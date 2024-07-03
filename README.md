@@ -7,7 +7,8 @@
 > Spring Boot와 Vue 프레임워크를 통해 협업 위주 툴 사용 및 기술 적용
 
 ## 초기 프로젝트 환경
-- [First Spring Project](https://github.com/cmsong111/Spring-webmail/tree/945cb0a149113b2e2ee497d918f2cc7246340189)
+- Spring Boot 3.3.1
+- Vue 2.0
 
 ## 프로젝트 개요
 
@@ -23,9 +24,9 @@
 - **REST API** [클라이언트와 서버 간의 통신을 원활하게 하는 방법인 웹 서비스 아키텍처 사용]
 
 ## Tools
-> Sonar Cloud
-> Github
-> Swagger
+- Sonar Cloud
+- Github
+- Swagger
 
 ## 기능 (필요에 따라 추가 예정)
 1. 사용자 관리(로그인, 회원가입, 회원 정보 수정, 회원 정보 탈퇴)
