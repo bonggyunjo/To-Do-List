@@ -19,7 +19,7 @@ public class UserService {
             throw new IllegalArgumentException("닉네임이 이미 존재합니다.");
         }
 
-        // dto -> entity
+        // dto -> entito
         User user = signUpDto.toEntity();
 
         // repository에게 entity를 디비에 저장하게 시킴
