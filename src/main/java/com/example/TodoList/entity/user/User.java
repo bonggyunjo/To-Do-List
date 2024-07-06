@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "User")
-public class user {
+public class User {
 
     // 아이디 = primary key
     @Id
