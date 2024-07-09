@@ -1,10 +1,10 @@
 <template>
   <div class="sign-up">
     <h1>회원가입</h1>
-    <form @submit.prevent="submitForm">
       <section>
         <div class="form-group">
-          <label for="userId">이메일</label>
+          <label for="userId" style="position: relative; left:-65px;">이메일</label>
+          <button @click="checkIdbut  " id="checkbtnid" type="submit" class="check-btn" style="position: relative; left:-115px; top:-2px;">중복확인</button>
           <input type="text" id="userId" v-model="userId" @input="checkId">
         </div>
         <div>
@@ -23,7 +23,8 @@
       </section>
 
       <div class="form-group">
-        <label for="nickname">닉네임</label>
+        <label for="nickname" style="position: relative; left:-65px;">닉네임</label>
+        <button type="submit" @click="checknicknamebut" class="check-btn" style="position: relative; left:-115px; top:-2px;">중복확인</button>
         <input type="text" id="nickname" v-model="nickname" minlength="4" nmaxlength="15">
       </div>
       <section>
@@ -33,8 +34,7 @@
         <label for="intro">대표 한마디</label>
         <input type="text" id="intro" v-model="intro">
       </div>
-      <button type="submit" @click="signup" class="submit-btn">가입하기</button>
-    </form>
+      <button type="submit" @click="submitForm" class="submit-btn">가입하기</button>
   </div>
 </template>
 
@@ -49,11 +49,43 @@ export default {
       intro: '',
       isUserIdValid: false,
       isPasswordValid: false,
-      inputStarted: false
+      inputStarted: false,
+      isIdChecked:false,
+      isNicknameChecked:false
     };
   },
 
   methods: {
+      checkIdbut() {
+        this.isIdChecked = true;
+        if (!this.userId.trim()) {
+          alert('이메일을 입력해주세요.');
+          return;
+        }
+        if (!this.isUserIdValid ) {
+          alert('유효하지 않은 이메일 형식입니다.');
+          return; // 유효하지 않으면 여기서 함수 종료
+        }      axios.get(`http://localhost:8081/checkuserId/${encodeURIComponent(this.userId)}`).then(res => {
+              const result = res.data;
+              if (result) {
+                alert('사용 가능한 아이디입니다.');
+                this.isIdAvailable = true; // 아이디 사용 가능 상태 업데이트
+              } else{
+                alert("이미 사용중인 아이디입니다.");
+                this.isIdAvailable = false; // 아이디 사용 불가 상태 업데이트
+              }
+            }
+        )
+            .catch(error => {
+              if (error.response) {
+                alert("서버 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+              } else if (error.request) {
+                alert("서버 응답이 없습니다. 네트워크 연결을 확인해주세요.");
+              } else {
+                alert("요청을 처리하는 중 오류가 발생했습니다.");
+              }
+            });
+      },
     checkId() {
       const validateEmail = (email) => {
         const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -87,7 +119,14 @@ export default {
         alert('빈칸을 입력해주세요.');
         return;
       }
-
+      if (!this.isIdChecked || !this.isIdAvailable) {
+        alert('아이디 중복 확인을 해주세요.');
+        return;
+      }
+      if(!this.isNicknameChecked || !this.isNicknameAvailable){
+        alert('닉네임 중복 확인을 해주세요.');
+        return;
+      }
       if (!this.isUserIdValid ) {
         alert('이메일 형식으로 입력해 주세요.');
         return;
@@ -110,8 +149,25 @@ export default {
       } catch (error) {
         console.error("실패", error);
       }
+    },
+    checknicknamebut(){
+      if (!this.nickname.trim()) {
+        alert('닉네임을 입력해주세요.');
+        return;
+      }
+      this.isNicknameChecked=true;
+      axios.get(`http://localhost:8081/checknickname/${encodeURIComponent(this.nickname)}`).then(res => {
+        const result = res.data;
+        if (result) {
+          alert('사용 가능한 닉네임입니다.');
+          this.isNicknameAvailable = true; // 닉네임 사용 가능 상태 업데이트
+        } else if(!result) {
+          alert("이미 사용중인 닉네임입니다..");
+          this.isNicknameAvailable = false; // 닉네임 사용 불가 상태 업데이트
+        }
+      })
     }
-  }
+    }
 };
 </script>
 
@@ -176,12 +232,28 @@ export default {
   background-color: #0056b3;
 }
 /* styles.css */
-.valid {
-  border-color: green;
+
+.check-btn {
+  position: relative;
+  left: -115px;
+  top: -2px;
+  border: 1px solid #0056b3;;
+  border: none; /* 테두리 없음 */
+  color: black; /* 흰색 텍스트 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  text-decoration: none; /* 텍스트 밑줄 없음 */
+  display: inline-block; /* 인라인 블록 요소 */
+  font-size: 12px; /* 폰트 크기 */
+  cursor: pointer; /* 마우스 포인터 모양 */
+  border-radius: 3px; /* 둥근 모서리 */
+  transition-duration: 0.4s; /* 전환 시간 */
+  width: 65px;
+  height: 28px;
 }
 
-.invalid {
-  border-color: red;
+.check-btn:hover {
+  background-color: white; /* 호버 시 흰색 배경 */
+  color: black; /* 호버 시 검정색 텍스트 */
+  border: 1px solid #0056b3;;
 }
-
 </style>
