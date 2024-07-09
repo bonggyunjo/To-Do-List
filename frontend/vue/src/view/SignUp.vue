@@ -1,10 +1,11 @@
 <template>
   <div class="sign-up">
+    <router-link to="/" style="text-decoration: none;"><h5 class="gotohome">Go To Home</h5></router-link>
     <h1>회원가입</h1>
       <section>
         <div class="form-group">
           <label for="userId" style="position: relative; left:-65px;">이메일</label>
-          <button @click="checkIdbut  " id="checkbtnid" type="submit" class="check-btn" style="position: relative; left:-115px; top:-2px;">중복확인</button>
+          <button @click="checkIdbut  " id="checkbtnid" type="submit" class="check-btn" style="position: relative; left:-115px; top:-2px; font-weight: bolder;  color:#333333;">중복확인</button>
           <input type="text" id="userId" v-model="userId" @input="checkId">
         </div>
         <div>
@@ -24,7 +25,7 @@
 
       <div class="form-group">
         <label for="nickname" style="position: relative; left:-65px;">닉네임</label>
-        <button type="submit" @click="checknicknamebut" class="check-btn" style="position: relative; left:-115px; top:-2px;">중복확인</button>
+        <button type="submit" @click="checknicknamebut" class="check-btn" style="position: relative; left:-115px; top:-2px;   color:#333333; font-weight: bolder;">중복확인</button>
         <input type="text" id="nickname" v-model="nickname" minlength="4" nmaxlength="15">
       </div>
       <section>
@@ -155,6 +156,10 @@ export default {
         alert('닉네임을 입력해주세요.');
         return;
       }
+      if (!this.nickname.length <4) {
+        alert('닉네임은 4글자 이상으로 입력해 주세요.');
+        return;
+      }
       this.isNicknameChecked=true;
       axios.get(`http://localhost:8081/checknickname/${encodeURIComponent(this.nickname)}`).then(res => {
         const result = res.data;
@@ -255,5 +260,10 @@ export default {
   background-color: white; /* 호버 시 흰색 배경 */
   color: black; /* 호버 시 검정색 텍스트 */
   border: 1px solid #0056b3;;
+}
+.gotohome{
+  font-weight: bolder;
+  text-decoration: none;
+  color:#333333;
 }
 </style>
