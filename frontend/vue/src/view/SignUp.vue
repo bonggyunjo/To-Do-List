@@ -156,7 +156,7 @@ export default {
         alert('닉네임을 입력해주세요.');
         return;
       }
-      if (!this.nickname.length <4) {
+      if (this.nickname.length < 4) {
         alert('닉네임은 4글자 이상으로 입력해 주세요.');
         return;
       }
