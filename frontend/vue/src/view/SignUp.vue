@@ -1,6 +1,5 @@
 <template>
   <div class="sign-up">
-    <router-link to="/" style="text-decoration: none;"><h5 class="gotohome">Go To Home</h5></router-link>
     <h1>회원가입</h1>
       <section>
         <div class="form-group">
