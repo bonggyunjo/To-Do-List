@@ -146,6 +146,7 @@ export default {
         const response = await axios.post('http://localhost:8081/signup', userData);
         console.log("성공", response.data);
         alert('회원가입에 성공하였습니다.');
+        this.$router.push('/login');
       } catch (error) {
         console.error("실패", error);
       }

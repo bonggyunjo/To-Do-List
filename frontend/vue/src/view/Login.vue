@@ -12,7 +12,7 @@
           <input type="password" id="password" v-model="password" placeholder="password" />
         </div>
         <button type="submit" class="login-button" @click="login">로그인</button>
-
+      <h5 style="position: relative; top:30px; font-weight: normal"><router-link to="/" style="text-decoration: none; color: #333333;">홈으로</router-link> | <router-link to="/signup" style="text-decoration: none; color: #333333;">회원가입</router-link></h5>
     </div>
   </div>
 </template>
@@ -21,47 +21,50 @@
 import axios from "axios";
 
 export default {
-  name: 'UserLogin',  // 여기에서 컴포넌트 이름을 변경합니다.
+  name: 'UserLogin',
   data() {
     return {
       userId: '',
       password: ''
     };
   },
+  mounted() {
+    // $store가 제대로 정의되었는지 확인
+    console.log(this.$store);
+  },
   methods: {
-
-    async login() {
-
-      // 여기에 로그인 로직을 추가하세요.
-      if(!this.userId){
+    async login(event) {
+      event.preventDefault();
+      // 로그인 로직
+      if (!this.userId) {
         alert("아이디를 입력하세요.");
         return;
       }
-      if(!this.password){
+      if (!this.password) {
         alert("비밀번호를 입력하세요.");
         return;
       }
 
+      const userData = {
+        userId: this.userId,
+        password: this.password,
+      };
+
       try {
-        const response = await axios.post('http://localhost:8081/login', {
-          userId: this.userId,
-          password: this.password
-        });
-        alert("로그인에 성공하였습니다.");
-        console.log('로그인 성공:', response.data);
-        // 로그인 성공 후 처리 로직 추가
+        const res = await axios.post('http://localhost:8081/login', userData);
+        console.log(res.data); // 응답 데이터 확인
+        alert('로그인에 성공하였습니다.');
+        this.$store.commit('setUserId', res.data.userId);
+        this.$router.push('/');
       } catch (error) {
-        console.error('로그인 실패:', error);
-        if (error.response && error.response.status === 401) {
-          alert('잘못된 사용자 이름 또는 비밀번호입니다.');
-        } else {
-          alert('로그인 중 오류가 발생했습니다.');
-        }
+        alert('로그인에 실패하였습니다. 아이디와 비밀번호를 확인해 주세요.');
+        console.error('Error data', error);
       }
     }
   }
 };
 </script>
+
 
 <style scoped>
 .login-container {
@@ -111,7 +114,7 @@ h2 {
 }
 
 .login-button {
-  width: 80%;
+  width: 75%;
   height: 50px;
   padding: 10px;
   background-color: #007BFF;
