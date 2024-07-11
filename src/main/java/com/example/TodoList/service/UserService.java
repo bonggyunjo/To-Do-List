@@ -6,16 +6,19 @@ import com.example.TodoList.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    //회원가입
     public User registerUser(SignUpDto signUpDto) {
-        if (userRepository.findByUserId(signUpDto.getUserId()).isPresent()) {
+        if (userRepository.findByUserId(signUpDto.getUserId())!=null) {
             throw new IllegalArgumentException("아이디가 이미 존재합니다");
         }
-        if (userRepository.findByNickname(signUpDto.getNickname()).isPresent()) {
+        if (userRepository.findByNickname(signUpDto.getNickname())!=null) {
             throw new IllegalArgumentException("닉네임이 이미 존재합니다.");
         }
 
@@ -27,5 +30,11 @@ public class UserService {
 
         return saved;
     }
+
+    //로그인
+    public User UserLogin(String userId) {
+        return userRepository.findByUserId(userId);
+    }
+
 }
 
