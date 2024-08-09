@@ -1,10 +1,7 @@
 package com.example.TodoList.entity.user;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -33,4 +30,5 @@ public class User {
     @Column(nullable = false)
     private String intro;
 
+    private String role;
 }

@@ -51,7 +51,9 @@ export default {
       isPasswordValid: false,
       inputStarted: false,
       isIdChecked:false,
-      isNicknameChecked:false
+      isNicknameChecked:false,
+      isIdAvailable: false,
+      isNicknameAvailable: false,
     };
   },
 
@@ -139,7 +141,7 @@ export default {
         userId: this.userId,
         password: this.password,
         nickname: this.nickname,
-        intro: this.intro
+        intro: this.intro,
       };
 
       try {
