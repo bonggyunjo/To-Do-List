@@ -22,12 +22,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    // 닉네임 = unique key
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false)
     private String nickname;
 
-    // 한줄소개
-    @Column(nullable = false)
     private String intro;
 
     private String role;

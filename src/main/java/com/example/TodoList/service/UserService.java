@@ -23,6 +23,8 @@ public class UserService {
     public void registerUser(SignUpDto signUpDto) {
         String userId = signUpDto.getUserId();
         String password = signUpDto.getPassword();
+        String nickname = signUpDto.getNickname();
+        String intro = signUpDto.getIntro();
 
         Boolean isExist = userRepository.existsByUserId(userId);
         if (isExist) {
@@ -42,6 +44,8 @@ public class UserService {
 
         user.setUserId(userId);
         user.setPassword(bCryptPasswordEncoder.encode(password)); //비밀번호 인코딩
+        user.setNickname(nickname);
+        user.setIntro(intro);
         user.setRole("ROLE_ADMIN"); // 어드민 권한 설정
 
         userRepository.save(user);
