@@ -1,11 +1,11 @@
 <template>
   <div class="sign-up">
-    <h1>회원가입</h1>
+    <h1 style="font-size: 21px; padding:20px; color: #007BFF; font-weight: bolder;"> <span style="position: relative; left:-75px;">회원가입을 위해 </span> <br><span style="position: relative; left:-50px; top:5px;">정보를 입력해 주세요.</span></h1>
       <section>
         <div class="form-group">
-          <label for="userId" style="position: relative; left:-65px;">이메일</label>
-          <button @click="checkIdbut  " id="checkbtnid" type="submit" class="check-btn" style="position: relative; left:-115px; top:-2px; font-weight: bolder;  color:#333333;">중복확인</button>
-          <input type="text" id="userId" v-model="userId" @input="checkId">
+          <label for="userId" style="position: relative; left:-59px;">이메일</label>
+          <button @click="checkIdbut  " id="checkbtnid" type="submit" class="btn btn-light" style="position: relative; left:-115px; top:-2px; font-weight: bolder; font-size: 13px;  color:#333333;">중복확인</button>
+          <input type="text" id="userId" v-model="userId" @input="checkId" style="position: relative;  left:-10px; width: 280px; top:3px;">
         </div>
         <div>
           <span id="checkId" style="font-size: 13px; position: relative; left:-70px; top:-10px;"></span>
@@ -14,27 +14,27 @@
 
       <section>
         <div class="form-group">
-          <label for="password">비밀번호</label>
-          <input type="password" id="password" v-model="password" @input="checkPassword">
+          <label for="password" style="position: relative; top:-1px; left:-98px;">비밀번호</label>
+          <input type="password" id="password" v-model="password" @input="checkPassword" style="position: relative; width: 280px; left:-10px;">
         </div>
         <section :style="{ color: inputStarted ? (isPasswordValid ? 'green' : 'red') : 'dimgray' }" id="pw-length" class="form-text-nickname form-text">
-          <span style="font-size: 11.5px; position: relative; top:-10px;">대소문자, 숫자, 특수문자를 포함한 8자 이상을 입력하세요.</span>
+          <span style="font-size: 11.5px; position: relative; top:-10px; left:3px;">대소문자, 숫자, 특수문자를 포함한 8자 이상을 입력하세요.</span>
         </section>
       </section>
 
       <div class="form-group">
-        <label for="nickname" style="position: relative; left:-65px;">닉네임</label>
-        <button type="submit" @click="checknicknamebut" class="check-btn" style="position: relative; left:-115px; top:-2px;   color:#333333; font-weight: bolder;">중복확인</button>
-        <input type="text" id="nickname" v-model="nickname" minlength="4" nmaxlength="15">
+        <label for="nickname" style="position: relative; left:-59px;">닉네임</label>
+        <button type="submit" @click="checknicknamebut" class="btn btn-light" style="position: relative; left:-115px; top:-2px; color:#333333; font-weight: bolder; font-size: 13px;">중복확인</button>
+        <input type="text" id="nickname" v-model="nickname" minlength="4" nmaxlength="15" style="position: relative; width: 280px; left:-10px;">
       </div>
       <section>
-      <span style="font-size: 11.5px; position: relative; top:-10px; left:-49px;">닉네임은 4~15자 사이로 입력해 주세요.</span>
+      <span style="font-size: 11.5px; position: relative; top:-10px; left:-46px;">닉네임은 4~15자 사이로 입력해 주세요.</span>
       </section>
       <div class="form-group">
-        <label for="intro">대표 한마디</label>
-        <input type="text" id="intro" v-model="intro">
+        <label for="intro" style="position: relative; top:-1px; left:-98px;">대표 한마디</label>
+        <input type="text" id="intro" v-model="intro" style="position: relative; width: 280px; left:-10px;">
       </div>
-      <button type="submit" @click="submitForm" class="submit-btn">가입하기</button>
+      <button type="submit" @click="submitForm" class="btn btn-outline-primary" style="width: 260px; top:5px; left:-5px; position: relative; height: 48px;">회원가입</button>
   </div>
 </template>
 
@@ -51,7 +51,9 @@ export default {
       isPasswordValid: false,
       inputStarted: false,
       isIdChecked:false,
-      isNicknameChecked:false
+      isNicknameChecked:false,
+      isIdAvailable: false,
+      isNicknameAvailable: false,
     };
   },
 
@@ -139,7 +141,7 @@ export default {
         userId: this.userId,
         password: this.password,
         nickname: this.nickname,
-        intro: this.intro
+        intro: this.intro,
       };
 
       try {
@@ -185,7 +187,7 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   position: relative;
-  top:130px;
+  top:150px;
 }
 
 .sign-up h1 {
@@ -207,7 +209,7 @@ export default {
   color: #555;
   text-align: left;
   position: relative;
-  left:-98px;
+  left:33px;
   font-size: 14px;
 }
 
@@ -256,14 +258,5 @@ export default {
   height: 28px;
 }
 
-.check-btn:hover {
-  background-color: white; /* 호버 시 흰색 배경 */
-  color: black; /* 호버 시 검정색 텍스트 */
-  border: 1px solid #0056b3;;
-}
-.gotohome{
-  font-weight: bolder;
-  text-decoration: none;
-  color:#333333;
-}
+
 </style>

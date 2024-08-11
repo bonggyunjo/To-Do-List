@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "bootstrap": "^5.3.3",
     "vuex": "^4.1.0",
     "vuex-persistedstate": "^4.1.0"
   }

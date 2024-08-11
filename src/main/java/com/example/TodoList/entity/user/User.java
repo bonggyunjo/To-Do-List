@@ -1,10 +1,7 @@
 package com.example.TodoList.entity.user;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -25,12 +22,10 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    // 닉네임 = unique key
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false)
     private String nickname;
 
-    // 한줄소개
-    @Column(nullable = false)
     private String intro;
 
+    private String role;
 }
