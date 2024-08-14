@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
