@@ -50,10 +50,5 @@ public class UserService {
 
         userRepository.save(user);
     }
-    //로그인
-    public User UserLogin(String userId) {
-        return userRepository.findByUserId(userId);
-    }
-
 }
 
