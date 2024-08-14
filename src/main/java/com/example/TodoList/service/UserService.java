@@ -26,12 +26,6 @@ public class UserService {
         String nickname = signUpDto.getNickname();
         String intro = signUpDto.getIntro();
 
-        Boolean isExist = userRepository.existsByUserId(userId);
-        if (isExist) {
-
-            return;
-
-        }
 
         Optional<User> existingUser = userRepository.findByUserId(signUpDto.getUserId());
         if (existingUser.isPresent()) {
