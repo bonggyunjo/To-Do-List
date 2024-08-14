@@ -33,9 +33,11 @@ public class UserService {
 
         }
 
-        if (userRepository.findByUserId(signUpDto.getUserId()) != null) {
+        Optional<User> existingUser = userRepository.findByUserId(signUpDto.getUserId());
+        if (existingUser.isPresent()) {
             throw new IllegalArgumentException("아이디가 이미 존재합니다");
         }
+
         if (userRepository.findByNickname(signUpDto.getNickname()) != null) {
             throw new IllegalArgumentException("닉네임이 이미 존재합니다.");
         }
