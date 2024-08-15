@@ -1,4 +1,6 @@
 <template>
+  <div>
+  <div class="lottie-animation" style="width:150px; height: 150px; margin: auto; position: relative; top:100px;"></div>
   <div class="sign-up">
     <h1 style="font-size: 21px; padding:20px; color: #007BFF; font-weight: bolder;"> <span style="position: relative; left:-75px;">회원가입을 위해 </span> <br><span style="position: relative; left:-50px; top:5px;">정보를 입력해 주세요.</span></h1>
       <section>
@@ -34,13 +36,24 @@
         <label for="intro" style="position: relative; top:-1px; left:-98px;">대표 한마디</label>
         <input type="text" id="intro" v-model="intro" style="position: relative; width: 280px; left:-10px;">
       </div>
-      <button type="submit" @click="submitForm" class="btn btn-outline-primary" style="width: 260px; top:5px; left:-5px; position: relative; height: 48px;">회원가입</button>
+      <button type="submit" @click="submitForm" class="btn btn-primary" style="width: 285px; top:5px; left:-5px; position: relative; height: 50px;">회원가입</button>
+  </div>
   </div>
 </template>
 
 <script>
+import lottie from 'lottie-web';
 import axios from 'axios';
 export default {
+  mounted() {
+    lottie.loadAnimation({
+      container: this.$el.querySelector('.lottie-animation'), // 애니메이션을 표시할 DOM 요소
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'https://assets10.lottiefiles.com/packages/lf20_x62chJ.json' // 애니메이션 파일 경로
+    });
+  },
   data() {
     return {
       userId: '',
@@ -187,7 +200,7 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   position: relative;
-  top:150px;
+  top:30px;
 }
 
 .sign-up h1 {

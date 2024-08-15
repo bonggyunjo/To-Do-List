@@ -1,18 +1,21 @@
 <template>
   <div class="login-container">
     <div class="login-box">
-      <h2>로그인</h2>
-
+      <h4 style="color: black;">로그인</h4>
+      <form @submit.prevent="login">
         <div class="input-group">
-          <label for="username">이메일</label>
-          <input type="text" id="username" v-model="userId" placeholder="email"/>
+          <input type="text"  style="color: black;position: relative;top:7.49px;" class="login-text" id="username" v-model="userId" placeholder="아이디" />
         </div>
         <div class="input-group">
-          <label for="password">비밀번호</label>
-          <input type="password" id="password" v-model="password" placeholder="password" />
+          <input type="password" style="position: relative;top:-8.516px;" class="password-text" id="password" v-model="password" placeholder="비밀번호" />
         </div>
-        <button type="submit" class="login-button" @click="login">로그인</button>
-      <h5 style="position: relative; top:30px; font-weight: normal"><router-link to="/" style="text-decoration: none; color: #333333;">홈으로</router-link> | <router-link to="/signup" style="text-decoration: none; color: #333333;">회원가입</router-link></h5>
+        <button type="submit" id="login-btn" class="btn btn-outline-primary">로그인</button>
+      </form>
+      <h6 class="link-text">
+        <router-link to="/">홈으로</router-link>
+        &nbsp; &nbsp;
+        <router-link to="/signup">회원가입</router-link>
+      </h6>
     </div>
   </div>
 </template>
@@ -28,13 +31,8 @@ export default {
       password: ''
     };
   },
-  mounted() {
-    // $store가 제대로 정의되었는지 확인
-    console.log(this.$store);
-  },
   methods: {
-    async login(event) {
-      event.preventDefault();
+    async login() {
       // 로그인 로직
       if (!this.userId) {
         alert("아이디를 입력하세요.");
@@ -52,7 +50,6 @@ export default {
 
       try {
         const res = await axios.post('http://localhost:8081/login', userData);
-        console.log(res.data); // 응답 데이터 확인
         alert('로그인에 성공하였습니다.');
         this.$store.commit('setUserId', res.data.userId);
         this.$router.push('/');
@@ -65,28 +62,28 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  height: 100vh;
+  background-color: #f7f7f7;
 }
 
 .login-box {
   width: 400px;
-  height: 330px;
   padding: 40px;
   background: white;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-h2 {
+h4 {
   margin-bottom: 20px;
   color: #333;
+  font-family: 'Arial', sans-serif;
 }
 
 .input-group {
@@ -94,41 +91,55 @@ h2 {
   text-align: left;
 }
 
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #555;
-  position: relative;
-  left:40px;
-  font-size: 13px;
-}
-
 .input-group input {
-  width: 80%;
+  width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
-  position: relative;
-  left:40px;
+  transition: border-color 0.3s;
+  border-radius: 2px;
 }
 
-.login-button {
-  width: 75%;
+.input-group input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.btn {
+  width: 100%;
   height: 50px;
-  padding: 10px;
-  background-color: #007BFF;
+  background-color: #007bff;
+  color: white;
   border: none;
   border-radius: 5px;
-  color: white;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
-  position: relative;
-  top:30px;
 }
 
-.login-button:hover {
+.btn:hover {
   background-color: #0056b3;
 }
+
+.link-text {
+  margin-top: 20px;
+  font-size: 14px;
+  position: relative;
+  top:20px;
+
+}
+
+.link-text a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.link-text a:hover {
+  text-decoration: underline;
+}
+.login-text, .password-text{
+  font-size: 13.5px;
+}
+
 </style>
