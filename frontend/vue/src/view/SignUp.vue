@@ -235,41 +235,4 @@ export default {
   margin-left: 10px;
 }
 
-.submit-btn {
-  width: 70%;
-  padding: 10px;
-  background-color: #007BFF;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 20px;
-  height: 50px;
-}
-
-.submit-btn:hover {
-  background-color: #0056b3;
-}
-/* styles.css */
-
-.check-btn {
-  position: relative;
-  left: -115px;
-  top: -2px;
-  border: 1px solid #0056b3;;
-  border: none; /* 테두리 없음 */
-  color: black; /* 흰색 텍스트 */
-  text-align: center; /* 텍스트 중앙 정렬 */
-  text-decoration: none; /* 텍스트 밑줄 없음 */
-  display: inline-block; /* 인라인 블록 요소 */
-  font-size: 12px; /* 폰트 크기 */
-  cursor: pointer; /* 마우스 포인터 모양 */
-  border-radius: 3px; /* 둥근 모서리 */
-  transition-duration: 0.4s; /* 전환 시간 */
-  width: 65px;
-  height: 28px;
-}
-
-
 </style>

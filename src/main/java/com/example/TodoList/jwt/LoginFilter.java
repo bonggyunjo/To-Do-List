@@ -3,7 +3,6 @@ package com.example.TodoList.jwt;
 import com.example.TodoList.dto.CustomUserDetails;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwt;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 @Slf4j
@@ -38,7 +36,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            // JSON 요청 본문에서 username과 password 추출
+            // JSON 요청 본문에서 userId와 password 추출
             Map<String, String> credentials = new ObjectMapper().readValue(request.getInputStream(), new TypeReference<Map<String, String>>() {
             });
             String userId = credentials.get("userId");
@@ -52,7 +50,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
-    //로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
+    //로그인 성공시 실행 (여기서 JWT를 발급)
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -74,7 +72,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         log.info("Login successful: {}", userId);
     }
-    //로그인 실패시 실행하는 메소드
+    //로그인 실패시 실행
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         response.setStatus(401);
