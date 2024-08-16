@@ -54,25 +54,26 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
         String userId = customUserDetails.getUsername();
 
-        //role 값 추출
+        // Role 추출
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = (Iterator<? extends GrantedAuthority>) ((Collection<?>) authorities).iterator();
-        GrantedAuthority auth = iterator.next();
+        String role = authorities.stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null);
 
-        String role = auth.getAuthority();
+        // JWT 생성
+        String token = jwtUtil.createJwt(userId, role, 60 * 60 * 10L); // 10시간 유효
 
-        String token = jwtUtil.createJwt(userId, role, 60 * 60 * 10L); // 3번째 인자는 jwt 만료되기 전까지의 시간
-
+        // JWT를 응답 헤더에 추가
         response.addHeader("Authorization", "Bearer " + token);
 
-        log.info("success");
-    }
+        // 응답 본체에 JWT 포함
+        response.setContentType("application/json");
+        response.getWriter().write("{\"token\": \"" + token + "\"}");
 
+        log.info("Login successful: {}", userId);
+    }
     //로그인 실패시 실행하는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
