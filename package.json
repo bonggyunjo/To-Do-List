@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bootstrap": "^5.3.3",
+    "lottie-web": "^5.12.2",
     "vuex": "^4.1.0",
     "vuex-persistedstate": "^4.1.0"
   }

@@ -26,16 +26,12 @@ public class UserService {
         String nickname = signUpDto.getNickname();
         String intro = signUpDto.getIntro();
 
-        Boolean isExist = userRepository.existsByUserId(userId);
-        if (isExist) {
 
-            return;
-
-        }
-
-        if (userRepository.findByUserId(signUpDto.getUserId()) != null) {
+        Optional<User> existingUser = userRepository.findByUserId(signUpDto.getUserId());
+        if (existingUser.isPresent()) {
             throw new IllegalArgumentException("아이디가 이미 존재합니다");
         }
+
         if (userRepository.findByNickname(signUpDto.getNickname()) != null) {
             throw new IllegalArgumentException("닉네임이 이미 존재합니다.");
         }
@@ -50,10 +46,5 @@ public class UserService {
 
         userRepository.save(user);
     }
-    //로그인
-    public User UserLogin(String userId) {
-        return userRepository.findByUserId(userId);
-    }
-
 }
 

@@ -48,14 +48,4 @@ public class  UserController {
         return ResponseEntity.ok(isAvailable);
     }
 
-    //로그인
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpSession session) {
-        User user = userService.UserLogin(loginDto.getUserId());
-        if (user != null && user.getPassword().equals(loginDto.getPassword())) {
-            session.setAttribute("user", user);
-            return ResponseEntity.ok("로그인에 성공하였습니다.");
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호를 찾을 수 없습니다.");
-    }
 }

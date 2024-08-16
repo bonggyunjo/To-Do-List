@@ -10,7 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    User findByUserId(String userId);
+
+    // Optional로 반환한 이유는 로그인 검증에서 orElseThrow 예외처리를 위해 Optional를 사용
+    Optional<User> findByUserId(String userId);
 
     User findByNickname(String nickname);
 
