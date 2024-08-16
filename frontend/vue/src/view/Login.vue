@@ -11,10 +11,12 @@
         </div>
         <button type="submit" id="login-btn" class="btn btn-outline-primary">로그인</button>
       </form>
+
+      <span style="color:#555555; position: relative; top:20px;">────────── <span style="font-size: 13px;">또는</span> ──────────</span>
       <h6 class="link-text">
-        <router-link to="/">홈으로</router-link>
-        &nbsp; &nbsp;
-        <router-link to="/signup">회원가입</router-link>
+        <router-link to="/" style="font-weight: bolder; color: #0056b3; top:5px; position: relative;">비밀번호를 잊으셨나요?</router-link>
+        <br><br><br>
+        <span style="font-size: 14.5px; font-weight: bolder; color: #333333;">계정이 없으신가요?</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<router-link to="/signup" style="font-weight: bolder; font-size: 15px;">가입하기</router-link>
       </h6>
     </div>
   </div>
@@ -75,6 +77,7 @@ export default {
 </script>
 
 <style scoped>
+
 .login-container {
   display: flex;
   justify-content: center;

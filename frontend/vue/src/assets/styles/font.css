@@ -1,0 +1,6 @@
+@font-face {
+    font-family: 'Poly';
+    src: url('@/fonts/Poly-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

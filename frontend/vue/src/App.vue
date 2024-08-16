@@ -16,6 +16,7 @@ export default {
 </script>
 
 <style>
+
 #app {
   font-family: "Pretendard Variable", Pretendard, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
