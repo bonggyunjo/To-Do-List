@@ -44,7 +44,7 @@ export default {
 }
 
 .copyright {
-  font-size: 14px;
+  font-size: 15px;
   color: #333;
   margin-bottom: 15px;
 }
