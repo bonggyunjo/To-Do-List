@@ -1,28 +1,30 @@
 <template>
   <header class="app-header">
     <div class="logo">
-      <h1>오늘의 일기</h1>
+      <h1>할 일 목록</h1>
     </div>
-    <p class="slogan">당신의 하루를 기록하세요</p>
+    <p class="slogan">당신의 일정을 관리하세요</p>
     <nav class="navigation">
       <ul>
         <li><router-link to="/">홈</router-link></li>
-        <li><router-link to="/write">일기 작성</router-link></li>
-        <li><router-link to="/my-diary">내 일기</router-link></li>
+        <li><router-link to="/add-task">작업 추가</router-link></li>
+        <li><router-link to="/task-list">작업 목록</router-link></li>
+        <li><router-link to="/task-list">자유 게시판</router-link></li>
         <li><router-link to="/settings">설정</router-link></li>
       </ul>
     </nav>
-    <div class="search-container">
-      <input type="text" placeholder="일기 검색..." />
+    <!--
+    <div class="filter-container">
+      <select>
+        <option value="all">모든 작업</option>
+        <option value="completed">완료된 작업</option>
+        <option value="pending">진행 중인 작업</option>
+      </select>
     </div>
+    -->
     <div class="auth-buttons">
-      <router-link to="/signup" class="signup-button">회원가입</router-link>
-      <router-link to="/login" class="login-button">로그인</router-link>
-    </div>
-    <div class="social-icons">
-      <a href="https://facebook.com" target="_blank">Facebook</a>
-      <a href="https://twitter.com" target="_blank">Twitter</a>
-      <a href="https://instagram.com" target="_blank">Instagram</a>
+      <router-link to="/signup" class="signup-button"><span style="font-size: 15px;">회원가입</span></router-link>
+      <router-link to="/login" class="login-button"><span style="font-size: 15  px;">로그인</span></router-link>
     </div>
   </header>
 </template>
@@ -30,7 +32,6 @@
 <script>
 export default {
   name: 'AppHeader',
-
 }
 </script>
 
@@ -47,11 +48,6 @@ export default {
 .logo {
   display: flex;
   align-items: center;
-}
-
-.logo img {
-  width: 50px; /* 로고 크기 조정 */
-  margin-right: 10px;
 }
 
 h1 {
@@ -91,27 +87,29 @@ h1 {
   border-radius: 4px;
 }
 
-.auth-buttons {
+.filter-container {
   margin: 10px 0;
 }
 
+.filter-container select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.auth-buttons {
+  display: flex; /* Flexbox로 레이아웃 조정 */
+}
+
 .signup-button, .login-button {
-  margin: 0 5px;
+  margin: 20px 13px;
   padding: 10px 15px;
   color: #fff;
   background-color: #007bff;
   border: none;
-  border-radius: 4px;
+  border-radius: 15px;
   text-decoration: none;
-}
-
-.social-icons {
-  margin: 10px 0;
-}
-
-.social-icons a {
-  margin: 0 10px;
-  text-decoration: none;
-  color: #007bff;
+  position: relative;
+  top: 10px;
 }
 </style>
