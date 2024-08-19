@@ -13,18 +13,12 @@
         <li><router-link to="/settings">설정</router-link></li>
       </ul>
     </nav>
-    <!--
-    <div class="filter-container">
-      <select>
-        <option value="all">모든 작업</option>
-        <option value="completed">완료된 작업</option>
-        <option value="pending">진행 중인 작업</option>
-      </select>
-    </div>
-    -->
     <div class="auth-buttons">
       <router-link to="/signup" class="signup-button"><span style="font-size: 15px;">회원가입</span></router-link>
-      <router-link to="/login" class="login-button"><span style="font-size: 15  px;">로그인</span></router-link>
+      <router-link to="/login" class="login-button"><span style="font-size: 15px;">로그인</span></router-link>
+    </div>
+    <div class="icon-animation">
+      <img src="@/assets/header/header_3d_icon_image.png" alt="아이콘" />
     </div>
   </header>
 </template>
@@ -77,26 +71,6 @@ h1 {
   color: #007bff;
 }
 
-.search-container {
-  margin: 10px 0;
-}
-
-.search-container input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.filter-container {
-  margin: 10px 0;
-}
-
-.filter-container select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 .auth-buttons {
   display: flex; /* Flexbox로 레이아웃 조정 */
 }
@@ -112,4 +86,25 @@ h1 {
   position: relative;
   top: 10px;
 }
+
+.icon-animation {
+  position: absolute; /* 위치 조정을 위해 절대 위치 설정 */
+  right: 10%; /* 오른쪽 중앙에 위치 */
+  transform: translateX(50%); /* 중앙 정렬 */
+  animation: float 2.5s ease-in-out infinite; /* 애니메이션 설정 */
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0); /* 원래 위치 */
+  }
+  50% {
+    transform: translateY(20px); /* 아래로 이동 */
+  }
+}
+.icon-animation img {
+  width: 280px; /* 이미지 크기 조정 */
+  height: 280px; /* 이미지 크기 조정 */
+}
+
 </style>
