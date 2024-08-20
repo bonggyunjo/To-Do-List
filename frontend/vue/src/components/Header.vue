@@ -13,10 +13,17 @@
         <li><router-link to="/settings">설정</router-link></li>
       </ul>
     </nav>
+
+    <template v-if="isUserLogin">
+      <button @click="logout" class="signup-button"><span style="font-size: 15px;">로그아웃</span></button>
+    </template>
+
+    <template v-else>
     <div class="auth-buttons">
       <router-link to="/signup" class="signup-button"><span style="font-size: 15px;">회원가입</span></router-link>
       <router-link to="/login" class="login-button"><span style="font-size: 15px;">로그인</span></router-link>
     </div>
+    </template>
     <div class="icon-animation">
       <img src="@/assets/header/header_3d_icon_image.png" alt="아이콘" />
     </div>
@@ -26,6 +33,24 @@
 <script>
 export default {
   name: 'AppHeader',
+  computed: {
+    // 로그인 유무 확인
+    isUserLogin() {
+      return this.$store.getters.isLogin;
+    }
+  },
+  methods: {
+    logout() {
+      // 로그아웃 로직
+      this.$store.dispatch('logout'); // Vuex로 로그아웃 처리
+      localStorage.removeItem('token'); // 토큰 삭제
+
+      // 현재 경로와 이동할 경로를 비교하여 중복 탐색 방지
+      if (this.$route.path !== '/') {
+        this.$router.push('/'); // 홈으로 리다이렉션
+      }
+    }
+  }
 }
 </script>
 
