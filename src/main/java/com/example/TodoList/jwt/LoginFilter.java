@@ -42,7 +42,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             String userId = credentials.get("userId");
             String password = credentials.get("password");
             System.out.println(userId);
-            // 나머지 코드
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, password, null);
             return authenticationManager.authenticate(authToken);
         } catch (IOException e) {
@@ -50,7 +49,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
-    //로그인 성공시 실행 (여기서 JWT를 발급)
+    //로그인 성공시 실행
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();

@@ -37,16 +37,16 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // 계정이 잠겨있지 않았는지 여부
+        return true; // 계정이 잠겨있는지 여부
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // 자격 증명이 만료되지 않았는지 여부
+        return true; // 자격 증명 여부
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // 계정이 활성화되어 있는지 여부
+        return true; // 계정이 활성화여부
     }
 }
