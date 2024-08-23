@@ -1,12 +1,15 @@
 package com.example.TodoList.service;
 
 import com.example.TodoList.dto.SignUpDto;
+import com.example.TodoList.dto.UserInfoUpdateDto;
 import com.example.TodoList.entity.user.User;
 import com.example.TodoList.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -49,34 +52,12 @@ public class UserService {
         userRepository.save(user);
     }
     //회원 정보 수정
-    public void updateUser(SignUpDto signUpDto) {
-        String userId = signUpDto.getUserId();
-        Optional<User> existingUser = userRepository.findByUserId(userId);
 
-        if (existingUser.isEmpty()) {
-            throw new IllegalArgumentException("해당 아이디를 가진 사용자가 존재하지 않습니다.");
-        }
-
-        User user = existingUser.get();
-
-        boolean isUpdated = false;
-
-        if (signUpDto.getPassword() != null && !signUpDto.getPassword().isEmpty()) {
-            user.setPassword(bCryptPasswordEncoder.encode(signUpDto.getPassword())); // 비밀번호 인코딩
-            isUpdated = true;
-        }
-        if (signUpDto.getNickname() != null && !signUpDto.getNickname().equals(user.getNickname())) {
-            user.setNickname(signUpDto.getNickname());
-            isUpdated = true;
-        }
-        if (signUpDto.getIntro() != null && !signUpDto.getIntro().equals(user.getIntro())) {
-            user.setIntro(signUpDto.getIntro());
-            isUpdated = true;
-        }
-
-        if (!isUpdated) {
-            throw new IllegalArgumentException("회원 정보를 수정할 수 없습니다.");
-        }
-
+    @Transactional
+    public void updateUser(String userId, UserInfoUpdateDto userInfoUpdateDto) throws IOException {
+        userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IOException("사용자를 찾을 수 없습니다.")) // 사용자 없을 경우 예외 처리
+                .updateDetails(userInfoUpdateDto.getPassword(), userInfoUpdateDto.getNickname(), userInfoUpdateDto.getIntro());
     }
+
 }

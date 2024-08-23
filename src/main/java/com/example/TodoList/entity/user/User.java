@@ -1,6 +1,7 @@
 package com.example.TodoList.entity.user;
 
 
+import com.example.TodoList.dto.UserInfoUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,4 +29,12 @@ public class User {
     private String intro;
 
     private String role;
+
+
+    //회원 정보 수정
+    public void updateDetails(String password, String nickname, String intro) {
+        this.password = password; // 비밀번호 업데이트
+        this.nickname = nickname; // 닉네임 업데이트
+        this.intro = intro; // 소개 업데이트
+    }
 }
