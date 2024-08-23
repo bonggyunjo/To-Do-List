@@ -59,7 +59,6 @@ public class UserService {
 
         User user = existingUser.get();
 
-        // 수정할 정보 업데이트 플래그
         boolean isUpdated = false;
 
         if (signUpDto.getPassword() != null && !signUpDto.getPassword().isEmpty()) {
@@ -75,11 +74,9 @@ public class UserService {
             isUpdated = true;
         }
 
-        // 수정된 정보가 없을 경우 예외 발생
         if (!isUpdated) {
             throw new IllegalArgumentException("회원 정보를 수정할 수 없습니다.");
         }
 
-        userRepository.save(user); // 수정된 사용자 정보 저장
     }
 }

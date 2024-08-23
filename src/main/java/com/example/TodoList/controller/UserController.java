@@ -48,8 +48,7 @@ public class  UserController {
         return ResponseEntity.ok(isAvailable);
     }
 
-    //정보 수정
-
+    //회원 정보 수정
     @PutMapping("/mypage/update")
     public ResponseEntity<String> updateUser(@RequestBody SignUpDto signUpDto) {
         try {
