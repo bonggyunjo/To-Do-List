@@ -1,16 +1,11 @@
 # 📌 To-Do-List Project
 
-> (24.07 ~ )
+- **프로젝트 명**: To-Do-List Project
+- **프로젝트 기간**: 2024년 07월 03일 ~ ing
 
 ## 초기 프로젝트 환경
 - Spring Boot 3.3.1
 - Vue 2.0
-
-## 프로젝트 개요
-
-- **프로젝트 명**: To-Do-List Project
-- **프로젝트 기간**: 2024년 07월 03일 ~ ing
-
 
 ## 프로젝트 목표
 
