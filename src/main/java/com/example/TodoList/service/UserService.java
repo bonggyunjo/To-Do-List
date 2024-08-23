@@ -49,7 +49,7 @@ public class UserService {
         userRepository.save(user);
     }
     //회원 정보 수정
-    public void updateUser(SignUpDto signUpDto){
+    public void updateUser(SignUpDto signUpDto) {
         String userId = signUpDto.getUserId();
         Optional<User> existingUser = userRepository.findByUserId(userId);
 
@@ -59,18 +59,27 @@ public class UserService {
 
         User user = existingUser.get();
 
-        // 수정할 정보 업데이트
+        // 수정할 정보 업데이트 플래그
+        boolean isUpdated = false;
+
         if (signUpDto.getPassword() != null && !signUpDto.getPassword().isEmpty()) {
             user.setPassword(bCryptPasswordEncoder.encode(signUpDto.getPassword())); // 비밀번호 인코딩
+            isUpdated = true;
         }
-        if (signUpDto.getNickname() != null) {
+        if (signUpDto.getNickname() != null && !signUpDto.getNickname().equals(user.getNickname())) {
             user.setNickname(signUpDto.getNickname());
+            isUpdated = true;
         }
-        if (signUpDto.getIntro() != null) {
+        if (signUpDto.getIntro() != null && !signUpDto.getIntro().equals(user.getIntro())) {
             user.setIntro(signUpDto.getIntro());
+            isUpdated = true;
+        }
+
+        // 수정된 정보가 없을 경우 예외 발생
+        if (!isUpdated) {
+            throw new IllegalArgumentException("회원 정보를 수정할 수 없습니다.");
         }
 
         userRepository.save(user); // 수정된 사용자 정보 저장
     }
-
 }
