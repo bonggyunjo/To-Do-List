@@ -48,4 +48,15 @@ public class  UserController {
         return ResponseEntity.ok(isAvailable);
     }
 
+    //정보 수정
+
+    @PutMapping("/mypage/update")
+    public ResponseEntity<String> updateUser(@RequestBody SignUpDto signUpDto) {
+        try {
+            userService.updateUser(signUpDto);
+            return ResponseEntity.ok("회원 정보가 성공적으로 수정되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

@@ -15,10 +15,12 @@ public class UserService {
     private UserRepository userRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
+
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
+
     //회원가입
     public void registerUser(SignUpDto signUpDto) {
         String userId = signUpDto.getUserId();
@@ -46,5 +48,29 @@ public class UserService {
 
         userRepository.save(user);
     }
-}
+    //회원 정보 수정
+    public void updateUser(SignUpDto signUpDto){
+        String userId = signUpDto.getUserId();
+        Optional<User> existingUser = userRepository.findByUserId(userId);
 
+        if (existingUser.isEmpty()) {
+            throw new IllegalArgumentException("해당 아이디를 가진 사용자가 존재하지 않습니다.");
+        }
+
+        User user = existingUser.get();
+
+        // 수정할 정보 업데이트
+        if (signUpDto.getPassword() != null && !signUpDto.getPassword().isEmpty()) {
+            user.setPassword(bCryptPasswordEncoder.encode(signUpDto.getPassword())); // 비밀번호 인코딩
+        }
+        if (signUpDto.getNickname() != null) {
+            user.setNickname(signUpDto.getNickname());
+        }
+        if (signUpDto.getIntro() != null) {
+            user.setIntro(signUpDto.getIntro());
+        }
+
+        userRepository.save(user); // 수정된 사용자 정보 저장
+    }
+
+}
