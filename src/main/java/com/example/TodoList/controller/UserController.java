@@ -62,4 +62,11 @@ public class  UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    //회원 탈퇴
+    @DeleteMapping("/user/delete")
+    public ResponseEntity<String> deleteUser(@RequestParam String userId){
+        userService.deleteuser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body("회원 탈퇴 완료");
+    }
 }
