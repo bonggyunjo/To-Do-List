@@ -60,4 +60,10 @@ public class UserService {
                 .updateDetails(userInfoUpdateDto.getPassword(), userInfoUpdateDto.getNickname(), userInfoUpdateDto.getIntro());
     }
 
+    //회원 탈퇴
+
+    @Transactional
+    public void deleteuser(String userId){
+        userRepository.deleteById(userId);
+    }
 }
