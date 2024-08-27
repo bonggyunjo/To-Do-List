@@ -5,6 +5,7 @@ import UserLogin from "@/view/Login.vue";
 import Home from "@/view/Home.vue";
 import MyPage from "@/view/MyPage/MyPage.vue";
 import UserDelete from "@/view/MyPage/UserDelete.vue";
+import PasswordChange from "@/view/MyPage/PasswordChange.vue";
 Vue.use(VueRouter)
 /*  경로 설정*/
 const routes = [
@@ -12,7 +13,8 @@ const routes = [
     { path: '/login', component: UserLogin},
     { path: '/' , component: Home},
     { path: '/mypage', component: MyPage},
-    { path: '/mypage/user/delete', component: UserDelete}
+    { path: '/mypage/user/delete', component: UserDelete},
+    { path: '/mypage/user/passwordchange', component: PasswordChange}
 ]
 
 const router = new VueRouter({

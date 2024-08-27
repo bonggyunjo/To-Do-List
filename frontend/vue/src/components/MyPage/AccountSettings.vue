@@ -23,7 +23,7 @@
     <div id="password">
       <span class="passowrd-title">패스워드</span>
       <br>
-      <button class="btn btn-secondary" id="password-change-button">비밀번호 변경</button>
+      <router-link to="/mypage/user/passwordchange"><button class="btn btn-secondary" id="password-change-button">비밀번호 변경</button></router-link>
     </div>
     <div class="content-line" style="position: relative; top:100px;"></div>
 

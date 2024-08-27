@@ -1,13 +1,7 @@
-<script >
-export default {
-  name : 'DeleteUser'
-}
-</script>
-
 <template>
   <main class="content">
     <h6 class="content-title">계정 삭제</h6>
-    <span style="font-size: 14px; position: relative; left:-382px; top:-25px; color: lightslategrey">To-Do-List를 이용해 주셔서 감사합니다!</span>
+    <span style="font-size: 13px; position: relative; left:-390px; top:-25px; color: lightslategrey">To-Do-List를 이용해 주셔서 감사합니다!</span>
     <div class="content-line"></div>
 
     <div id="content-for-delete">
@@ -20,16 +14,26 @@ export default {
       <br>
       <span style="position: relative; left:-105px;">필요시 백업을 고려하세요.</span>
       <br>
-      <span style="position: relative; left:-17px; top:14px; color: green; font-weight: bolder; font-size: 13px;">위의 모든 사항을 확인하였으며, 이에 동의합니다.</span>
+      <span style="position: relative; left:-17px; top:50px; color: green; font-weight: bolder; font-size: 13px;">위의 모든 사항을 확인하였으며, 이에 동의합니다.</span>
       </span>
-    <div class="form-check" style="position: relative; top:40px; left:-4px;">
-      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+    <div class="form-check" style="position: relative; top:76px; left:-4px;">
+      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"  v-model="isChecked">
       <label class="form-check-label" for="defaultCheck1">
       </label>
     </div>
-    <button class="btn btn-outline-danger" id="delete-user-button">계정 삭제</button>
+    <button class="btn btn-outline-danger" id="delete-user-button"  :disabled="!isChecked">계정 삭제</button>
   </main>
 </template>
+<script >
+export default {
+  name : 'DeleteUser',
+  data() {
+    return {
+      isChecked: false // 체크박스 상태를 관리하는 데이터
+    };
+  }
+}
+</script>
 
 <style scoped>
 .content {
