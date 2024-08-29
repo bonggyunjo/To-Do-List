@@ -1,4 +1,3 @@
-
 <template>
   <main class="content">
     <h6 class="content-title">계정</h6>
@@ -8,7 +7,7 @@
     <div id="nickname">
       <span class="nickname-title">닉네임</span>
       <div class="input-group mb-3" id="nickname-field">
-        <input type="text" class="form-control" placeholder="username" aria-label="username" aria-describedby="button-addon2" style="border-right: none; font-size: 14px;">
+        <input type="text" class="form-control" placeholder="user_name" aria-label="username" aria-describedby="button-addon2" style="border-right: none; font-size: 14px;">
         <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="font-size: 13px; font-weight: bolder; border-radius: 10px; position: relative; left:-10px;">변경</button>
       </div>
 
@@ -16,9 +15,7 @@
     <div id="email">
       <span class="email-title">이메일</span>
       <br>
-      <span style="position: relative; left:-464px; top:20px;">이메일 공간</span>
-      <br>
-      <button class="btn btn-secondary" id="email-change-button">이메일 변경</button>
+      <span style="position: absolute; left:-2px; top:175px; text-align: left; font-size: 15px;">user_email</span>
     </div>
     <div id="password">
       <span class="passowrd-title">패스워드</span>
@@ -43,7 +40,6 @@ export default {
 </script>
 
 <style>
-
 .content {
   width: 80%; /* 오른쪽 섹션 너비 */
   position: relative;
@@ -59,10 +55,12 @@ export default {
   left:-490px;
   top:-20px;
 }
+
 .content-line{
   border-top: 1px solid lightgrey;
   width: 100%;
 }
+
 .nickname-title{
   color: black;
   font-size: 14px;
@@ -71,12 +69,14 @@ export default {
   left:-485px;
   top:10px;
 }
+
 #nickname-field{
   position: relative;
   top: 20px;
   width: 300px;
   left:-3px;
 }
+
 .email-title{
   color: black;
   font-size: 14px;
@@ -85,14 +85,16 @@ export default {
   left:-485px;
   top:20px;
 }
+
 .passowrd-title{
   color: black;
   font-size: 14px;
   font-weight: bolder;
   position: relative;
   left:-480px;
-  top:45px;
+  top:60px;
 }
+
 #email-change-button{
   position: relative;
   left:-460px;
@@ -105,6 +107,7 @@ export default {
   color: #333333;
   font-weight: bolder;
 }
+
 #email-change-button:hover, #password-change-button{
   background-color: lightgray;
 }
@@ -112,7 +115,7 @@ export default {
 #password-change-button{
   position: relative;
   left:-453px;
-  top:55px;
+  top:70px;
   background-color : #dddddd;
   font-size: 13px;
   width: 110px;
@@ -121,6 +124,7 @@ export default {
   color: #333333;
   font-weight: bolder;
 }
+
 .delete-user-title{
   color: black;
   font-size: 14px;
@@ -129,6 +133,7 @@ export default {
   left:-476px;
   top:130px;
 }
+
 #delete-user-button{
   position: relative;
   left:-793px;
