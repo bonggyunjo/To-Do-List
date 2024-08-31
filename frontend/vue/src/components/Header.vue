@@ -3,25 +3,26 @@
     <div class="logo">
       <h1>할 일 목록</h1>
     </div>
-    <p class="slogan">당신의 일정을 관리하세요</p>
-    <nav class="navigation">
-      <ul>
-        <li><router-link to="/">홈</router-link></li>
-        <li><router-link to="/add-task">작업 추가</router-link></li>
-        <li><router-link to="/task-list">작업 목록</router-link></li>
-        <li><router-link to="/task-list">자유 게시판</router-link></li>
-        <li><router-link to="/settings">설정</router-link></li>
-      </ul>
-    </nav>
+    <p class="slogan">일정을 관리하여 보세요.</p>
+
 
     <template v-if="isUserLogin">
+      <nav class="navigation">
+        <ul>
+          <li><router-link to="/">홈</router-link></li>
+          <li><router-link to="/add-task">작업 추가</router-link></li>
+          <li><router-link to="/task-list">작업 목록</router-link></li>
+          <li><router-link to="/task-list">자유 게시판</router-link></li>
+          <li><router-link to="/settings">설정</router-link></li>
+        </ul>
+      </nav>
       <button @click="logout" class="signup-button"><span style="font-size: 15px;">로그아웃</span></button>
     </template>
 
     <template v-else>
     <div class="auth-buttons">
-      <router-link to="/signup" class="signup-button"><span style="font-size: 15px;">회원가입</span></router-link>
-      <router-link to="/login" class="login-button"><span style="font-size: 15px;">로그인</span></router-link>
+      <router-link to="/signup" class="signup-button"><span style="font-size: 14px;">회원가입</span></router-link>
+      <router-link to="/login" class="login-button"><span style="font-size: 14px;">로그인</span></router-link>
     </div>
     </template>
     <div class="icon-animation">
@@ -78,6 +79,8 @@ h1 {
   font-size: 16px;
   color: #666;
   margin: 5px 0 15px;
+  position: relative;
+  top:10px;
 }
 
 .navigation ul {
