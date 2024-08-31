@@ -1,4 +1,16 @@
 <template>
+  <div>
+    <div class="thank-you-message">
+      <span v-if="showFirst" class="fade-in slide-down" style="position: relative; left:-510px;">To-Do-List를</span><br>
+      <span v-if="showSecond" class="fade-in slide-down">이렇게 사용해 주셔서</span><br>
+      <span v-if="showThird" class="fade-in slide-down" style="position: relative; left:-433px;">진심으로 감사드립니다.</span>
+    </div>
+    <img src="../assets/main_image.png" width="700" height="380" style="position: relative; top:-300px; left:350px; border-radius: 5px;" class="modern-image fade-in">
+    <div class="main-contents">
+    <p class="intro-text" style="position: relative; left:-36px;">1️⃣️  ️당신의 일상적인 작업을 효율적으로 관리하세요.</p>
+    <p class="intro-text" style="position: relative; left:-36px;">2️⃣ 편하게 작업을 추가하고 우선순위를 정해보세요.</p>
+    <p class="intro-text">3️⃣ 스트레스를 줄이고 목표를 효과적으로 달성할 수 있습니다.</p>
+    </div>
   <div id="home">
     <div class="left">
       <!-- 첫번째-->
@@ -40,24 +52,80 @@
       <p>오른쪽 콘텐츠</p>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'HomePage'
+  name: 'HomePage',
+  data() {
+    return {
+      showFirst: false,
+      showSecond: false,
+      showThird: false,
+    };
+  },
+  mounted() {
+    this.animateText();
+  },
+  methods: {
+    animateText() {
+      setTimeout(() => {
+        this.showFirst = true;
+      }, 500);
+      setTimeout(() => {
+        this.showSecond = true;
+      }, 1500);
+      setTimeout(() => {
+        this.showThird = true;
+      }, 3500);
+    }
+  }
 }
 </script>
 
 <style>
+.thank-you-message {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  color: #333;
+  line-height: 1.5;
+  height: 500px;
+}
+
+.fade-in {
+  animation: fadeIn 1s forwards;
+  display: inline-block;
+  position: relative;
+  left:-450px;
+  top:180px;
+  font-weight: bolder;
+  color: #333333;
+  font-size: 35px;
+  padding: 2px;
+  opacity: 0; /* 초기 투명도 설정 */
+  animation-delay: 1.6s; /* 2초 후에 애니메이션 시작 */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* 시작할 때 완전히 투명 */
+  }
+  to {
+    opacity: 0.9; /* 끝날 때 완전히 불투명 */
+  }
+}
+
 body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 20px;
-  background-color: #f5f5f5; 
+  background-color: #f5f5f5;
 }
-
 #home {
-  display: flex; /* Flexbox를 사용하여 수평 정렬 */
+  display: flex;
   justify-content: space-between;
   align-items: flex-start;
   max-width: 1800px;
@@ -66,6 +134,8 @@ body {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  top:-150px;
 }
 
 .first-title {
@@ -197,5 +267,48 @@ body {
   margin: 10px 0;
   position: relative;
   left:-124px;
+}
+.modern-image {
+  width: 100%;
+  max-width: 550px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.modern-image:hover {
+  transform: scale(1.05);
+}
+.slide-down {
+  animation: slideDown 0.5s forwards;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.intro-text {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.intro-text:hover{
+  transform: scale(1.03);
+}
+
+.main-contents{
+  position: relative;
+  left:-395px;
+  top:-400px;
 }
 </style>
