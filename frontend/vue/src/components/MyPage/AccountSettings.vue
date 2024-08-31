@@ -3,19 +3,19 @@
     <h6 class="content-title">계정</h6>
     <span style="font-size: 13px; position: relative; left:-405px; top:-25px; color: lightslategrey">이곳은 개인정보 보호 공간 입니다.</span>
     <div class="content-line"></div>
+    <div id="email">
+      <span class="email-title">이메일</span>
+      <br>
+      <span style="position: absolute; left:-1px; top:95px; text-align: left; font-size: 15px;">user_email</span>
+    </div>
 
     <div id="nickname">
       <span class="nickname-title">닉네임</span>
       <div class="input-group mb-3" id="nickname-field">
-        <input type="text" class="form-control" placeholder="user_name" aria-label="username" aria-describedby="button-addon2" style="border-right: none; font-size: 14px;">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2" style="font-size: 13px; font-weight: bolder; border-radius: 10px; position: relative; left:-10px;">변경</button>
+        <span style="font-size: 14px; position: relative; top:30px; left:2px;">user_name</span>
+        <router-link to="/mypage/user/nicknamechange"><button class="btn btn-outline-secondary" type="button" id="button-addon2" style="font-size: 12px; font-weight: bolder; border-radius: 6px; border: lightgray; position: relative; left:-70px; top: 55px; height: 31px; width: 90px; background-color: lightgray; color: #333333;">닉네임 변경</button></router-link>
       </div>
 
-    </div>
-    <div id="email">
-      <span class="email-title">이메일</span>
-      <br>
-      <span style="position: absolute; left:-2px; top:175px; text-align: left; font-size: 15px;">user_email</span>
     </div>
     <div id="password">
       <span class="passowrd-title">패스워드</span>
@@ -67,7 +67,7 @@ export default {
   font-weight: bolder;
   position: relative;
   left:-485px;
-  top:10px;
+  top:50px;
 }
 
 #nickname-field{
@@ -91,8 +91,8 @@ export default {
   font-size: 14px;
   font-weight: bolder;
   position: relative;
-  left:-480px;
-  top:60px;
+  left:-475px;
+  top:65px;
 }
 
 #email-change-button{
@@ -116,13 +116,14 @@ export default {
   position: relative;
   left:-453px;
   top:70px;
-  background-color : #dddddd;
-  font-size: 13px;
+  background-color: lightgray;
+  font-size: 12px;
   width: 110px;
   height: 33px;
   border-color: #cccccc;
   color: #333333;
   font-weight: bolder;
+  border: lightgray;
 }
 
 .delete-user-title{
