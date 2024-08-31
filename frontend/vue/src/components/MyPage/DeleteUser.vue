@@ -5,7 +5,7 @@
     <div class="content-line"></div>
 
     <span class="content-for-delete-ismain">
-      계정 삭제 시 <span style="color: red; font-weight: bolder;">모든 데이터는 즉시 삭제되며</span> 복구할 수 없습니다.
+      계정 삭제 시 모든 데이터는 즉시 삭제되며 복구할 수 없습니다.
       <br>
       <span style="position: relative; left:99px;">이로 인해 이전에 저장한 작업, 프로젝트, 설정 등이 모두 사라지니 신중하게 결정하시기 바랍니다.</span>
       <br>
@@ -60,7 +60,7 @@ export default {
   top:10px;
   left:-325px;
   font-size: 13px;
-  color:lightslategrey;
+  color: #333333;
 }
 
 #delete-user-button{
