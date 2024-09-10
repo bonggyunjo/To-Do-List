@@ -138,7 +138,7 @@ export default {
 #delete-user-button{
   position: relative;
   left:-793px;
-  top:165px;
+  top:175px;
   font-size: 13px;
   width: 90px;
   height: 33px;

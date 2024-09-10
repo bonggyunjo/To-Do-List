@@ -13,10 +13,10 @@
           <li><router-link to="/add-task">작업 추가</router-link></li>
           <li><router-link to="/task-list">작업 목록</router-link></li>
           <li><router-link to="/task-list">자유 게시판</router-link></li>
-          <li><router-link to="/settings">설정</router-link></li>
+          <li><router-link to="/mypage">설정</router-link></li>
         </ul>
       </nav>
-      <button @click="logout" class="signup-button"><span style="font-size: 15px;">로그아웃</span></button>
+      <button @click="logout" class="logout-button"><span style="font-size: 15px;">로그아웃</span></button>
     </template>
 
     <template v-else>
@@ -63,6 +63,12 @@ export default {
   padding: 20px;
   background-color: #f8f9fa;
   border-bottom: 1px solid #e7e7e7;
+  width: 105%;
+  position: relative;
+  left:-3%;
+  top:-20px;
+  height: 220px;
+
 }
 
 .logo {
@@ -114,7 +120,17 @@ h1 {
   position: relative;
   top: 10px;
 }
-
+.logout-button{
+  margin: 20px 13px;
+  padding: 10px 15px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 15px;
+  text-decoration: none;
+  position: relative;
+  top: -5px;
+}
 .icon-animation {
   position: absolute; /* 위치 조정을 위해 절대 위치 설정 */
   right: 10%; /* 오른쪽 중앙에 위치 */

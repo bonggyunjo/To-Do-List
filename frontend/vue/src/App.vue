@@ -13,7 +13,7 @@ import Footer from '@/components/Footer.vue'
 export default {
   name: 'App',
   components: {
-    AppHeader
+    AppHeader,
     Footer
     // eslint-disable-next-line vue/no-unused-components
   },
@@ -26,6 +26,7 @@ export default {
       // this.$store.commit('setUserId', userIdFromToken);
       // this.$store.commit('setUserNickname', nicknameFromToken);
     }
+  }
 }
 </script>
 

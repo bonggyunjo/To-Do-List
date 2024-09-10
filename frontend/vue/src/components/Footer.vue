@@ -31,11 +31,8 @@ export default {
 
 <style scoped>
 .app-footer {
-  background-color: #ffffff;
   padding: 30px 20px;
   text-align: center;
-  border-top: 2px solid #e7e7e7;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .footer-content {
