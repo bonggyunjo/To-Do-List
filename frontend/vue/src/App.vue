@@ -2,16 +2,19 @@
   <div id="app">
     <AppHeader v-if="!$route.meta.hideHeader"></AppHeader> <!-- Header를 AppHeader로 변경 -->
     <router-view/>
+    <Footer v-if="!$route.meta.hideFooter"></Footer>
   </div>
 </template>
 
 <script>
 
 import AppHeader from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 export default {
   name: 'App',
   components: {
     AppHeader
+    Footer
     // eslint-disable-next-line vue/no-unused-components
   },
   created() {
@@ -23,7 +26,6 @@ export default {
       // this.$store.commit('setUserId', userIdFromToken);
       // this.$store.commit('setUserNickname', nicknameFromToken);
     }
-  }
 }
 </script>
 
