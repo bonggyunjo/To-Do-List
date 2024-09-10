@@ -41,7 +41,7 @@ export default {
 
 <style>
 .content {
-  width: 80%; /* 오른쪽 섹션 너비 */
+  width: 80%; 
   position: relative;
   top:20px;
 }
@@ -93,19 +93,6 @@ export default {
   position: relative;
   left:-475px;
   top:65px;
-}
-
-#email-change-button{
-  position: relative;
-  left:-460px;
-  top:30px;
-  background-color : #dddddd;
-  font-size: 13px;
-  width: 95px;
-  height: 33px;
-  border-color: #cccccc;
-  color: #333333;
-  font-weight: bolder;
 }
 
 #email-change-button:hover, #password-change-button{

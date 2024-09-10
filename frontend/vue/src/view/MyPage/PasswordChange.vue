@@ -26,7 +26,7 @@ export default {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: relative;
   top: 50px;
-  display: flex; /* Flexbox를 사용하여 섹션을 나란히 배치 */
+  display: flex;
   height: 550px;
 }
 </style>

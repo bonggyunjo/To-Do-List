@@ -8,7 +8,7 @@
 
 <script>
 import MyPageSideBar from "@/components/MyPage/MyPageSideBar.vue";
-import AccountSettings from "@/components/MyPage/AccountSettings.vue"; // 변경된 파일 이름
+import AccountSettings from "@/components/MyPage/AccountSettings.vue";
 export default {
   name: 'TodoApp',
   components: {AccountSettings, MyPageSideBar},
@@ -27,7 +27,7 @@ export default {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: relative;
   top: 50px;
-  display: flex; /* Flexbox를 사용하여 섹션을 나란히 배치 */
+  display: flex;
   height: 550px;
 }
 </style>

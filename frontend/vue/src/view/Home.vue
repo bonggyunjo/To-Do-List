@@ -105,16 +105,16 @@ export default {
   color: #333333;
   font-size: 35px;
   padding: 2px;
-  opacity: 0; /* 초기 투명도 설정 */
+  opacity: 0;
   animation-delay: 1.6s; /* 2초 후에 애니메이션 시작 */
 }
 
 @keyframes fadeIn {
   from {
-    opacity: 0; /* 시작할 때 완전히 투명 */
+    opacity: 0;
   }
   to {
-    opacity: 0.9; /* 끝날 때 완전히 불투명 */
+    opacity: 0.9;
   }
 }
 

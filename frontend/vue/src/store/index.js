@@ -9,7 +9,7 @@ export default new Vuex.Store({
     plugins: [
         createPersistedState({
             key: 'my-app-state',
-            paths: ['userId', 'nickname', 'isLogin'] // 로그인 상태도 저장
+            paths: ['userId', 'nickname', 'isLogin']
         })
     ],
     state: {
@@ -19,7 +19,7 @@ export default new Vuex.Store({
     },
     getters: {
         isLogin(state) {
-            return state.isLogin; // 직접 isLogin 상태 반환
+            return state.isLogin;
         },
         userNickname(state) {
             return state.nickname;
@@ -42,18 +42,18 @@ export default new Vuex.Store({
     actions: {
         async login({ commit }, { userId, password }) {
             try {
-                // API 호출 예시 (axios 등을 사용하여)
+
                 const res = await axios.post('http://localhost:8081/login', { userId, password });
                 if (res.data && res.data.token) {
                     localStorage.setItem('token', res.data.token); // JWT 토큰 저장
                     commit('setUserId', res.data.userId);
-                    commit('setUserNickname', res.data.nickname); // 응답에 nickname이 포함되어 있다고 가정
+                    commit('setUserNickname', res.data.nickname);
                 } else {
                     throw new Error('로그인 실패: 토큰이 없습니다.');
                 }
             } catch (error) {
                 console.error(error);
-                // 실패 시 추가적인 처리 필요 (예: 사용자에게 알림)
+
             }
         },
         logout({ commit }) {

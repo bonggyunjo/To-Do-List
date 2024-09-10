@@ -35,7 +35,7 @@ export default {
 
 <style scoped>
 .content {
-  width: 80%; /* 오른쪽 섹션 너비 */
+  width: 80%;
   position: relative;
   top:20px;
 }

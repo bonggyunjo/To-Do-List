@@ -22,7 +22,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    routes // 단축 속성 이름으로 routes: routes
+    routes
 })
 
 export default router

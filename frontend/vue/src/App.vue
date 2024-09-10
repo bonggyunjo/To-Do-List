@@ -20,11 +20,7 @@ export default {
   created() {
     const token = localStorage.getItem('token');
     if (token) {
-      // 토큰이 존재하면 로그인 상태로 설정
       this.$store.commit('SET_LOGIN', true);
-      // userId와 nickname도 복원할 수 있다면 복원
-      // this.$store.commit('setUserId', userIdFromToken);
-      // this.$store.commit('setUserNickname', nicknameFromToken);
     }
   }
 }

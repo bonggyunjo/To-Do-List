@@ -29,12 +29,12 @@
       <img src="@/assets/header/header_3d_icon_image.png" alt="아이콘" />
     </div>
 
-    <loading-spinner v-if="loading" /> <!-- 로딩 스피너 추가 -->
+    <loading-spinner v-if="loading" />
   </header>
 </template>
 
 <script>
-import LoadingSpinner from './LoadingSpinner.vue'; // 로딩 스피너 컴포넌트 import
+import LoadingSpinner from './LoadingSpinner.vue';
 export default {
   name: 'AppHeader',
   components: {
@@ -53,16 +53,16 @@ export default {
   },
   methods: {
     logout() {
-      this.loading = true; // 로딩 시작
+      this.loading = true;
       setTimeout(() => {
         this.$store.dispatch('logout'); // Vuex로 로그아웃 처리
         localStorage.removeItem('token'); // 토큰 삭제
 
         if (this.$route.path !== '/') {
-          this.$router.push('/'); // 홈으로 리다이렉션
+          this.$router.push('/');
         }
         this.loading = false; // 로딩 종료
-      }, 1000); // 1초 후에 로그아웃 실행
+      }, 1000);
     }
   }
 }
@@ -119,7 +119,7 @@ h1 {
 }
 
 .auth-buttons {
-  display: flex; /* Flexbox로 레이아웃 조정 */
+  display: flex;
 }
 
 .signup-button, .login-button {
@@ -145,23 +145,22 @@ h1 {
   top: -5px;
 }
 .icon-animation {
-  position: absolute; /* 위치 조정을 위해 절대 위치 설정 */
-  right: 10%; /* 오른쪽 중앙에 위치 */
-  transform: translateX(50%); /* 중앙 정렬 */
-  animation: float 2.5s ease-in-out infinite; /* 애니메이션 설정 */
+  position: absolute;
+  right: 10%;
+  transform: translateX(50%);
+  animation: float 2.5s ease-in-out infinite;
 }
 
 @keyframes float {
   0%, 100% {
-    transform: translateY(0); /* 원래 위치 */
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(20px); /* 아래로 이동 */
+    transform: translateY(20px);
   }
 }
 .icon-animation img {
-  width: 280px; /* 이미지 크기 조정 */
-  height: 280px; /* 이미지 크기 조정 */
+  width: 280px;
+  height: 280px;
 }
-
 </style>
