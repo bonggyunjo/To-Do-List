@@ -28,12 +28,23 @@
     <div class="icon-animation">
       <img src="@/assets/header/header_3d_icon_image.png" alt="아이콘" />
     </div>
+
+    <loading-spinner v-if="loading" /> <!-- 로딩 스피너 추가 -->
   </header>
 </template>
 
 <script>
+import LoadingSpinner from './LoadingSpinner.vue'; // 로딩 스피너 컴포넌트 import
 export default {
   name: 'AppHeader',
+  components: {
+    LoadingSpinner,
+  },
+  data() {
+    return {
+      loading: false,
+    };
+  },
   computed: {
     // 로그인 유무 확인
     isUserLogin() {
@@ -42,14 +53,16 @@ export default {
   },
   methods: {
     logout() {
-      // 로그아웃 로직
-      this.$store.dispatch('logout'); // Vuex로 로그아웃 처리
-      localStorage.removeItem('token'); // 토큰 삭제
+      this.loading = true; // 로딩 시작
+      setTimeout(() => {
+        this.$store.dispatch('logout'); // Vuex로 로그아웃 처리
+        localStorage.removeItem('token'); // 토큰 삭제
 
-      // 현재 경로와 이동할 경로를 비교하여 중복 탐색 방지
-      if (this.$route.path !== '/') {
-        this.$router.push('/'); // 홈으로 리다이렉션
-      }
+        if (this.$route.path !== '/') {
+          this.$router.push('/'); // 홈으로 리다이렉션
+        }
+        this.loading = false; // 로딩 종료
+      }, 1000); // 1초 후에 로그아웃 실행
     }
   }
 }
