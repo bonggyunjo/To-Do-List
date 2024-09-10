@@ -17,6 +17,8 @@ const routes = [
     { path: '/mypage/user/delete', component: UserDelete},
     { path: '/mypage/user/passwordchange', component: PasswordChange},
     { path: '/mypage/user/nicknamechange', component: NicknameChange},
+    { path: '/' , component: Home, meta: { hideHeader: false,hideFooter: false }},
+    { path: '/' , component: Home, meta: { hideFooter: false,hideHeader: false}},
 ]
 
 const router = new VueRouter({
