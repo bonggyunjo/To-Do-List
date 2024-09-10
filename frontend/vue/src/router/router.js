@@ -8,6 +8,7 @@ Vue.use(VueRouter)
 const routes = [
     { path: '/signup', component: SignUp},
     { path: '/login', component: UserLogin},
+    { path: '/' , component: Home, meta: { hideHeader: false,hideFooter: false }},
     { path: '/' , component: Home, meta: { hideFooter: false,hideHeader: false}},
 ]
 
