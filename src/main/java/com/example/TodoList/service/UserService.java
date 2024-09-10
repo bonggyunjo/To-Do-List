@@ -55,11 +55,23 @@ public class UserService {
 
     @Transactional
     public void updateUser(String userId, UserInfoUpdateDto userInfoUpdateDto) throws IOException {
-        userRepository.findByUserId(userId)
-                .orElseThrow(() -> new IOException("사용자를 찾을 수 없습니다.")) // 사용자 없을 경우 예외 처리
-                .updateDetails(userInfoUpdateDto.getPassword(), userInfoUpdateDto.getNickname(), userInfoUpdateDto.getIntro());
-    }
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IOException("사용자를 찾을 수 없습니다."));
 
+        if (userInfoUpdateDto.getPassword() != null) {
+            // 비밀번호 해싱
+            String hashedPassword = bCryptPasswordEncoder.encode(userInfoUpdateDto.getPassword());
+            user.setPassword(hashedPassword); // 해싱된 비밀번호로 업데이트
+        }
+        if (userInfoUpdateDto.getNickname() != null) {
+            user.setNickname(userInfoUpdateDto.getNickname());
+        }
+        if (userInfoUpdateDto.getIntro() != null) {
+            user.setIntro(userInfoUpdateDto.getIntro());
+        }
+
+        userRepository.save(user); // 변경 사항 저장
+    }
     //회원 탈퇴
 
     @Transactional
