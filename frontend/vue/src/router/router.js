@@ -10,13 +10,13 @@ import NicknameChange from "@/view/MyPage/NicknameChange.vue";
 Vue.use(VueRouter)
 /*  경로 설정*/
 const routes = [
-    { path: '/signup', component: SignUp},
-    { path: '/login', component: UserLogin},
+    { path: '/signup', component: SignUp, meta: { hideHeader: true,hideFooter: true }},
+    { path: '/login', component: UserLogin, meta: { hideHeader: true,hideFooter: true }},
     { path: '/' , component: Home},
-    { path: '/mypage', component: MyPage},
-    { path: '/mypage/user/delete', component: UserDelete},
-    { path: '/mypage/user/passwordchange', component: PasswordChange},
-    { path: '/mypage/user/nicknamechange', component: NicknameChange},
+    { path: '/mypage', component: MyPage, meta: { hideHeader: true,hideFooter: true }},
+    { path: '/mypage/user/delete', component: UserDelete, meta: { hideHeader: true,hideFooter: true }},
+    { path: '/mypage/user/passwordchange', component: PasswordChange, meta: { hideHeader: true,hideFooter: true }},
+    { path: '/mypage/user/nicknamechange', component: NicknameChange, meta: { hideHeader: true,hideFooter: true }},
     { path: '/' , component: Home, meta: { hideHeader: false,hideFooter: false }},
     { path: '/' , component: Home, meta: { hideFooter: false,hideHeader: false}},
 ]

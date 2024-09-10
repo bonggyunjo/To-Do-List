@@ -66,9 +66,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         // JWT를 응답 헤더에 추가
         response.addHeader("Authorization", "Bearer " + token);
 
-        // 응답 본체에 JWT 포함
+        // 응답 본체에 JWT, userId포함 + 필요한 경우 nickname도 여기에 추가하면 됨
         response.setContentType("application/json");
-        response.getWriter().write("{\"token\": \"" + token + "\"}");
+        response.getWriter().write("{\"userId\": \"" + userId + "\", \"token\": \"" + token + "\"}");
 
         log.info("Login successful: {}", userId);
     }

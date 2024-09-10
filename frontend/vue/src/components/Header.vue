@@ -13,10 +13,10 @@
           <li><router-link to="/add-task">작업 추가</router-link></li>
           <li><router-link to="/task-list">작업 목록</router-link></li>
           <li><router-link to="/task-list">자유 게시판</router-link></li>
-          <li><router-link to="/settings">설정</router-link></li>
+          <li><router-link to="/mypage">설정</router-link></li>
         </ul>
       </nav>
-      <button @click="logout" class="signup-button"><span style="font-size: 15px;">로그아웃</span></button>
+      <button @click="logout" class="logout-button"><span style="font-size: 15px;">로그아웃</span></button>
     </template>
 
     <template v-else>
@@ -28,12 +28,23 @@
     <div class="icon-animation">
       <img src="@/assets/header/header_3d_icon_image.png" alt="아이콘" />
     </div>
+
+    <loading-spinner v-if="loading" /> <!-- 로딩 스피너 추가 -->
   </header>
 </template>
 
 <script>
+import LoadingSpinner from './LoadingSpinner.vue'; // 로딩 스피너 컴포넌트 import
 export default {
   name: 'AppHeader',
+  components: {
+    LoadingSpinner,
+  },
+  data() {
+    return {
+      loading: false,
+    };
+  },
   computed: {
     // 로그인 유무 확인
     isUserLogin() {
@@ -42,14 +53,16 @@ export default {
   },
   methods: {
     logout() {
-      // 로그아웃 로직
-      this.$store.dispatch('logout'); // Vuex로 로그아웃 처리
-      localStorage.removeItem('token'); // 토큰 삭제
+      this.loading = true; // 로딩 시작
+      setTimeout(() => {
+        this.$store.dispatch('logout'); // Vuex로 로그아웃 처리
+        localStorage.removeItem('token'); // 토큰 삭제
 
-      // 현재 경로와 이동할 경로를 비교하여 중복 탐색 방지
-      if (this.$route.path !== '/') {
-        this.$router.push('/'); // 홈으로 리다이렉션
-      }
+        if (this.$route.path !== '/') {
+          this.$router.push('/'); // 홈으로 리다이렉션
+        }
+        this.loading = false; // 로딩 종료
+      }, 1000); // 1초 후에 로그아웃 실행
     }
   }
 }
@@ -63,6 +76,12 @@ export default {
   padding: 20px;
   background-color: #f8f9fa;
   border-bottom: 1px solid #e7e7e7;
+  width: 105%;
+  position: relative;
+  left:-3%;
+  top:-20px;
+  height: 220px;
+
 }
 
 .logo {
@@ -114,7 +133,17 @@ h1 {
   position: relative;
   top: 10px;
 }
-
+.logout-button{
+  margin: 20px 13px;
+  padding: 10px 15px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 15px;
+  text-decoration: none;
+  position: relative;
+  top: -5px;
+}
 .icon-animation {
   position: absolute; /* 위치 조정을 위해 절대 위치 설정 */
   right: 10%; /* 오른쪽 중앙에 위치 */
