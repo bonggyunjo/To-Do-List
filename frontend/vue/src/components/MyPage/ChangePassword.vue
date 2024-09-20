@@ -31,8 +31,9 @@
     <button class="btn btn-success" id="delete-user-button" :disabled="!passwordsMatch || !isPasswordValid" @click="changebutton">변경하기</button>
   </main>
 </template>
-<script>
 
+<script>
+import axios from "axios";
 export default{
  name:'ChangePassword',
   data(){
@@ -46,7 +47,30 @@ export default{
     }
   },
   methods :{
-    changebutton(){
+    async changebutton(){
+      if (!this.passwordsMatch || !this.isPasswordValid) {
+        alert('비밀번호가 유효해야 변경할 수 있습니다.');
+        return;
+      }
+
+      try {
+        const userId = this.$store.getters.getUserId; // Vuex에서 사용자 ID 가져오기
+        const response = await axios.put(`http://localhost:8081/mypage/update`, {
+          userId: userId,
+          password: this.password
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        
+        alert('비밀번호가 변경되었습니다.');
+        console.log("response",response);
+        this.$router.push('/mypage'); // 변경 후 마이 페이지로 리다이렉트
+      } catch (error) {
+        console.error('비밀번호 변경 실패:', error);
+        alert('비밀번호 변경에 실패했습니다. 다시 시도해 주세요.');
+      }
     },
     checkPasswords() {
       this.inputStarted = true;

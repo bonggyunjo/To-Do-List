@@ -51,10 +51,10 @@ export default{
         const result = res.data;
         if (result) {
           alert('사용 가능한 닉네임입니다.');
-          this.isNicknameAvailable = true; // 닉네임 사용 가능 상태 업데이트
+          this.isNicknameAvailable = true;
         } else if(!result) {
           alert("이미 사용중인 닉네임입니다..");
-          this.isNicknameAvailable = false; // 닉네임 사용 불가 상태 업데이트
+          this.isNicknameAvailable = false;
         }
       })
     },
@@ -81,7 +81,7 @@ export default{
 
         console.log("response",response);
 
-        this.$router.push('/mypage'); // 변경 후 마이 페이지로 리다이렉트
+        this.$router.push('/mypage');
       } catch (error) {
         console.error('닉네임 변경 실패:', error);
         alert('닉네임 변경에 실패했습니다. 다시 시도해 주세요.');
