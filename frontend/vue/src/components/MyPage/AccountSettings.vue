@@ -6,7 +6,7 @@
     <div id="email">
       <span class="email-title">이메일</span>
       <br>
-      <span style="position: absolute; left:-1px; top:95px; text-align: left; font-size: 15px;">user_email</span>
+      <span style="position: absolute; left:-1px; top:95px; text-align: left; font-size: 15px;">{{ userId }}</span>
     </div>
 
     <div id="nickname">
@@ -34,8 +34,15 @@
 </template>
 
 <script >
+import { mapGetters } from 'vuex';
 export default {
-  name:'AccountSettings'
+  name:'AccountSettings',
+  computed: {
+    ...mapGetters(['getUserId']),
+    userId() {
+      return this.getUserId; // userId를 computed 속성으로 가져옴
+    }
+  }
 }
 </script>
 
