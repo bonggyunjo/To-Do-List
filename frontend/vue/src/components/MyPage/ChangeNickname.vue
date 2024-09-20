@@ -4,7 +4,7 @@
     <span style="font-size: 13px; position: relative; left:-415.5px; top:-25px; color: lightslategrey">새로운 닉네임을 입력해 주세요.</span>
     <div class="content-line"></div>
 
-    <p style="font-size: 13px; color: #333333; margin-top: 5px; text-align: left; position: relative; top:5px;">현재 사용하고 있는 닉네임은 <span style="font-size: 13.5px; color: black; font-weight: bolder;">user_name</span> 입니다.</p>
+    <p style="font-size: 13px; color: #333333; margin-top: 5px; text-align: left; position: relative; top:5px;">현재 사용하고 있는 닉네임은 <span style="font-size: 13.5px; color: black; font-weight: bolder;">{{userNickname}}</span> 입니다.</p>
     <p style="font-size: 13px;  color: #333333; margin-top: 5px; text-align: left;">새로운 닉네임을 입력하고 중복 확인을 통해 사용 가능한 닉네임인지 확인하세요.</p>
     <div id="renickname">
 
@@ -23,14 +23,18 @@
 <script>
 
 import axios from "axios";
+import {mapGetters} from "vuex";
 
 export default{
   name:'ChangeNickname',
-  data(){
+  data() {
     return{
       nickname:'',
       isNicknameAvailable : false,
     }
+  },
+  computed: {
+    ...mapGetters(['userNickname']),
   },
   methods :{
     checkIdbut(){
@@ -54,7 +58,41 @@ export default{
         }
       })
     },
-    changebutton(){
+    async changebutton(){
+      if (!this.isNicknameAvailable) {
+        alert('닉네임이 사용 가능해야 변경할 수 있습니다.');
+        return;
+      }
+
+      try {
+        const userId = this.$store.getters.getUserId;
+        const response = await axios.put(`http://localhost:8081/mypage/update`, {
+          userId: userId,
+          nickname: this.nickname
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        alert('닉네임이 변경되었습니다.');
+
+        this.$store.commit('updateNickname', this.nickname);
+
+        console.log("response",response);
+
+        this.$router.push('/mypage'); // 변경 후 마이 페이지로 리다이렉트
+      } catch (error) {
+        console.error('닉네임 변경 실패:', error);
+        alert('닉네임 변경에 실패했습니다. 다시 시도해 주세요.');
+      }
+    },
+    password_cancel() {
+      const userConfirmed = confirm("취소하시겠습니까?");
+      if (userConfirmed) {
+        this.$router.push('/mypage');
+      }
+      }
     },
     checkPasswords() {
       this.inputStarted = true;
@@ -86,7 +124,6 @@ export default{
         this.$router.push('/mypage');
       }
     }
-  }
 }
 </script>
 

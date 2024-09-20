@@ -34,9 +34,13 @@
 </template>
 
 <script >
+import axios from "axios";
 import { mapGetters } from 'vuex';
 export default {
   name:'AccountSettings',
+  mounted() {
+    this.fetchUserData(); // 마이페이지 로드 시 사용자 데이터 가져오기
+  },
   computed: {
     ...mapGetters(['getUserId', 'userNickname']),
     userId() {
@@ -44,6 +48,22 @@ export default {
     },
     nickname(){
       return this.userNickname;
+    }
+  },
+  methods: {
+    async fetchUserData() {
+      try {
+        const userId = this.$store.getters.getUserId;
+        const response = await axios.get(`http://localhost:8081/mypage/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        this.nickname = response.data.nickname; // 닉네임 업데이트
+        // 다른 사용자 데이터도 업데이트...
+      } catch (error) {
+        console.error('사용자 데이터 가져오기 실패:', error);
+      }
     }
   }
 }
