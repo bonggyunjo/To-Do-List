@@ -46,6 +46,7 @@ export default {
       const userData = {
         userId: this.userId,
         password: this.password,
+
       };
 
       try {
@@ -59,6 +60,7 @@ export default {
           localStorage.setItem('token', res.data.token);
           axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
           this.$store.commit('setUserId', res.data.userId);
+          this.$store.commit('setUserNickname', res.data.nickname);
           this.$router.push('/');
         } else {
           alert('토큰이 응답에 없습니다. 로그인 실패.');

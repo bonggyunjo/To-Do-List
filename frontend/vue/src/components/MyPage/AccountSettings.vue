@@ -12,8 +12,8 @@
     <div id="nickname">
       <span class="nickname-title">닉네임</span>
       <div class="input-group mb-3" id="nickname-field">
-        <span style="font-size: 14px; position: relative; top:30px; left:2px;">user_name</span>
-        <router-link to="/mypage/user/nicknamechange"><button class="btn btn-outline-secondary" type="button" id="button-addon2" style="font-size: 12px; font-weight: bolder; border-radius: 6px; border: lightgray; position: relative; left:-70px; top: 55px; height: 31px; width: 90px; background-color: lightgray; color: #333333;">닉네임 변경</button></router-link>
+        <span style="font-size: 14px; position: relative; top:30px; left:2px;">{{ nickname }}</span>
+        <router-link to="/mypage/user/nicknamechange"><button class="btn btn-outline-secondary" type="button" id="button-addon2" style="font-size: 11.5px; font-weight: bolder; border-radius: 6px; border: lightgray; position: absolute; top:53px; left:0px;height: 31px; width: 90px; background-color: lightgray; color: #333333;">닉네임 변경</button></router-link>
       </div>
 
     </div>
@@ -38,9 +38,12 @@ import { mapGetters } from 'vuex';
 export default {
   name:'AccountSettings',
   computed: {
-    ...mapGetters(['getUserId']),
+    ...mapGetters(['getUserId', 'userNickname']),
     userId() {
       return this.getUserId; // userId를 computed 속성으로 가져옴
+    },
+    nickname(){
+      return this.userNickname;
     }
   }
 }
@@ -99,7 +102,7 @@ export default {
   font-weight: bolder;
   position: relative;
   left:-475px;
-  top:65px;
+  top:70px;
 }
 
 #email-change-button:hover, #password-change-button{
@@ -109,7 +112,7 @@ export default {
 #password-change-button{
   position: relative;
   left:-453px;
-  top:70px;
+  top:75px;
   background-color: lightgray;
   font-size: 12px;
   width: 110px;

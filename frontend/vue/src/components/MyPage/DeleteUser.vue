@@ -18,17 +18,48 @@
       <label class="form-check-label" for="defaultCheck1">
       </label>
     </div>
-    <button class="btn btn-outline-danger" id="delete-user-button"  :disabled="!isChecked">계정 삭제</button>
+    <button class="btn btn-outline-danger" id="delete-user-button"  :disabled="!isChecked" @click="deleteUser">계정 삭제</button>
   </main>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name : 'DeleteUser',
   data() {
     return {
-      isChecked: false // 체크박스 상태를 관리하는 데이터
+      isChecked: false,
     };
+  },
+  methods:{
+    async deleteUser() {
+      if (!this.isChecked) {
+        alert('계정 삭제를 위해 동의해야 합니다.');
+        return;
+      }
+
+      try {
+        const userId = this.$store.getters.getUserId; // Vuex에서 사용자 ID 가져오기
+        const res = await axios.delete(`http://localhost:8081/user/delete`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+          params: {
+            userId: userId // userId를 쿼리 파라미터로 추가
+          }
+        });
+        console.log("res",res);
+
+        this.$store.commit('clearUserData');
+        localStorage.removeItem('token');
+
+        alert('계정이 삭제되었습니다.');
+        this.$router.push('/'); // 홈으로 리다이렉트
+      } catch (error) {
+        console.error('계정 삭제 실패:', error);
+        alert('계정 삭제에 실패했습니다. 다시 시도해 주세요.');
+      }
+    }
   }
 }
 </script>

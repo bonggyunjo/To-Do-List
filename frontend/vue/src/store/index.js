@@ -40,6 +40,11 @@ export default new Vuex.Store({
             state.nickname = '';
             state.userId = '';
             state.isLogin = false;
+        },
+        clearUserData(state) {
+            state.userId = '';
+            state.nickname = '';
+            state.isLogin = false; // 로그인 상태 초기화
         }
     },
     actions: {
