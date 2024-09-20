@@ -2,6 +2,7 @@ package com.example.TodoList.controller;
 
 import com.example.TodoList.dto.LoginDto;
 import com.example.TodoList.dto.SignUpDto;
+import com.example.TodoList.dto.UserInfoUpdateDto;
 import com.example.TodoList.entity.user.User;
 import com.example.TodoList.repository.UserRepository;
 import com.example.TodoList.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -48,4 +50,23 @@ public class  UserController {
         return ResponseEntity.ok(isAvailable);
     }
 
+    //회원 정보 수정
+    @PutMapping("/mypage/update")
+    public ResponseEntity<String> updateUser(@RequestBody UserInfoUpdateDto userInfoUpdateDto) {
+
+        try {
+            String userId = userInfoUpdateDto.getUserId(); // DTO에서 userId 추출
+            userService.updateUser(userId, userInfoUpdateDto);
+            return ResponseEntity.ok("회원 정보가 성공적으로 수정되었습니다.");
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    //회원 탈퇴
+    @DeleteMapping("/user/delete")
+    public ResponseEntity<String> deleteUser(@RequestParam String userId){
+        userService.deleteuser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body("회원 탈퇴 완료");
+    }
 }
