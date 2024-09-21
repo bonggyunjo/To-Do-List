@@ -63,7 +63,7 @@ export default{
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
         });
-        
+
         alert('비밀번호가 변경되었습니다.');
         console.log("response",response);
         this.$router.push('/mypage'); // 변경 후 마이 페이지로 리다이렉트

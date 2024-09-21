@@ -52,8 +52,8 @@ export default {
       try {
         const res = await axios.post('http://localhost:8081/login', userData);
 
-        console.log('API 응답:', res); // 전체 응답을 확인
-        console.log('응답 데이터:', res.data); // 응답 데이터 확인
+        console.log('API 응답:', res);
+        console.log('응답 데이터:', res.data);
 
         if (res.data && res.data.token) {
           alert('로그인에 성공하였습니다.');

@@ -5,6 +5,8 @@
     <div class="content-line"></div>
 
     <span class="content-for-delete-ismain">
+        <span style="position: fixed; left:576px;"><span style="font-weight: bolder; font-size: 18px;">{{userNickname}}</span>님 <span class="bounce">계정을 삭제하시겠습니까 ?</span></span>
+      <br>
       계정 삭제 시 모든 데이터는 즉시 삭제되며 복구할 수 없습니다.
       <br>
       <span style="position: relative; left:99px;">이로 인해 이전에 저장한 작업, 프로젝트, 설정 등이 모두 사라지니 신중하게 결정하시기 바랍니다.</span>
@@ -24,12 +26,19 @@
 
 <script>
 import axios from 'axios';
+import {mapGetters} from "vuex";
 export default {
   name : 'DeleteUser',
   data() {
     return {
       isChecked: false,
     };
+  },
+  computed: {
+    ...mapGetters(['userNickname']),
+    nickname(){
+      return this.userNickname;
+    }
   },
   methods:{
     async deleteUser() {
@@ -54,7 +63,7 @@ export default {
         localStorage.removeItem('token');
 
         alert('계정이 삭제되었습니다.');
-        this.$router.push('/'); // 홈으로 리다이렉트
+        this.$router.push('/');
       } catch (error) {
         console.error('계정 삭제 실패:', error);
         alert('계정 삭제에 실패했습니다. 다시 시도해 주세요.');
@@ -96,7 +105,26 @@ export default {
 
 #delete-user-button{
   position: relative;
-  top:290px;
+  top:270px;
   left:460px;
+}
+
+.bounce {
+  display: inline-block;
+  animation: bounce 0.5s infinite;
+}
+
+.bounce {
+  display: inline-block;
+  animation: bounce 0.5s 4;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 </style>

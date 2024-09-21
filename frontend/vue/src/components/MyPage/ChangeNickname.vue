@@ -12,7 +12,7 @@
       <button @click="checkIdbut  " id="checkbtnid" type="submit" class="btn btn-light" style="position: relative; left:-185px; top:57px; font-weight: bolder; font-size: 13px;  color:#333333; background-color: lightgray; border: lightgray;">중복확인</button>
       <div class="mb-3 row">
         <div class="col-sm-10">
-          <input type="password" class="form-control" id="inputnickname" placeholder="new nickname.." style="font-size: 12px; width: 300px;" v-model="nickname" @input="checkPasswords" >
+          <input type="password" class="form-control" id="inputnickname" placeholder="new nickname.." style="font-size: 12px; width: 300px; position: relative; left:-3px;" v-model="nickname" @input="checkPasswords" >
         </div>
       </div>
     </div>
@@ -167,7 +167,7 @@ export default{
 #cancel{
   position: relative;
   left:405px;
-  top:335px;
+  top:255px;
   font-size: 13.3px;
   font-weight: bolder;
   width: 65px;
@@ -185,7 +185,7 @@ export default{
 #delete-user-button{
   position: relative;
   left:425px;
-  top:335px;
+  top:255px;
 }
 
 </style>
