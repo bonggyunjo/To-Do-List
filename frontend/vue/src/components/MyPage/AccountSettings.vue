@@ -6,22 +6,23 @@
     <div id="email">
       <span class="email-title">이메일</span>
       <br>
-      <span style="position: absolute; left:-1px; top:95px; text-align: left; font-size: 15px;">user_email</span>
+      <span style="position: absolute; left:-1px; top:95px; text-align: left; font-size: 15px;">{{ userId }}</span>
     </div>
 
     <div id="nickname">
       <span class="nickname-title">닉네임</span>
       <div class="input-group mb-3" id="nickname-field">
-        <span style="font-size: 14px; position: relative; top:30px; left:2px;">user_name</span>
-        <router-link to="/mypage/user/nicknamechange"><button class="btn btn-outline-secondary" type="button" id="button-addon2" style="font-size: 12px; font-weight: bolder; border-radius: 6px; border: lightgray; position: relative; left:-70px; top: 55px; height: 31px; width: 90px; background-color: lightgray; color: #333333;">닉네임 변경</button></router-link>
+        <span style="font-size: 14px; position: relative; top:30px; left:2px;">{{ nickname }}</span>
+        <router-link to="/mypage/user/nicknamechange"><button class="btn btn-outline-secondary" type="button" id="button-addon2" style="font-size: 11.5px; font-weight: bolder; border-radius: 6px; border: lightgray; position: absolute; top:53px; left:0px;height: 31px; width: 90px; background-color: lightgray; color: #333333;">닉네임 변경</button></router-link>
       </div>
-
+      <span style="font-size: 11.4px; position: relative; left:-330px; top:40px; color: #555555;">닉네임을 변경할 수 있습니다.</span>
     </div>
     <div id="password">
       <span class="passowrd-title">패스워드</span>
       <br>
       <router-link to="/mypage/user/passwordchange"><button class="btn btn-secondary" id="password-change-button">비밀번호 변경</button></router-link>
     </div>
+    <span style="font-size: 11.4px; position: relative; left:-305px; top:47px; color: #555555;">비밀번호를 변경할 수 있습니다.</span>
     <div class="content-line" style="position: relative; top:100px;"></div>
 
     <div id="delete-user">
@@ -34,8 +35,38 @@
 </template>
 
 <script >
+import axios from "axios";
+import { mapGetters } from 'vuex';
 export default {
-  name:'AccountSettings'
+  name:'AccountSettings',
+  mounted() {
+    this.fetchUserData(); // 마이페이지 로드 시 사용자 데이터 가져오기
+  },
+  computed: {
+    ...mapGetters(['getUserId', 'userNickname']),
+    userId() {
+      return this.getUserId; // userId를 computed 속성으로 가져옴
+    },
+    nickname(){
+      return this.userNickname;
+    }
+  },
+  methods: {
+    async fetchUserData() {
+      try {
+        const userId = this.$store.getters.getUserId;
+        const response = await axios.get(`http://localhost:8081/mypage/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        this.nickname = response.data.nickname; // 닉네임 업데이트
+        // 다른 사용자 데이터도 업데이트...
+      } catch (error) {
+        console.error('사용자 데이터 가져오기 실패:', error);
+      }
+    }
+  }
 }
 </script>
 
@@ -92,17 +123,17 @@ export default {
   font-weight: bolder;
   position: relative;
   left:-475px;
-  top:65px;
+  top:70px;
 }
 
-#email-change-button:hover, #password-change-button{
+#password-change-button{
   background-color: lightgray;
 }
 
 #password-change-button{
   position: relative;
   left:-453px;
-  top:70px;
+  top:75px;
   background-color: lightgray;
   font-size: 12px;
   width: 110px;

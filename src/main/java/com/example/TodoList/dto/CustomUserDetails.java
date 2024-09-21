@@ -17,12 +17,14 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUserId(); // User 클래스에서 userId를 반환하는 메소드
+        return user.getUserId();
     }
-
+    public String getUserNickname(){
+        return user.getNickname();
+    }
     @Override
     public String getPassword() {
-        return user.getPassword(); // User 클래스에서 password를 반환하는 메소드
+        return user.getPassword();
     }
 
     @Override

@@ -54,7 +54,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         String userId = customUserDetails.getUsername();
-
+        String nickname = customUserDetails.getUserNickname();
         // Role 추출
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String role = authorities.stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null);
@@ -67,7 +67,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // 응답 본체에 JWT, userId포함 + 필요한 경우 nickname도 여기에 추가하면 됨
         response.setContentType("application/json");
-        response.getWriter().write("{\"userId\": \"" + userId + "\", \"token\": \"" + token + "\"}");
+        response.getWriter().write("{\"userId\": \"" + userId + "\", \"token\": \"" + token + "\", \"nickname\": \"" + nickname + "\"}");
 
         log.info("Login successful: {}", userId);
     }

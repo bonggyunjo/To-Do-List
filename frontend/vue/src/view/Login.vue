@@ -46,19 +46,21 @@ export default {
       const userData = {
         userId: this.userId,
         password: this.password,
+
       };
 
       try {
         const res = await axios.post('http://localhost:8081/login', userData);
 
-        console.log('API 응답:', res); // 전체 응답을 확인
-        console.log('응답 데이터:', res.data); // 응답 데이터 확인
+        console.log('API 응답:', res);
+        console.log('응답 데이터:', res.data);
 
         if (res.data && res.data.token) {
           alert('로그인에 성공하였습니다.');
           localStorage.setItem('token', res.data.token);
           axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
           this.$store.commit('setUserId', res.data.userId);
+          this.$store.commit('setUserNickname', res.data.nickname);
           this.$router.push('/');
         } else {
           alert('토큰이 응답에 없습니다. 로그인 실패.');

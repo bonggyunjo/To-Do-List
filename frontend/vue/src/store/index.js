@@ -24,6 +24,9 @@ export default new Vuex.Store({
         userNickname(state) {
             return state.nickname;
         },
+        getUserId(state) {
+            return state.userId;
+        }
     },
     mutations: {
         setUserId(state, userId) {
@@ -37,7 +40,15 @@ export default new Vuex.Store({
             state.nickname = '';
             state.userId = '';
             state.isLogin = false;
-        }
+        },
+        clearUserData(state) {
+            state.userId = '';
+            state.nickname = '';
+            state.isLogin = false; // 로그인 상태 초기화
+        },
+        updateNickname(state, newNickname) {
+            state.nickname = newNickname; // 닉네임 업데이트
+        },
     },
     actions: {
         async login({ commit }, { userId, password }) {

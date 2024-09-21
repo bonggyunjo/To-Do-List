@@ -5,6 +5,8 @@
     <div class="content-line"></div>
 
     <span class="content-for-delete-ismain">
+        <span style="position: fixed; left:576px;"><span style="font-weight: bolder; font-size: 18px;">{{userNickname}}</span>님 <span class="bounce">계정을 삭제하시겠습니까 ?</span></span>
+      <br>
       계정 삭제 시 모든 데이터는 즉시 삭제되며 복구할 수 없습니다.
       <br>
       <span style="position: relative; left:99px;">이로 인해 이전에 저장한 작업, 프로젝트, 설정 등이 모두 사라지니 신중하게 결정하시기 바랍니다.</span>
@@ -18,17 +20,55 @@
       <label class="form-check-label" for="defaultCheck1">
       </label>
     </div>
-    <button class="btn btn-outline-danger" id="delete-user-button"  :disabled="!isChecked">계정 삭제</button>
+    <button class="btn btn-outline-danger" id="delete-user-button"  :disabled="!isChecked" @click="deleteUser">계정 삭제</button>
   </main>
 </template>
 
 <script>
+import axios from 'axios';
+import {mapGetters} from "vuex";
 export default {
   name : 'DeleteUser',
   data() {
     return {
-      isChecked: false // 체크박스 상태를 관리하는 데이터
+      isChecked: false,
     };
+  },
+  computed: {
+    ...mapGetters(['userNickname']),
+    nickname(){
+      return this.userNickname;
+    }
+  },
+  methods:{
+    async deleteUser() {
+      if (!this.isChecked) {
+        alert('계정 삭제를 위해 동의해야 합니다.');
+        return;
+      }
+
+      try {
+        const userId = this.$store.getters.getUserId; // Vuex에서 사용자 ID 가져오기
+        const res = await axios.delete(`http://localhost:8081/user/delete`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+          params: {
+            userId: userId // userId를 쿼리 파라미터로 추가
+          }
+        });
+        console.log("res",res);
+
+        this.$store.commit('clearUserData');
+        localStorage.removeItem('token');
+
+        alert('계정이 삭제되었습니다.');
+        this.$router.push('/');
+      } catch (error) {
+        console.error('계정 삭제 실패:', error);
+        alert('계정 삭제에 실패했습니다. 다시 시도해 주세요.');
+      }
+    }
   }
 }
 </script>
@@ -65,7 +105,26 @@ export default {
 
 #delete-user-button{
   position: relative;
-  top:290px;
+  top:270px;
   left:460px;
+}
+
+.bounce {
+  display: inline-block;
+  animation: bounce 0.5s infinite;
+}
+
+.bounce {
+  display: inline-block;
+  animation: bounce 0.5s 4;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 </style>
