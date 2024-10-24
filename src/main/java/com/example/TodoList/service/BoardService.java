@@ -1,0 +1,33 @@
+package com.example.TodoList.service;
+
+import com.example.TodoList.dto.BoardDto;
+import com.example.TodoList.entity.Board;
+import com.example.TodoList.repository.BoardRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class BoardService {
+
+    @Autowired
+    private BoardRepository boardRepository;
+
+    @Transactional
+    public List<BoardDto> getAllBoards() {
+        List<Board> boards = boardRepository.findAll();
+        return boards.stream()
+                .map(board -> BoardDto.builder()
+                        .postId(board.getPostId())
+                        .userId(board.getUser().getUserId())
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .createdAt(board.getCreatedAt())
+                        .updatedAt(board.getUpdatedAt())
+                        .build())
+                .collect(Collectors.toList());
+    }
+}

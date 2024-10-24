@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "board")
@@ -46,5 +45,15 @@ public class Board {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    @Builder
+    public Board(Long postId, User user, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.postId = postId;
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }
