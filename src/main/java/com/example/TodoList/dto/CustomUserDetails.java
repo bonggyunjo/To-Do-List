@@ -1,6 +1,6 @@
 package com.example.TodoList.dto;
 
-import com.example.TodoList.entity.user.User;
+import com.example.TodoList.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

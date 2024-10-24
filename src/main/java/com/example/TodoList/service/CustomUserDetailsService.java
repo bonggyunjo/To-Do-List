@@ -1,7 +1,7 @@
 package com.example.TodoList.service;
 
 import com.example.TodoList.dto.CustomUserDetails;
-import com.example.TodoList.entity.user.User;
+import com.example.TodoList.entity.User;
 import com.example.TodoList.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

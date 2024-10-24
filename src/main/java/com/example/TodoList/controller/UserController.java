@@ -1,12 +1,9 @@
 package com.example.TodoList.controller;
 
-import com.example.TodoList.dto.LoginDto;
 import com.example.TodoList.dto.SignUpDto;
 import com.example.TodoList.dto.UserInfoUpdateDto;
-import com.example.TodoList.entity.user.User;
 import com.example.TodoList.repository.UserRepository;
 import com.example.TodoList.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 @Slf4j

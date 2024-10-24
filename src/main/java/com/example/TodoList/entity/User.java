@@ -1,4 +1,4 @@
-package com.example.TodoList.entity.user;
+package com.example.TodoList.entity;
 
 
 import com.example.TodoList.dto.UserInfoUpdateDto;
@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 public class User {
 
     // 아이디 = primary key

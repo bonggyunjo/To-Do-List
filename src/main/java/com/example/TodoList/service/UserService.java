@@ -2,7 +2,7 @@ package com.example.TodoList.service;
 
 import com.example.TodoList.dto.SignUpDto;
 import com.example.TodoList.dto.UserInfoUpdateDto;
-import com.example.TodoList.entity.user.User;
+import com.example.TodoList.entity.User;
 import com.example.TodoList.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
