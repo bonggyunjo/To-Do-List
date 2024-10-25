@@ -20,7 +20,7 @@ public class  UserController {
     @Autowired
     private UserRepository userRepository;
 
-    //회원가입
+
     @PostMapping("/signup")
     public ResponseEntity<String> registerUser(@RequestBody SignUpDto signUpDto) {
         try {
@@ -30,7 +30,7 @@ public class  UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-    //닉네임 중복확인
+
     @GetMapping("/checknickname/{nickname}")
     public ResponseEntity<Boolean> checkNickname(@PathVariable(value="nickname") String nickname) {
         boolean exists = userRepository.existsByNickname(nickname);
@@ -38,7 +38,7 @@ public class  UserController {
         return ResponseEntity.ok(isAvailable);
     }
 
-    //아이디 중복확인
+
     @GetMapping("/checkuserId/{userId}")
     public ResponseEntity<Boolean> checkuserId(@PathVariable(value="userId") String userId) {
         boolean exists = userRepository.existsByUserId(userId);
@@ -46,7 +46,7 @@ public class  UserController {
         return ResponseEntity.ok(isAvailable);
     }
 
-    //회원 정보 수정
+
     @PutMapping("/mypage/update")
     public ResponseEntity<String> updateUser(@RequestBody UserInfoUpdateDto userInfoUpdateDto) {
 
@@ -59,7 +59,7 @@ public class  UserController {
         }
     }
 
-    //회원 탈퇴
+
     @DeleteMapping("/user/delete")
     public ResponseEntity<String> deleteUser(@RequestParam String userId){
         userService.deleteuser(userId);

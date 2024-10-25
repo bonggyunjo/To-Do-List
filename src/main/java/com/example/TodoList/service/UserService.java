@@ -24,7 +24,7 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    //회원가입
+
     public void registerUser(SignUpDto signUpDto) {
         String userId = signUpDto.getUserId();
         String password = signUpDto.getPassword();
@@ -51,7 +51,7 @@ public class UserService {
 
         userRepository.save(user);
     }
-    //회원 정보 수정
+
 
     @Transactional
     public void updateUser(String userId, UserInfoUpdateDto userInfoUpdateDto) throws IOException {
@@ -72,7 +72,7 @@ public class UserService {
 
         userRepository.save(user); // 변경 사항 저장
     }
-    //회원 탈퇴
+
 
     @Transactional
     public void deleteuser(String userId){

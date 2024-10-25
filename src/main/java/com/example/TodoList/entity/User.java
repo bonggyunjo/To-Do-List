@@ -14,12 +14,12 @@ import lombok.*;
 @Table(name = "user")
 public class User {
 
-    // 아이디 = primary key
+
     @Id
     @Column(name = "userId", nullable = false)
     private String userId;
 
-    // 비밀번호
+
     @Column(nullable = false)
     private String password;
 
@@ -33,8 +33,8 @@ public class User {
 
     //회원 정보 수정
     public void updateDetails(String password, String nickname, String intro) {
-        this.password = password; // 비밀번호 업데이트
-        this.nickname = nickname; // 닉네임 업데이트
-        this.intro = intro; // 소개 업데이트
+        this.password = password;
+        this.nickname = nickname;
+        this.intro = intro;
     }
 }

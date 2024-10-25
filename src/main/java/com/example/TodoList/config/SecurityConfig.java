@@ -41,22 +41,22 @@ public class SecurityConfig {
         // CSRF 비활성화
         http.csrf(auth -> auth.disable());
 
-        // Form 로그인 비활성화
+
         http.formLogin(auth -> auth.disable());
 
-        // Basic 인증 비활성화
+
         http.httpBasic(auth -> auth.disable());
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/mypage").authenticated() // /mypage 접근 시 인증 필요
-                .requestMatchers("/admin").hasRole("ADMIN") // /admin 접근 시 ADMIN 권한 필요
-                .anyRequest().permitAll() // 나머지 요청은 허용
+                .requestMatchers("/mypage").authenticated()
+                .requestMatchers("/admin").hasRole("ADMIN")
+                .anyRequest().permitAll()
         );
 
         // 필터 등록
         http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        // Stateless 세션 관리
+
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();

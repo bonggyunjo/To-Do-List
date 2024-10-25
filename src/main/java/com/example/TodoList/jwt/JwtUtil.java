@@ -42,7 +42,7 @@ public class JwtUtil {
     //토큰 생성
     public String createJwt(String userId, String role, Long expiredMs) {
 
-        //빌더 패턴
+
         return Jwts.builder()
                 .claim("userId", userId)
                 .claim("role", role)
