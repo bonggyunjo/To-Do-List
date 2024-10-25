@@ -30,4 +30,8 @@ public class BoardService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    public Board createBoard(Board board){
+        return boardRepository.save(board);
+    }
 }
