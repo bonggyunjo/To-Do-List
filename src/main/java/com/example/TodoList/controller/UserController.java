@@ -51,7 +51,7 @@ public class  UserController {
     public ResponseEntity<String> updateUser(@RequestBody UserInfoUpdateDto userInfoUpdateDto) {
 
         try {
-            String userId = userInfoUpdateDto.getUserId(); // DTO에서 userId 추출
+            String userId = userInfoUpdateDto.getUserId();
             userService.updateUser(userId, userInfoUpdateDto);
             return ResponseEntity.ok("회원 정보가 성공적으로 수정되었습니다.");
         } catch (IOException e) {

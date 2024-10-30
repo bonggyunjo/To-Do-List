@@ -8,6 +8,8 @@ import UserDelete from "@/view/MyPage/UserDelete.vue";
 import PasswordChange from "@/view/MyPage/PasswordChange.vue";
 import NicknameChange from "@/view/MyPage/NicknameChange.vue";
 import store from "@/store";
+import Board from "@/view/Board/Board.vue";
+import BoardWrite from "@/view/Board/BoardWrite.vue";
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,6 +22,8 @@ const routes = [
     { path: '/mypage/user/nicknamechange', component: NicknameChange, meta: { hideHeader: true,hideFooter: true, requiresAuth: true}},
     { path: '/' , component: Home, meta: { hideHeader: false,hideFooter: false}},
     { path: '/' , component: Home, meta: { hideFooter: false,hideHeader: false}},
+    { path: '/board' , component: Board, meta: { hideFooter: true,hideHeader: false}},
+    { path: '/board/write' , component: BoardWrite, meta: { hideFooter: true,hideHeader: false}},
 ]
 
 const router = new VueRouter({

@@ -1,7 +1,6 @@
 package com.example.TodoList.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 

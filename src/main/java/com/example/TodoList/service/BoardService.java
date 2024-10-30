@@ -31,7 +31,10 @@ public class BoardService {
                         .build())
                 .collect(Collectors.toList());
     }
-    public Board createBoard(Board board){
+    public Board createBoard(Board board) {
+        if (board.getTitle() == null || board.getContent() == null) {
+            throw new RuntimeException("제목과 내용은 필수입니다.");
+        }
         return boardRepository.save(board);
     }
 
@@ -43,7 +46,7 @@ public class BoardService {
             board.setContent(content);
             return boardRepository.save(board);
         } else {
-            throw new RuntimeException("게시글을 찾을 수 없습니다."); // 예외 처리
+            throw new RuntimeException("게시글을 찾을 수 없습니다.");
         }
     }
     public Board deleteBoard(Long postId) {
@@ -51,7 +54,7 @@ public class BoardService {
         if (optionalBoard.isPresent()) {
             boardRepository.delete(optionalBoard.get());
         } else {
-            throw new RuntimeException("게시글을 찾을 수 없습니다."); // 예외 처리
+            throw new RuntimeException("게시글을 찾을 수 없습니다.");
         }
         return null;
     }

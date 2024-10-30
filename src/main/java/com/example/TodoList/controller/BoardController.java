@@ -38,6 +38,6 @@ public class BoardController {
     @DeleteMapping("/boards/{postId}")
     public ResponseEntity<Void> deleteBoard(@PathVariable Long postId) {
         boardService.deleteBoard(postId);
-        return ResponseEntity.noContent().build(); // 성공적으로 삭제된 경우 204 응답
+        return ResponseEntity.noContent().build();
     }
 }
