@@ -15,15 +15,17 @@ import java.time.LocalDateTime;
 public class BoardDto {
     private Long postId;
     private String userId;
+    private String nickname;
     private String title;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
 
-    public BoardDto(Long postId, String userId, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public BoardDto(Long postId, String userId, String nickname, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.postId = postId;
         this.userId = userId;
+        this.nickname = nickname;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
@@ -34,7 +36,7 @@ public class BoardDto {
     public Board toEntity(){
         return Board.builder()
                 .postId(postId)
-                .user(User.builder().build())
+                .user(User.builder().userId(userId).build())
                 .title(title)
                 .content(content)
                 .createdAt(createdAt)

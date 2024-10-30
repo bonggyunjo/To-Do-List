@@ -1,23 +1,20 @@
 <template>
   <div class="board-list">
-    <h1>게시글 목록</h1>
     <div class="board-container">
       <div class="table-header">
-        <div class="table-title">NO</div>
-        <div class="table-title">ID</div>
+        <div class="table-title" style="position: relative; left:-60px;">NO</div>
+        <div class="table-title" style="position: relative; left:-60px;">ID</div>
         <div class="table-title">제목</div>
         <div class="table-title">작성일</div>
       </div>
       <ul>
         <li v-for="post in paginatedPosts" :key="post.postId" class="post-item">
           <div class="post-info">
-            <span class="post-id">{{ post.postId }}</span>
-            <span class="post-user">{{ post.userId }}</span>
-            <h2 class="post-title">{{ post.title }}</h2>
+            <span class="post-id" style="position: relative; left:-60px;">{{ post.postId }}</span>
+            <span class="post-user" style="position: relative; left:-60px;">{{ post.nickname }}</span>
+            <h6 class="post-title">{{ post.title }}</h6>
             <small class="post-date">{{ formatDate(post.createdAt) }}</small>
           </div>
-          <p class="post-content">{{ post.content }}</p>
-          <button class="read-more" @click="goToPost(post.postId)">상세보기</button>
         </li>
       </ul>
       <router-link to="/board/write" class="add-post">새 게시글 작성</router-link>
@@ -88,11 +85,9 @@ export default {
 <style scoped>
 .board-list {
   padding: 20px;
-  max-width: 800px;
+  max-width: 1100px;
   margin: auto;
-  background-color: #f8f9fa;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -103,10 +98,8 @@ h1 {
 }
 
 .board-container {
-  background-color: #ffffff;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .table-header {
@@ -130,12 +123,9 @@ ul {
 
 .post-item {
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
   margin: 15px 0;
   padding: 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
-  background-color: #f9f9f9;
 }
 
 .post-item:hover {

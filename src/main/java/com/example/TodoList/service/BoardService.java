@@ -24,6 +24,7 @@ public class BoardService {
                 .map(board -> BoardDto.builder()
                         .postId(board.getPostId())
                         .userId(board.getUser().getUserId())
+                        .nickname(board.getUser().getNickname())
                         .title(board.getTitle())
                         .content(board.getContent())
                         .createdAt(board.getCreatedAt())
