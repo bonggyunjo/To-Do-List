@@ -15,14 +15,14 @@
         <span style="font-size: 14px; position: relative; top:30px; left:2px;">{{ nickname }}</span>
         <router-link to="/mypage/user/nicknamechange"><button class="btn btn-outline-secondary" type="button" id="button-addon2" style="font-size: 11.5px; font-weight: bolder; border-radius: 6px; border: lightgray; position: absolute; top:53px; left:0px;height: 31px; width: 90px; background-color: lightgray; color: #333333;">닉네임 변경</button></router-link>
       </div>
-      <span style="font-size: 11.4px; position: relative; left:-330px; top:40px; color: #555555;">닉네임을 변경할 수 있습니다.</span>
+      <span style="font-size: 12px; position: relative; left:-330px; top:40px; color: #555555;">닉네임을 변경할 수 있습니다.</span>
     </div>
     <div id="password">
       <span class="passowrd-title">패스워드</span>
       <br>
       <router-link to="/mypage/user/passwordchange"><button class="btn btn-secondary" id="password-change-button">비밀번호 변경</button></router-link>
     </div>
-    <span style="font-size: 11.4px; position: relative; left:-305px; top:47px; color: #555555;">비밀번호를 변경할 수 있습니다.</span>
+    <span style="font-size: 12px; position: relative; left:-305px; top:47px; color: #555555;">비밀번호를 변경할 수 있습니다.</span>
     <div class="content-line" style="position: relative; top:100px;"></div>
 
     <div id="delete-user">

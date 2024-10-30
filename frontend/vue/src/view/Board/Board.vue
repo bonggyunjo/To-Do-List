@@ -3,28 +3,39 @@
     <div class="board-container">
       <div class="table-header">
         <div class="table-title" style="position: relative; left:-60px;">NO</div>
-        <div class="table-title" style="position: relative; left:-60px;">ID</div>
-        <div class="table-title">제목</div>
+        <div class="table-title" style="position: relative; left:-100px;">ID</div>
+        <div class="table-title"  style="position: relative; left:-75px;">제목</div>
         <div class="table-title">작성일</div>
       </div>
+      <div style="border-top: 1px solid #e0e0e0;"></div>
       <ul>
         <li v-for="post in paginatedPosts" :key="post.postId" class="post-item">
           <div class="post-info">
             <span class="post-id" style="position: relative; left:-60px;">{{ post.postId }}</span>
-            <span class="post-user" style="position: relative; left:-60px;">{{ post.nickname }}</span>
-            <h6 class="post-title">{{ post.title }}</h6>
-            <small class="post-date">{{ formatDate(post.createdAt) }}</small>
+            <span class="post-user" style="position: relative; left:-100px;">{{ post.nickname }}</span>
+            <span class="post-title"  style="position: relative; left:-75px;">{{ post.title }}</span>
+            <small class="post-date" style="font-size: 14px">{{ formatDate(post.createdAt) }}</small>
           </div>
         </li>
       </ul>
-      <router-link to="/board/write" class="add-post">새 게시글 작성</router-link>
-
       <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
-        <span>페이지 {{ currentPage }} / {{ totalPages }}</span>
-        <button @click="nextPage" :disabled="currentPage === totalPages">다음</button>
+        <div class="page-numbers">
+          <button
+              v-for="page in totalPages"
+              :key="page"
+              :class="{ active: currentPage === page }"
+              @click="goToPage(page)"
+              class="page-number-button"
+          >
+            {{ page }}
+          </button>
+        </div>
       </div>
+      <span class="current-page">페이지 {{ currentPage }} / {{ totalPages }}</span>
     </div>
+    <router-link to="/board/write">
+      <button type="submit" class="btn btn-success" id="create-button">작성하기</button>
+    </router-link>
   </div>
 </template>
 
@@ -56,7 +67,7 @@ export default {
     async fetchPosts() {
       try {
         const response = await axios.get('http://localhost:8081/boards');
-        this.posts = response.data;
+        this.posts = response.data.reverse();
       } catch (error) {
         console.error('게시글을 가져오는 데 오류가 발생했습니다:', error);
       }
@@ -66,7 +77,7 @@ export default {
       return new Date(dateString).toLocaleDateString('ko-KR', options);
     },
     goToPost(postId) {
-      this.$router.push({ name: 'BoardDetail', params: { postId } }); // 상세보기 페이지로 이동
+      this.$router.push({ name: 'BoardDetail', params: { postId } });
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {
@@ -77,6 +88,9 @@ export default {
       if (this.currentPage > 1) {
         this.currentPage--;
       }
+    },
+    goToPage(page) {
+      this.currentPage = page;
     }
   }
 };
@@ -104,11 +118,13 @@ h1 {
 
 .table-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr; /* 열의 너비 조정 */
-  background-color: #f1f1f1; /* 헤더 배경색 */
+  grid-template-columns: 1fr 1fr 2fr 1fr;
   padding: 10px;
   border-radius: 8px;
   margin-bottom: 10px;
+  color: #555555;
+  font-size: 14px;
+  font-weight: bolder;
 }
 
 .table-title {
@@ -122,89 +138,75 @@ ul {
 }
 
 .post-item {
-  border: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
   margin: 15px 0;
   padding: 15px;
   transition: transform 0.2s;
-}
-
-.post-item:hover {
-  transform: translateY(-3px);
+  color: #333333;
+  font-size: 15px;
 }
 
 .post-info {
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr; /* 열의 너비 조정 */
-  align-items: center; /* 세로 정렬 */
+  grid-template-columns: 1fr 1fr 2fr 1fr;
+  align-items: center;
 }
 
 .post-id,
 .post-user,
 .post-title,
 .post-date {
-  text-align: center; /* 가운데 정렬 */
-}
-
-.post-content {
-  margin: 10px 0;
-}
-
-.read-more {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.read-more:hover {
-  background-color: #0056b3;
-}
-
-.add-post {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: block;
-  margin: 20px auto;
-  text-decoration: none;
-  width: 160px;
   text-align: center;
-}
-
-.add-post:hover {
-  background-color: #218838;
 }
 
 .pagination {
   display: flex;
+  align-items: center;
   justify-content: center;
   margin-top: 20px;
 }
 
-.pagination button {
-  margin: 0 10px;
+.current-page {
+  margin: 0 15px;
+  font-weight: bold;
+  font-size: 16px;
+  position: relative;
+  top:20px;
+  color: #333333;
+  font-size: 14.5px;
+  font-weight : normal;
+}
+
+.page-numbers {
+  display: flex;
+  align-items: center;
+}
+
+.page-number-button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #e0e0e0;
   padding: 5px 10px;
-  border: none;
   border-radius: 5px;
-  background-color: #007bff;
-  color: white;
   cursor: pointer;
+  margin: 0 3px;
   transition: background-color 0.3s;
 }
 
-.pagination button:hover {
-  background-color: #0056b3;
+.page-number-button:hover {
+  background-color: #007bff;
+  color: white;
 }
 
-.pagination button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.page-number-button.active {
+  background-color: #007bff;
+  color: white;
+}
+#create-button {
+  font-size: 14px;
+  width: 100px;
+  height: 43px;
+  position: relative;
+  left:400px;
 }
 </style>
