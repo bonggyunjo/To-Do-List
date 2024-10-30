@@ -2,10 +2,18 @@
   <div class="board-list">
     <h1>게시글 목록</h1>
     <div class="board-container">
+      <div class="table-header">
+        <div class="table-title">NO</div>
+        <div class="table-title">ID</div>
+        <div class="table-title">제목</div>
+        <div class="table-title">작성일</div>
+      </div>
       <ul>
-        <li v-for="post in posts" :key="post.postId" class="post-item">
-          <div class="post-header">
-            <h2>{{ post.title }}</h2>
+        <li v-for="post in paginatedPosts" :key="post.postId" class="post-item">
+          <div class="post-info">
+            <span class="post-id">{{ post.postId }}</span>
+            <span class="post-user">{{ post.userId }}</span>
+            <h2 class="post-title">{{ post.title }}</h2>
             <small class="post-date">{{ formatDate(post.createdAt) }}</small>
           </div>
           <p class="post-content">{{ post.content }}</p>
@@ -13,6 +21,12 @@
         </li>
       </ul>
       <router-link to="/board/write" class="add-post">새 게시글 작성</router-link>
+
+      <div class="pagination">
+        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+        <span>페이지 {{ currentPage }} / {{ totalPages }}</span>
+        <button @click="nextPage" :disabled="currentPage === totalPages">다음</button>
+      </div>
     </div>
   </div>
 </template>
@@ -24,11 +38,22 @@ export default {
   name: 'BoardList',
   data() {
     return {
-      posts: []
+      posts: [],
+      currentPage: 1,
+      postsPerPage: 10
     };
   },
   created() {
     this.fetchPosts();
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.posts.length / this.postsPerPage);
+    },
+    paginatedPosts() {
+      const start = (this.currentPage - 1) * this.postsPerPage;
+      return this.posts.slice(start, start + this.postsPerPage);
+    }
   },
   methods: {
     async fetchPosts() {
@@ -45,6 +70,16 @@ export default {
     },
     goToPost(postId) {
       this.$router.push({ name: 'BoardDetail', params: { postId } }); // 상세보기 페이지로 이동
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
     }
   }
 };
@@ -55,7 +90,7 @@ export default {
   padding: 20px;
   max-width: 800px;
   margin: auto;
-  background-color: #f8f9fa; /* 배경색 추가 */
+  background-color: #f8f9fa;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -64,14 +99,28 @@ h1 {
   text-align: center;
   color: #333;
   margin-bottom: 20px;
-  font-family: 'Arial', sans-serif; /* 폰트 설정 */
+  font-family: 'Arial', sans-serif;
 }
 
 .board-container {
-  background-color: #ffffff; /* 게시판 배경색 */
+  background-color: #ffffff;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr; /* 열의 너비 조정 */
+  background-color: #f1f1f1; /* 헤더 배경색 */
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.table-title {
+  font-weight: bold;
+  text-align: center;
 }
 
 ul {
@@ -86,22 +135,24 @@ ul {
   padding: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
-  background-color: #f9f9f9; /* 게시글 배경색 */
+  background-color: #f9f9f9;
 }
 
 .post-item:hover {
   transform: translateY(-3px);
 }
 
-.post-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.post-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr; /* 열의 너비 조정 */
+  align-items: center; /* 세로 정렬 */
 }
 
+.post-id,
+.post-user,
+.post-title,
 .post-date {
-  font-size: 0.9em;
-  color: #888;
+  text-align: center; /* 가운데 정렬 */
 }
 
 .post-content {
@@ -134,10 +185,36 @@ ul {
   margin: 20px auto;
   text-decoration: none;
   width: 160px;
-  text-align: center; /* 텍스트 가운데 정렬 */
+  text-align: center;
 }
 
 .add-post:hover {
   background-color: #218838;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination button:hover {
+  background-color: #0056b3;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 </style>
