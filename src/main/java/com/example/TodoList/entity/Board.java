@@ -1,6 +1,7 @@
 package com.example.TodoList.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 설정
     private Long postId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
