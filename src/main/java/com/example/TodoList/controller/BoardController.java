@@ -25,13 +25,19 @@ public class BoardController {
 
     @PostMapping("/boards/create")
     public ResponseEntity<Board> createBoards(@RequestBody Board board) {
-        Board createdBoard = boardService.createBoard(board);
-        return ResponseEntity.ok(createdBoard);
+        Board createBoard = boardService.createBoard(board);
+        return ResponseEntity.ok(createBoard);
     }
 
     @PutMapping("/boards/{postId}")
     public ResponseEntity<Board> updateBoard(@PathVariable Long postId, @RequestBody Board updatedBoard) {
-        Board board = boardService.updateBoard(postId, updatedBoard.getTitle(), updatedBoard.getContent());
-        return ResponseEntity.ok(board);
+        Board updateboard = boardService.updateBoard(postId, updatedBoard.getTitle(), updatedBoard.getContent());
+        return ResponseEntity.ok(updateboard);
+    }
+
+    @DeleteMapping("/boards/{postId}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long postId) {
+        boardService.deleteBoard(postId);
+        return ResponseEntity.noContent().build(); // 성공적으로 삭제된 경우 204 응답
     }
 }

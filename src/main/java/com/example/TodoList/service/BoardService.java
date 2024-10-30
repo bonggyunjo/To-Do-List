@@ -46,4 +46,13 @@ public class BoardService {
             throw new RuntimeException("게시글을 찾을 수 없습니다."); // 예외 처리
         }
     }
+    public Board deleteBoard(Long postId) {
+        Optional<Board> optionalBoard = boardRepository.findById(postId);
+        if (optionalBoard.isPresent()) {
+            boardRepository.delete(optionalBoard.get());
+        } else {
+            throw new RuntimeException("게시글을 찾을 수 없습니다."); // 예외 처리
+        }
+        return null;
+    }
 }
