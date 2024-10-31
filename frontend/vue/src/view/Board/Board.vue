@@ -136,7 +136,7 @@ ul {
   color: #333333;
   font-size: 15px;
   position: relative;
-  top:-20px;
+  top:-15px;
 }
 
 .post-info {

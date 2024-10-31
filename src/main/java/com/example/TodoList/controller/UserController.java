@@ -1,6 +1,7 @@
 package com.example.TodoList.controller;
 
 import com.example.TodoList.dto.SignUpDto;
+import com.example.TodoList.dto.UserInfoDto;
 import com.example.TodoList.dto.UserInfoUpdateDto;
 import com.example.TodoList.repository.UserRepository;
 import com.example.TodoList.service.UserService;
@@ -59,6 +60,15 @@ public class  UserController {
         }
     }
 
+    @GetMapping("/mypage/{userId}")
+    public ResponseEntity<UserInfoDto> getUserInfo(@PathVariable String userId) {
+        UserInfoDto userInfo = userService.getUserInfo(userId);
+        if (userInfo != null) {
+            return ResponseEntity.ok(userInfo);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
     @DeleteMapping("/user/delete")
     public ResponseEntity<String> deleteUser(@RequestParam String userId){

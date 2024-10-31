@@ -9,13 +9,14 @@ export default new Vuex.Store({
     plugins: [
         createPersistedState({
             key: 'my-app-state',
-            paths: ['userId', 'nickname', 'isLogin']
+            paths: ['userId', 'nickname', 'isLogin','intro']
         })
     ],
     state: {
         userId: '',
         nickname: '',
         isLogin: false,
+        intro: ''
     },
     getters: {
         isLogin(state) {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
         },
         getUserId(state) {
             return state.userId;
+        },
+        getIntro(state){
+            return state.intro;
         }
     },
     mutations: {
@@ -45,9 +49,13 @@ export default new Vuex.Store({
             state.userId = '';
             state.nickname = '';
             state.isLogin = false; // 로그인 상태 초기화
+            state.intro = '';
         },
         updateNickname(state, newNickname) {
             state.nickname = newNickname; // 닉네임 업데이트
+        },
+        setIntro(state, intro) { // intro mutation 추가
+            state.intro = intro;
         },
     },
     actions: {
@@ -59,6 +67,7 @@ export default new Vuex.Store({
                     localStorage.setItem('token', res.data.token); // JWT 토큰 저장
                     commit('setUserId', res.data.userId);
                     commit('setUserNickname', res.data.nickname);
+                    commit('setIntro',res.data.intro);
                 } else {
                     throw new Error('로그인 실패: 토큰이 없습니다.');
                 }

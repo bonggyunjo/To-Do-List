@@ -1,6 +1,7 @@
 package com.example.TodoList.service;
 
 import com.example.TodoList.dto.SignUpDto;
+import com.example.TodoList.dto.UserInfoDto;
 import com.example.TodoList.dto.UserInfoUpdateDto;
 import com.example.TodoList.entity.User;
 import com.example.TodoList.repository.UserRepository;
@@ -53,6 +54,20 @@ public class UserService {
     }
 
 
+    public UserInfoDto getUserInfo(String userId) {
+        Optional<User> userOptional = userRepository.findByUserId(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            UserInfoDto userInfoDto = new UserInfoDto();
+            userInfoDto.setUserId(user.getUserId());
+            userInfoDto.setNickname(user.getNickname());
+            userInfoDto.setIntro(user.getIntro());
+            return userInfoDto;
+        }
+        return null;
+    }
+
+
     @Transactional
     public void updateUser(String userId, UserInfoUpdateDto userInfoUpdateDto) throws IOException {
         User user = userRepository.findByUserId(userId)
@@ -70,7 +85,7 @@ public class UserService {
             user.setIntro(userInfoUpdateDto.getIntro());
         }
 
-        userRepository.save(user); // 변경 사항 저장
+        userRepository.save(user);
     }
 
 

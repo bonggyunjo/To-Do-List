@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return new CustomUserDetails(user); // CustomUserDetails 객체 반환
+        return new CustomUserDetails(user);
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(User user) {
