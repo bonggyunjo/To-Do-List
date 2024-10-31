@@ -11,7 +11,7 @@
       <ul>
         <li v-for="post in paginatedPosts" :key="post.postId" class="post-item">
           <div class="post-info">
-            <span class="post-id" style="position: relative; left:-60px;">{{ post.postId }}</span>
+            <span class="post-id" style="position: relative; left:-60px;" @click="goToPost(post.postId)">{{ post.postId }}</span>
             <span class="post-user" style="position: relative; left:-100px;">{{ post.nickname }}</span>
             <span class="post-title"  style="position: relative; left:-75px;">{{ post.title }}</span>
             <small class="post-date" style="font-size: 14px">{{ formatDate(post.createdAt) }}</small>
@@ -77,17 +77,7 @@ export default {
       return new Date(dateString).toLocaleDateString('ko-KR', options);
     },
     goToPost(postId) {
-      this.$router.push({ name: 'BoardDetail', params: { postId } });
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-      }
-    },
-    prevPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
+      this.$router.push({ path: `/board/detail/${postId}` });
     },
     goToPage(page) {
       this.currentPage = page;
@@ -95,6 +85,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .board-list {
@@ -144,6 +135,8 @@ ul {
   transition: transform 0.2s;
   color: #333333;
   font-size: 15px;
+  position: relative;
+  top:-20px;
 }
 
 .post-info {

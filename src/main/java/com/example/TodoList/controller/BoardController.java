@@ -40,4 +40,14 @@ public class BoardController {
         boardService.deleteBoard(postId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/boards/detail/{postId}")
+    public ResponseEntity<Board> getDetailBoard(@PathVariable Long postId) {
+        Board board = boardService.getBoardPostId(postId);
+        if (board != null) {
+            return ResponseEntity.ok(board);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

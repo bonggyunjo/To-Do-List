@@ -59,4 +59,9 @@ public class BoardService {
         }
         return null;
     }
+
+    public Board getBoardPostId(Long postId){
+        Optional<Board> detailBoard = boardRepository.findById(postId);
+        return detailBoard.orElse(null);
+    }
 }
