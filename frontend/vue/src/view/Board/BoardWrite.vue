@@ -41,7 +41,7 @@ export default {
         alert("내용을 입력하세요");
         return;
       }
-      const userId = this.$store.state.userId; // Vuex에서 사용자 ID 가져오기
+      const userId = this.$store.state.userId;
       try {
         const response = await axios.post('http://localhost:8081/boards/create', {
           title: this.title,
@@ -52,7 +52,7 @@ export default {
         alert("글이 등록되었습니다.");
         this.$router.push('/board');
         this.title = '';
-        this.content = ''; // 입력 필드 초기화
+        this.content = '';
       } catch (error) {
         console.error('게시글 작성 중 오류 발생:', error);
       }
@@ -82,13 +82,13 @@ h1 {
 
 label {
   font-weight: bold;
-  text-align: left; /* 왼쪽 정렬 */
+  text-align: left;
 }
 
 input[type="text"],
 textarea {
   font-size: 16px;
-  text-align: left; /* 왼쪽 정렬 */
+  text-align: left;
 }
 
 textarea {

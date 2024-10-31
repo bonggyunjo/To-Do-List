@@ -35,22 +35,22 @@ export default {
     };
   },
   created() {
-    const postId = this.$route.params.postId; // URL에서 게시글 ID 가져오기
-    this.fetchPost(postId); // 게시글 데이터 가져오기
+    const postId = this.$route.params.postId;
+    this.fetchPost(postId);
   },
   methods: {
     async fetchPost(postId) {
       try {
         const response = await axios.get(`http://localhost:8081/boards/detail/${postId}`);
-        this.post = response.data; // 가져온 데이터로 post 업데이트
+        this.post = response.data;
       } catch (error) {
         console.error('게시글을 가져오는 데 오류가 발생했습니다:', error);
       }
     },
     async updatePost() {
       try {
-        const postId = this.$route.params.postId; // URL에서 게시글 ID 가져오기
-        await axios.put(`http://localhost:8081/boards/${postId}`, this.post); // 수정 API 호출
+        const postId = this.$route.params.postId;
+        await axios.put(`http://localhost:8081/boards/${postId}`, this.post);
         alert("수정되었습니다.")
         this.$router.push('/board');
       } catch (error) {
@@ -103,26 +103,6 @@ export default {
   border: none;
   outline: none;
 
-}
-
-.post-meta {
-  font-size: 14px;
-  color: #777;
-  margin-bottom: 15px;
-  position: relative;
-  left: -308px;
-  top: 10px;
-}
-
-.post-author {
-  margin-right: 15px;
-}
-
-.post-date {
-  margin-right: 15px;
-  position: relative;
-  left: 630px;
-  top: -40px;
 }
 
 .post-content {

@@ -43,9 +43,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['userNickname']), // 로그인한 사용자 ID를 가져오는 getter
+    ...mapGetters(['userNickname']),
     isAuthor() {
-      return this.post && this.post.nickname === this.userNickname; // 게시글 작성자와 현재 사용자 비교
+      return this.post && this.post.nickname === this.userNickname;
     },
   },
   created() {
