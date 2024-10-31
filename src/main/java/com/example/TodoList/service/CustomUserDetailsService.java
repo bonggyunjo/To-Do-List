@@ -1,7 +1,7 @@
 package com.example.TodoList.service;
 
 import com.example.TodoList.dto.CustomUserDetails;
-import com.example.TodoList.entity.user.User;
+import com.example.TodoList.entity.User;
 import com.example.TodoList.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return new CustomUserDetails(user); // CustomUserDetails 객체 반환
+        return new CustomUserDetails(user);
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(User user) {

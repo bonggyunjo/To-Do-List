@@ -12,7 +12,7 @@
           <li><router-link to="/">홈</router-link></li>
           <li><router-link to="/add-task">작업 추가</router-link></li>
           <li><router-link to="/task-list">작업 목록</router-link></li>
-          <li><router-link to="/task-list">자유 게시판</router-link></li>
+          <li><router-link to="/board">자유 게시판</router-link></li>
           <li><router-link to="/mypage">설정</router-link></li>
         </ul>
       </nav>

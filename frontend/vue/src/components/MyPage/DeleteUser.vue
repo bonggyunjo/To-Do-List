@@ -5,7 +5,7 @@
     <div class="content-line"></div>
 
     <span class="content-for-delete-ismain">
-        <span style="position: fixed; left:576px;"><span style="font-weight: bolder; font-size: 18px;">{{userNickname}}</span>님 <span class="bounce">계정을 삭제하시겠습니까 ?</span></span>
+        <div style="position: relative; left:-50px;"><span style="font-weight: bolder; font-size: 18px;">{{userNickname}}</span>님 <span class="bounce">계정을 삭제하시겠습니까 ?</span></div>
       <br>
       계정 삭제 시 모든 데이터는 즉시 삭제되며 복구할 수 없습니다.
       <br>
@@ -105,7 +105,7 @@ export default {
 
 #delete-user-button{
   position: relative;
-  top:270px;
+  top:240px;
   left:460px;
 }
 
