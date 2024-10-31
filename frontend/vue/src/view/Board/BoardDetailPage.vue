@@ -1,17 +1,24 @@
 <template>
   <div class="board-detail-page">
     <div class="post-container" v-if="post">
-      <h1 class="post-title">{{ post.title }}</h1>
+
+      <div class="post-header">
+        <span class="post-label">제목 :</span>
+        <h1 class="post-title">{{ post.title }}</h1>
+      </div>
+      <div style="border-bottom: 1px solid lightgray"></div>
       <div class="post-meta">
         <span class="post-author">작성자: {{ post.nickname }}</span>
         <span class="post-date">작성일: {{ formatDate(post.createdAt) }}</span>
       </div>
+      <div style="border-bottom: 1px solid lightgray; position: relative; top:5px;"></div>
       <div class="post-content">
+        <span class="post-label">내용</span>
         <p>{{ post.content }}</p>
       </div>
-      <router-link to="/board" class="back-button">목록으로 돌아가기</router-link>
     </div>
     <div v-else>로딩 중...</div>
+    <router-link to="/board"><button class="btn btn-secondary" style="font-size: 13.5px; width: 90px; height: 35px; position: relative; left:415px; top:280px;">뒤로가기</button></router-link>
   </div>
 </template>
 
@@ -21,25 +28,26 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      post: null, // 게시글 데이터를 저장할 변수
+      post: null,
     };
   },
   created() {
-    const postId = this.$route.params.postId; // URL에서 postId 가져오기
-    this.fetchPost(postId); // 게시글 데이터 가져오기
+    const postId = this.$route.params.postId;
+    this.fetchPost(postId);
   },
   methods: {
     async fetchPost(postId) {
       try {
         const response = await axios.get(`http://localhost:8081/boards/detail/${postId}`);
         this.post = response.data;
+        console.log(response);
       } catch (error) {
         console.error('게시글을 가져오는 데 오류가 발생했습니다:', error);
       }
     },
     formatDate(dateString) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString('ko-KR', options); // 날짜 포맷팅
+      return new Date(dateString).toLocaleDateString('ko-KR', options);
     },
   },
 };
@@ -47,40 +55,73 @@ export default {
 
 <style scoped>
 .board-detail-page {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 20px auto;
   padding: 20px;
-  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .post-container {
   padding: 20px;
 }
 
+.post-header {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 15px;
+  position: relative;
+  top:5px;
+}
+
+.post-label {
+  font-weight: bold;
+  margin-right: 5px;
+  font-size: 14.5px;
+  color: #333333;
+}
+
 .post-title {
   font-size: 28px;
   font-weight: bold;
-  margin-bottom: 10px;
   color: #333;
+  margin: 0;
+  flex: 1;
+  text-align: left;
+  position: relative;
+  top:4px;
 }
 
 .post-meta {
   font-size: 14px;
   color: #777;
   margin-bottom: 15px;
+  position: relative;
+  left:-308px;
+  top:10px;
 }
 
-.post-author,
+.post-author{
+  margin-right: 15px;
+}
 .post-date {
   margin-right: 15px;
+  position: relative;
+  left:630px;
+  top:-40px;
 }
 
 .post-content {
   font-size: 16px;
   line-height: 1.6;
   color: #444;
+  text-align: left;
+  position: relative;
+  top:25px;
+}
+
+.post-content .post-label {
+  font-weight: bold;
+  margin-top: 20px;
 }
 
 .back-button {

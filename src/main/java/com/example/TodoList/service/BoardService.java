@@ -60,8 +60,17 @@ public class BoardService {
         return null;
     }
 
-    public Board getBoardPostId(Long postId){
-        Optional<Board> detailBoard = boardRepository.findById(postId);
-        return detailBoard.orElse(null);
+    public BoardDto getBoardPostId(Long postId) {
+        Optional<Board> boardOptional = boardRepository.findById(postId);
+        return boardOptional.map(this::convertToDto).orElse(null);
+    }
+    private BoardDto convertToDto(Board board) {
+        BoardDto dto = new BoardDto();
+        dto.setPostId(board.getPostId());
+        dto.setTitle(board.getTitle());
+        dto.setContent(board.getContent());
+        dto.setNickname(board.getUser().getNickname());
+        dto.setCreatedAt(board.getCreatedAt());
+        return dto;
     }
 }

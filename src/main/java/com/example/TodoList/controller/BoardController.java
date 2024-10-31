@@ -42,10 +42,10 @@ public class BoardController {
     }
 
     @GetMapping("/boards/detail/{postId}")
-    public ResponseEntity<Board> getDetailBoard(@PathVariable Long postId) {
-        Board board = boardService.getBoardPostId(postId);
-        if (board != null) {
-            return ResponseEntity.ok(board);
+    public ResponseEntity<BoardDto> getDetailBoard(@PathVariable Long postId) {
+        BoardDto boarddto = boardService.getBoardPostId(postId);
+        if (boarddto != null) {
+            return ResponseEntity.ok(boarddto);
         } else {
             return ResponseEntity.notFound().build();
         }
