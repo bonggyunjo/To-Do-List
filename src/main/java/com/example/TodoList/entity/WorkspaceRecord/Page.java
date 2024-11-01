@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,4 +34,11 @@ public class Page {
     @JoinColumn(name = "parent_id")
     private Page parentPage;
 
+    @ManyToMany
+    @JoinTable(
+            name = "page_tags",
+            joinColumns = @JoinColumn(name = "page_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags;
 }
