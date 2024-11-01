@@ -1,5 +1,6 @@
 package com.example.TodoList.entity.WorkspaceRecord;
 
+import com.example.TodoList.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,4 +42,8 @@ public class Page {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private List<Tag> tags;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user; // 페이지 작성자
 }
