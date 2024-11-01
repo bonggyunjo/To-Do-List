@@ -1,4 +1,4 @@
-package com.example.TodoList.entity.WorkspaceRecord;
+package com.example.TodoList.entity.record;
 
 import jakarta.persistence.*;
 import lombok.*;
