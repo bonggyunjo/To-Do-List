@@ -45,5 +45,5 @@ public class Page {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // 페이지 작성자
+    private User user;
 }

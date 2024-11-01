@@ -1,5 +1,6 @@
 package com.example.TodoList.entity.WorkspaceRecord;
 
+import com.example.TodoList.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,7 @@ public class Block {
     private Long id;
 
     @Column(nullable = false)
-    private String type; // 블록 타입 (예: TEXT, IMAGE 등)
+    private String type;
 
     @Lob
     private String content;
@@ -26,5 +27,9 @@ public class Block {
     private Page page;
 
     @Column(nullable = false)
-    private int order; // 페이지 내에서의 순서
+    private int order;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
