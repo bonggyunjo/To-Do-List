@@ -1,11 +1,9 @@
-package com.example.TodoList.entity;
+package com.example.TodoList.entity.WorkspaceRecord;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.aspectj.apache.bcel.generic.Tag;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -34,5 +32,5 @@ public class Page {
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Page parentPage;
-    
+
 }
