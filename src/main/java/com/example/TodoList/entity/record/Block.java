@@ -1,6 +1,7 @@
 package com.example.TodoList.entity.record;
 
 import com.example.TodoList.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Block {
     private String content;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "page_id", nullable = false)
     private Page page;
 

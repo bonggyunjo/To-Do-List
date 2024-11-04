@@ -34,6 +34,9 @@ public class BlockService {
                 .user(user)
                 .build();
 
-        return blockRepository.save(block);
+        page.getBlocks().add(block);
+        pageRepository.save(page);
+
+        return blockRepository.save(block); // 블록을 저장
     }
 }
