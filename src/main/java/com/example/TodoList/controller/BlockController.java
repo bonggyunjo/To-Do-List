@@ -6,10 +6,7 @@ import com.example.TodoList.service.BlockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,17 @@ public class BlockController {
     public ResponseEntity<List<Block>> getBlockById(@PathVariable Long pageId) {
         List<Block> blocks = blockService.getBlocksByPageId(pageId);
         return ResponseEntity.ok(blocks);
+    }
+
+    @PutMapping("pages/blocks/{id}")
+    public ResponseEntity<Block> updateBlock(@PathVariable Long id, @RequestBody BlockDto blockDto) {
+        Block updatedBlock = blockService.updateBlock(id, blockDto.getTitle(), blockDto.getContent());
+        return ResponseEntity.ok(updatedBlock);
+    }
+
+    @DeleteMapping("/pages/blocks/{id}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
+        blockService.deleteBlock(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BlockService {
@@ -46,5 +47,26 @@ public class BlockService {
     public List<Block> getBlocksByPageId(Long pageId) {
         return blockRepository.findByPageId(pageId);
     }
+
+    public Block updateBlock(Long id, String title, String content) {
+        Block block = blockRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("블록을 찾을 수 없습니다."));
+
+        block.setTitle(title);
+        block.setContent(content);
+
+        return blockRepository.save(block);
+    }
+
+    public Block deleteBlock(Long id) {
+        Optional<Block> optionalBlock = blockRepository.findById(id);
+        if (optionalBlock.isPresent()) {
+            blockRepository.delete(optionalBlock.get());
+        } else {
+            throw new RuntimeException("블록 페이지를 찾을 수 없습니다.");
+        }
+        return null;
+    }
+
 }
 
