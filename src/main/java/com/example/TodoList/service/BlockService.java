@@ -9,6 +9,8 @@ import com.example.TodoList.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BlockService {
     @Autowired
@@ -38,6 +40,11 @@ public class BlockService {
         page.getBlocks().add(block);
         pageRepository.save(page);
 
-        return blockRepository.save(block); // 블록을 저장
+        return blockRepository.save(block);
+    }
+
+    public List<Block> getBlocksByPageId(Long pageId) {
+        return blockRepository.findByPageId(pageId);
     }
 }
+
