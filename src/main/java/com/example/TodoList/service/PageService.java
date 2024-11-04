@@ -1,5 +1,6 @@
 package com.example.TodoList.service;
 
+import com.example.TodoList.entity.Board;
 import com.example.TodoList.entity.User;
 import com.example.TodoList.entity.record.Page;
 import com.example.TodoList.repository.PageRepository;
@@ -37,9 +38,9 @@ public class PageService {
     }
 
     public Page updatePage(Long id, String title, String content) {
-        Optional<Page> optionalBoard = pageRepository.findById(id);
-        if (optionalBoard.isPresent()) {
-            Page page = optionalBoard.get();
+        Optional<Page> optionalPage = pageRepository.findById(id);
+        if (optionalPage.isPresent()) {
+            Page page = optionalPage.get();
             page.setTitle(title);
             page.setContent(content);
             return pageRepository.save(page);
@@ -47,4 +48,15 @@ public class PageService {
             throw new RuntimeException("페이지를 찾을 수 없습니다.");
         }
     }
+
+    public Page deletePage(Long id) {
+        Optional<Page> optionalPage = pageRepository.findById(id);
+        if (optionalPage.isPresent()) {
+            pageRepository.delete(optionalPage.get());
+        } else {
+            throw new RuntimeException("게시글을 찾을 수 없습니다.");
+        }
+        return null;
+    }
+
 }

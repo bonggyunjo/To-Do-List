@@ -31,10 +31,15 @@ public class PageController {
     }
 
     @PutMapping("/pages/{id}")
-    public ResponseEntity<Page> updateBoard(@PathVariable Long id, @RequestBody Page updatedPage) {
+    public ResponseEntity<Page> updatePage(@PathVariable Long id, @RequestBody Page updatedPage) {
         Page updatepage = pageService.updatePage(id, updatedPage.getTitle(), updatedPage.getContent());
         return ResponseEntity.ok(updatepage);
     }
-    
+
+    @DeleteMapping("/pages/{id}")
+    public ResponseEntity<Void> deletePage(@PathVariable Long id) {
+        pageService.deletePage(id);
+        return ResponseEntity.noContent().build();
+    }
 }
 
