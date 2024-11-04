@@ -20,7 +20,7 @@ public class BlockService {
     @Autowired
     UserRepository userRepository;
 
-    public Block createBlock(String type, String content, Long pageId, String userId) {
+    public Block createBlock(String type, String title, String content, Long pageId, String userId) {
         Page page = pageRepository.findById(pageId)
                 .orElseThrow(() -> new RuntimeException("페이지를 찾을 수 없습니다."));
         User user = userRepository.findByUserId(userId)
@@ -28,6 +28,7 @@ public class BlockService {
 
         Block block = Block.builder()
                 .type(type)
+                .title(title)
                 .content(content)
                 .page(page)
                 .order(0)

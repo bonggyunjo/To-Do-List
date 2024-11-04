@@ -17,6 +17,8 @@ public class Block {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String title;
+
     @Column(nullable = false)
     private String type;
 

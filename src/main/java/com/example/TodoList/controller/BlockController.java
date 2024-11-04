@@ -16,7 +16,7 @@ public class BlockController {
 
     @PostMapping("/pages/block/create")
     public ResponseEntity<Block> createBlock(@RequestBody BlockDto blockDto) {
-        Block newBlock = blockService.createBlock(blockDto.getType(), blockDto.getContent(), blockDto.getId(), blockDto.getUserId());
+        Block newBlock = blockService.createBlock(blockDto.getType(), blockDto.getTitle(), blockDto.getContent(), blockDto.getId(), blockDto.getUserId());
         return ResponseEntity.ok(newBlock);
     }
 }

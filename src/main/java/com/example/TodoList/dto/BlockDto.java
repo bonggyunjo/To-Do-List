@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BlockDto {
     private String type;
+    private String title;
     private String content;
     private Long id;
     private String userId;
