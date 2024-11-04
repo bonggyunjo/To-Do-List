@@ -26,7 +26,7 @@ public class Block {
     @JoinColumn(name = "page_id", nullable = false)
     private Page page;
 
-    @Column(nullable = false)
+    @Column(name="block_order", nullable = false)
     private int order;
 
     @ManyToOne
