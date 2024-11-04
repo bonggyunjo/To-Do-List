@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -35,4 +36,15 @@ public class PageService {
         return pageRepository.save(page);
     }
 
+    public Page updatePage(Long id, String title, String content) {
+        Optional<Page> optionalBoard = pageRepository.findById(id);
+        if (optionalBoard.isPresent()) {
+            Page page = optionalBoard.get();
+            page.setTitle(title);
+            page.setContent(content);
+            return pageRepository.save(page);
+        } else {
+            throw new RuntimeException("페이지를 찾을 수 없습니다.");
+        }
+    }
 }

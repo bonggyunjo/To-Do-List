@@ -1,17 +1,15 @@
 package com.example.TodoList.controller;
 
-import com.example.TodoList.dto.BoardDto;
+
 import com.example.TodoList.dto.PageDto;
+import com.example.TodoList.entity.Board;
 import com.example.TodoList.entity.record.Page;
 import com.example.TodoList.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +30,11 @@ public class PageController {
         return new ResponseEntity<>(pages, HttpStatus.OK);
     }
 
+    @PutMapping("/pages/{id}")
+    public ResponseEntity<Page> updateBoard(@PathVariable Long id, @RequestBody Page updatedPage) {
+        Page updatepage = pageService.updatePage(id, updatedPage.getTitle(), updatedPage.getContent());
+        return ResponseEntity.ok(updatepage);
+    }
+    
 }
 
