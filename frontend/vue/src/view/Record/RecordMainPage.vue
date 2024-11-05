@@ -9,15 +9,27 @@
     />
     <div class="content-area">
       <div class="header">
-        <h1 class="page-title">{{ selectedPage.title }}</h1>
+        <input
+            type="text"
+            v-model="selectedPage.title"
+            class="page-title-input"
+            @input="updatePageTitle"
+            placeholder="제목을 입력하세요"
+            maxlength="10"
+        />
         <div class="time-shared">
           <span class="time">{{ formatTime(selectedPage.createdDate) }}</span>
-          <button class="share-button" @click="shareLink">공유하기</button>
+          <button class="share-button" @click="shareLink">공유</button>
           <button class="delete-button" @click="deletebt">삭제</button>
         </div>
       </div>
       <div style="border-bottom: 1px solid lightgray; position:relative; top:-6px;"></div>
-      <p class="card-content">{{ selectedPage.content }}</p>
+      <textarea
+          v-model="selectedPage.content"
+          class="card-content"
+          @input="updatePageContent"
+          placeholder="내용을 입력하세요"
+      ></textarea>
       <div class="blocks-container">
         <div v-for="block in selectedPage.blocks" :key="block.id" class="block" @click="goToBlockDetail(block.id)">
           <h3 class="block-title">{{ block.title || '제목 없음' }}</h3>
@@ -78,7 +90,7 @@ export default {
         const response = await axios.get(`http://localhost:8081/pages/${this.getUserId}`);
         this.pages = response.data;
         if (this.pages.length > 0) {
-          this.selectedPage = this.pages[0];
+          this.selectedPage = { ...this.pages[0], content: this.pages[0].content || '', title: this.pages[0].title || '' };
           await this.fetchBlocks(this.selectedPage.id);
         }
       } catch (error) {
@@ -101,7 +113,7 @@ export default {
       this.$router.push({ name: 'BlockDetail', params: { id: blockId } });
     },
     formatTime(date) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      const options = { year: 'numeric', month: 'long', day: 'numeric'};
       return new Date(date).toLocaleString(undefined, options);
     },
     shareLink() {
@@ -126,6 +138,28 @@ export default {
       } catch (error) {
         console.error('새 페이지 생성 중 오류 발생:', error);
       }
+    },
+    async updatePageTitle() {
+      try {
+        await axios.put(`http://localhost:8081/pages/${this.selectedPage.id}`, { title: this.selectedPage.title });
+        console.log('제목 업데이트 성공');
+      } catch (error) {
+        console.error('제목 업데이트 중 오류 발생:', error.response.data);
+      }
+    },
+    async updatePageContent() {
+      try {
+        console.log('업데이트할 제목:', this.selectedPage.title);
+        const payload = {
+          title: this.selectedPage.title,
+          content: this.selectedPage.content,
+          userId: this.getUserId
+        };
+        await axios.put(`http://localhost:8081/pages/${this.selectedPage.id}`, payload);
+        console.log('내용 업데이트 성공');
+      } catch (error) {
+        console.error('내용 업데이트 중 오류 발생:', error.response.data);
+      }
     }
   }
 };
@@ -148,15 +182,16 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
-  top:30px;
+  top: 30px;
 }
 
-.page-title {
+.page-title-input {
   font-size: 24px;
   color: #333;
   margin-bottom: 20px;
-  position: relative;
-  left:6px;
+  border: none;
+  outline: none;
+  background-color: #f9f9f9;
 }
 
 .card-content {
@@ -164,8 +199,9 @@ export default {
   color: #666;
   margin-bottom: 15px;
   text-align: left;
-  position: relative;
-  left:10px;
+  background-color: #f9f9f9;
+  border: none;
+  outline: none;
 }
 
 .time {
@@ -186,7 +222,7 @@ export default {
 
 .share-button {
   padding: 5px 10px;
-  font-size: 15.5px;
+  font-size: 13.5px;
   color: #333333;
   border: none;
   border-radius: 5px;
@@ -195,19 +231,21 @@ export default {
   background-color: #f9f9f9;
   text-decoration: underline;
   position: relative;
+  left: 10px;
 }
-.delete-button{
+
+.delete-button {
   padding: 5px 10px;
-  font-size: 15.5px;
+  font-size: 13.5px;
   color: #333333;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
   background-color: #f9f9f9;
-  text-decoration: underline;
   position: relative;
 }
+
 .blocks-container {
   display: flex;
   flex-direction: column;
