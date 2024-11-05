@@ -1,27 +1,22 @@
 <template>
   <div class="container">
-    <div class="sidebar">
-      <h2 class="sidebar-title">내 페이지</h2>
-      <ul class="page-list">
-        <li v-for="(pageItem, index) in pages" :key="index" @click="selectPage(index)" class="page-item">
-          <div class="page-item-content">
-            {{ pageItem.title }}
-            <span class="time">{{ formatTime(pageItem.createdDate) }}</span>
-          </div>
-        </li>
-      </ul>
-    </div>
+    <Sidebar
+        :pages="pages"
+        :selectPage="selectPage"
+        :formatTime="formatTime"
+        :goToMainPage="goToMainPage"
+        @create-page="handleCreatePage"
+    />
     <div class="content-area">
       <div class="header">
         <h1 class="page-title">{{ selectedPage.title }}</h1>
         <div class="time-shared">
           <span class="time">{{ formatTime(selectedPage.createdDate) }}</span>
-          <button class="share-button" @click="shareLink">링크 공유</button>
+          <button class="share-button" @click="shareLink">공유하기</button>
         </div>
       </div>
       <p class="card-content">{{ selectedPage.content }}</p>
       <div class="blocks-container">
-        <h2 class="blocks-title">블록 목록</h2>
         <div v-for="block in selectedPage.blocks" :key="block.id" class="block" @click="goToBlockDetail(block.id)">
           <h3 class="block-title">{{ block.title || '제목 없음' }}</h3>
         </div>
@@ -33,9 +28,13 @@
 <script>
 import axios from 'axios';
 import { mapGetters } from 'vuex';
+import Sidebar from '@/components/Record/SideBar.vue';
 
 export default {
   name: 'MainPage-Record',
+  components: {
+    Sidebar
+  },
   data() {
     return {
       pages: [],
@@ -49,6 +48,9 @@ export default {
     this.fetchPageData();
   },
   methods: {
+    goToMainPage() {
+      this.$router.push(`/pages/${this.userId}`);
+    },
     async fetchPageData() {
       try {
         const response = await axios.get(`http://localhost:8081/pages/${this.getUserId}`);
@@ -57,7 +59,6 @@ export default {
           this.selectedPage = this.pages[0];
           await this.fetchBlocks(this.selectedPage.id);
         }
-        console.log("res", response);
       } catch (error) {
         console.error('페이지 데이터를 가져오는 데 실패했습니다:', error);
       }
@@ -66,7 +67,6 @@ export default {
       try {
         const response = await axios.get(`http://localhost:8081/pages/blocks/${pageId}`);
         this.selectedPage.blocks = response.data;
-        console.log("res1", response);
       } catch (error) {
         console.error('블록 데이터를 가져오는 데 실패했습니다:', error);
       }
@@ -76,7 +76,7 @@ export default {
       this.fetchBlocks(this.selectedPage.id);
     },
     goToBlockDetail(blockId) {
-      this.$router.push({ name: 'BlockDetail', params: { id: blockId } }); // 블록 상세 페이지로 이동
+      this.$router.push({ name: 'BlockDetail', params: { id: blockId } });
     },
     formatTime(date) {
       const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -89,11 +89,28 @@ export default {
       }).catch(err => {
         console.error('링크 복사 실패:', err);
       });
+    },
+    async handleCreatePage() {
+      const newPage = {
+        title: '새 페이지',
+        content: '새 페이지 내용',
+        createdDate: new Date().toISOString(),
+        userId: this.getUserId 
+      };
+      try {
+        const response = await axios.post(`http://localhost:8081/pages/create`, newPage);
+        this.pages.push(response.data); // 새 페이지를 목록에 추가
+        this.selectPage(this.pages.length - 1); // 새로 생성한 페이지를 선택
+      } catch (error) {
+        console.error('새 페이지 생성 중 오류 발생:', error);
+      }
     }
   }
 };
 </script>
+
 <style scoped>
+/* 기존 스타일 유지 */
 .container {
   display: flex;
   max-width: 100%;
@@ -105,12 +122,6 @@ export default {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar {
-  flex: 0 0 20%;
-  border-right: 1px solid #e7e7e7;
-  padding-right: 20px;
-}
-
 .content-area {
   flex: 1;
   padding-left: 20px;
@@ -119,49 +130,16 @@ export default {
 }
 
 .page-title {
-  font-size: 28px;
+  font-size: 24px;
   color: #333;
   margin-bottom: 20px;
 }
 
 .card-content {
-  font-size: 16px;
+  font-size: 14px;
   color: #666;
   margin-bottom: 15px;
   text-align: left;
-}
-
-.sidebar {
-  flex: 0 0 20%;
-  border-right: 1px solid #e7e7e7;
-  padding-right: 20px;
-}
-
-.sidebar-title {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.page-list {
-  list-style: none;
-  padding: 0;
-}
-
-.page-item {
-  cursor: pointer;
-  padding: 10px;
-  transition: background-color 0.3s;
-}
-
-.page-item:hover {
-  background-color: #f0f0f0;
-}
-
-.page-item-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .time {
@@ -169,23 +147,10 @@ export default {
   color: #999;
 }
 
-.content-area {
-  flex: 1;
-  padding-left: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.page-title {
-  font-size: 28px;
-  color: #333;
-  margin-bottom: 20px;
 }
 
 .time-shared {
@@ -195,24 +160,15 @@ export default {
 
 .share-button {
   padding: 5px 10px;
-  font-size: 14px;
-  color: white;
-  background-color: #28a745;
+  font-size: 15.5px;
+  color: #333333;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-}
-
-.share-button:hover {
-  background-color: #218838;
-}
-
-.card-content {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 15px;
-  text-align: left;
+  background-color: #f9f9f9;
+  text-decoration: underline;
+  position: relative;
 }
 
 .blocks-container {
@@ -220,20 +176,17 @@ export default {
   flex-direction: column;
 }
 
-.blocks-title {
-  font-size: 24px;
-  margin-bottom: 10px;
-  color: #333;
-}
-
 .block {
   padding: 10px;
-  border: 1px solid #e7e7e7;
   border-radius: 5px;
   margin-bottom: 10px;
 }
 
 .block-title {
   font-weight: bold;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 16px;
 }
 </style>
