@@ -24,6 +24,7 @@ public class PageService {
         return pageRepository.findByUser_UserId(userId); // 수정한 메서드 사용
     }
 
+
     public Page createPage(String title, String content, String userId){
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));

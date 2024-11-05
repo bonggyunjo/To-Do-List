@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class BlockController {
@@ -22,10 +23,17 @@ public class BlockController {
     }
 
     @GetMapping("/pages/blocks/{pageId}")
-    public ResponseEntity<List<Block>> getBlockById(@PathVariable Long pageId) {
+    public ResponseEntity<List<Block>> getBlockByPageId(@PathVariable Long pageId) {
         List<Block> blocks = blockService.getBlocksByPageId(pageId);
         return ResponseEntity.ok(blocks);
     }
+
+    @GetMapping("/pages/block/{blockId}")
+    public ResponseEntity<Optional<Block>> getBlockById(@PathVariable Long blockId) {
+        Optional<Block> block = blockService.getBlocksById(blockId);
+        return ResponseEntity.ok(block);
+    }
+
 
     @PutMapping("pages/blocks/{id}")
     public ResponseEntity<Block> updateBlock(@PathVariable Long id, @RequestBody BlockDto blockDto) {

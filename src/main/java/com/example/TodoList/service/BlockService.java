@@ -48,6 +48,10 @@ public class BlockService {
         return blockRepository.findByPageId(pageId);
     }
 
+    public Optional<Block> getBlocksById(Long blockId) {
+        return blockRepository.findById(blockId);
+    }
+
     public Block updateBlock(Long id, String title, String content) {
         Block block = blockRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("블록을 찾을 수 없습니다."));

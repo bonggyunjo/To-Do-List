@@ -1,5 +1,5 @@
 <template>
-  <div id="record-mainpage" class="main-container">
+  <div class="container">
     <div class="sidebar">
       <h2 class="sidebar-title">내 페이지</h2>
       <ul class="page-list">
@@ -21,7 +21,10 @@
       </div>
       <p class="card-content">{{ selectedPage.content }}</p>
       <div class="blocks-container">
-        <Block v-for="block in selectedPage.blocks" :key="block.id" :block="block" />
+        <h2 class="blocks-title">블록 목록</h2>
+        <div v-for="block in selectedPage.blocks" :key="block.id" class="block" @click="goToBlockDetail(block.id)">
+          <h3 class="block-title">{{ block.title || '제목 없음' }}</h3>
+        </div>
       </div>
     </div>
   </div>
@@ -52,14 +55,28 @@ export default {
         this.pages = response.data;
         if (this.pages.length > 0) {
           this.selectedPage = this.pages[0];
+          await this.fetchBlocks(this.selectedPage.id);
         }
         console.log("res", response);
       } catch (error) {
         console.error('페이지 데이터를 가져오는 데 실패했습니다:', error);
       }
     },
+    async fetchBlocks(pageId) {
+      try {
+        const response = await axios.get(`http://localhost:8081/pages/blocks/${pageId}`);
+        this.selectedPage.blocks = response.data;
+        console.log("res1", response);
+      } catch (error) {
+        console.error('블록 데이터를 가져오는 데 실패했습니다:', error);
+      }
+    },
     selectPage(index) {
       this.selectedPage = this.pages[index];
+      this.fetchBlocks(this.selectedPage.id);
+    },
+    goToBlockDetail(blockId) {
+      this.$router.push({ name: 'BlockDetail', params: { id: blockId } }); // 블록 상세 페이지로 이동
     },
     formatTime(date) {
       const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
@@ -76,9 +93,8 @@ export default {
   }
 };
 </script>
-
 <style scoped>
-.main-container {
+.container {
   display: flex;
   max-width: 100%;
   height: 100vh;
@@ -87,6 +103,32 @@ export default {
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+  flex: 0 0 20%;
+  border-right: 1px solid #e7e7e7;
+  padding-right: 20px;
+}
+
+.content-area {
+  flex: 1;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-title {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.card-content {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 15px;
+  text-align: left;
 }
 
 .sidebar {
@@ -176,5 +218,22 @@ export default {
 .blocks-container {
   display: flex;
   flex-direction: column;
+}
+
+.blocks-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.block {
+  padding: 10px;
+  border: 1px solid #e7e7e7;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.block-title {
+  font-weight: bold;
 }
 </style>
