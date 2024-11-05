@@ -28,7 +28,7 @@ public class PageController {
     public ResponseEntity<Page> createPage(@RequestBody PageDto pagedto) {
         String userId = pagedto.getUserId();
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found")); // 사용자가 없으면 예외 발생
+                .orElseThrow(() -> new RuntimeException("User not found"));
         Page newPage = pageService.createPage(pagedto.getTitle(), pagedto.getContent(), pagedto.getUserId());
         return ResponseEntity.ok(newPage);
     }

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AppHeader v-if="!$route.meta.hideHeader"></AppHeader> <!-- Header를 AppHeader로 변경 -->
+    <AppHeader v-if="!$route.meta.hideHeader"></AppHeader>
     <router-view/>
     <Footer v-if="!$route.meta.hideFooter"></Footer>
   </div>

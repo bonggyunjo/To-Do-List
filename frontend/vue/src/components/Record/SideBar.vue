@@ -1,7 +1,9 @@
 <template>
   <div class="sidebar">
-    <h2 class="sidebar-title" @click="goToMainPage">개인 페이지</h2>
-    <button class="create-page-button" @click="createPage">새 페이지 만들기</button>
+    <div class="sidebar-header">
+      <h2 class="sidebar-title" @click="goToMainPage">개인 페이지</h2>
+      <img src="@/assets/records/write.png" width="20" height="25" class="write-button" @click="createPage"/>
+    </div>
     <ul class="page-list">
       <li v-for="(pageItem, index) in pages" :key="index" @click="selectPage(index)" class="page-item">
         <div class="page-item-content">
@@ -43,39 +45,35 @@ export default {
 </script>
 
 <style scoped>
-/* 기존 스타일 유지 */
 .sidebar {
   flex: 0 0 18%;
   border-right: 1px solid #e7e7e7;
   padding-right: 20px;
   position: relative;
-  top:50px;
+  top: 50px;
+}
+
+.sidebar-header {
+  display: flex; /* Flexbox 사용 */
+  justify-content: space-between; /* 공간을 균등하게 분배 */
+  align-items: center; /* 수직 중앙 정렬 */
+  margin-bottom: 15px; /* 제목과 페이지 리스트 간의 간격 */
 }
 
 .sidebar-title {
   font-size: 16px;
   color: #333;
-  margin-bottom: 15px;
   cursor: pointer;
-  position: absolute;
-  top:-50px;
-  left:10px;
   font-weight: bolder;
+  position: relative;
+  top:-30px;
 }
 
-.create-page-button {
-  margin-bottom: 15px; /* 버튼과 리스트 간의 간격 조정 */
-  padding: 8px 12px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
+.write-button {
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.create-page-button:hover {
-  background-color: #218838; /* 버튼 호버 시 색상 변경 */
+  margin-left: 10px; /* 아이콘과 제목 간의 간격 */
+  position: relative;
+  top:-30px
 }
 
 .page-list {

@@ -13,8 +13,10 @@
         <div class="time-shared">
           <span class="time">{{ formatTime(selectedPage.createdDate) }}</span>
           <button class="share-button" @click="shareLink">공유하기</button>
+          <button class="delete-button" @click="deletebt">삭제</button>
         </div>
       </div>
+      <div style="border-bottom: 1px solid lightgray; position:relative; top:-6px;"></div>
       <p class="card-content">{{ selectedPage.content }}</p>
       <div class="blocks-container">
         <div v-for="block in selectedPage.blocks" :key="block.id" class="block" @click="goToBlockDetail(block.id)">
@@ -48,6 +50,26 @@ export default {
     this.fetchPageData();
   },
   methods: {
+    async deletebt() {
+      try {
+        console.log("페이지 id:", this.selectedPage.id);
+        const userConfirmed = confirm("삭제하시겠습니까?");
+        if (!userConfirmed) {
+          return;
+        }
+        await axios.delete(`http://localhost:8081/pages/${this.selectedPage.id}`);
+        this.pages = this.pages.filter(page => page.id !== this.selectedPage.id);
+        if (this.pages.length > 0) {
+          this.selectedPage = this.pages[0];
+        } else {
+          this.selectedPage = {};
+        }
+
+        console.log("삭제 성공");
+      } catch (error) {
+        console.error('페이지 삭제 중 오류 발생:', error.response.data);
+      }
+    },
     goToMainPage() {
       this.$router.push(`/pages/${this.userId}`);
     },
@@ -95,12 +117,12 @@ export default {
         title: '새 페이지',
         content: '새 페이지 내용',
         createdDate: new Date().toISOString(),
-        userId: this.getUserId 
+        userId: this.getUserId
       };
       try {
         const response = await axios.post(`http://localhost:8081/pages/create`, newPage);
-        this.pages.push(response.data); // 새 페이지를 목록에 추가
-        this.selectPage(this.pages.length - 1); // 새로 생성한 페이지를 선택
+        this.pages.push(response.data);
+        this.selectPage(this.pages.length - 1);
       } catch (error) {
         console.error('새 페이지 생성 중 오류 발생:', error);
       }
@@ -110,13 +132,11 @@ export default {
 </script>
 
 <style scoped>
-/* 기존 스타일 유지 */
 .container {
   display: flex;
   max-width: 100%;
   height: 100vh;
   margin: 0;
-  padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -127,12 +147,16 @@ export default {
   padding-left: 20px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  top:30px;
 }
 
 .page-title {
   font-size: 24px;
   color: #333;
   margin-bottom: 20px;
+  position: relative;
+  left:6px;
 }
 
 .card-content {
@@ -140,6 +164,8 @@ export default {
   color: #666;
   margin-bottom: 15px;
   text-align: left;
+  position: relative;
+  left:10px;
 }
 
 .time {
@@ -170,7 +196,18 @@ export default {
   text-decoration: underline;
   position: relative;
 }
-
+.delete-button{
+  padding: 5px 10px;
+  font-size: 15.5px;
+  color: #333333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background-color: #f9f9f9;
+  text-decoration: underline;
+  position: relative;
+}
 .blocks-container {
   display: flex;
   flex-direction: column;
