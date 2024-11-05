@@ -1,4 +1,4 @@
-package com.example.TodoList.controller;
+package com.example.TodoList.controller.records;
 
 
 import com.example.TodoList.dto.PageDto;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 @Controller
 public class PageController {
     @Autowired
@@ -24,10 +25,9 @@ public class PageController {
         return ResponseEntity.ok(newPage);
     }
 
-    @GetMapping("/pages")
-    public ResponseEntity<List<Page>> getPages() {
-        List<Page> pages = pageService.getAllPages();
-        return new ResponseEntity<>(pages, HttpStatus.OK);
+    @GetMapping("/pages/{userId}")
+    public List<Page> getPagesByUserId(@PathVariable String userId) {
+        return pageService.findByUserId(userId);
     }
 
     @PutMapping("/pages/{id}")

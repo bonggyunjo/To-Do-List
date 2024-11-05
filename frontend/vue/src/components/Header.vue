@@ -11,7 +11,7 @@
         <ul>
           <li><router-link to="/">홈</router-link></li>
           <li><router-link to="/add-task">작업 추가</router-link></li>
-          <li><router-link to="/task-list">작업 목록</router-link></li>
+          <router-link :to="`/pages/${userId}`" class="task-list-button">작업 목록</router-link>
           <li><router-link to="/board">자유 게시판</router-link></li>
           <li><router-link to="/mypage">설정</router-link></li>
         </ul>
@@ -46,9 +46,11 @@ export default {
     };
   },
   computed: {
-    // 로그인 유무 확인
     isUserLogin() {
       return this.$store.getters.isLogin;
+    },
+    userId() {
+      return this.$store.getters.getUserId;
     }
   },
   methods: {
@@ -56,12 +58,12 @@ export default {
       this.loading = true;
       setTimeout(() => {
         this.$store.dispatch('logout'); // Vuex로 로그아웃 처리
-        localStorage.removeItem('token'); // 토큰 삭제
+        localStorage.removeItem('token');
 
         if (this.$route.path !== '/') {
           this.$router.push('/');
         }
-        this.loading = false; // 로딩 종료
+        this.loading = false;
       }, 1000);
     }
   }

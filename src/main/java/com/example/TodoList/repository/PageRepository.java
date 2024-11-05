@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface PageRepository extends JpaRepository<Page, Long > {
     List<Page> findAll();
+
+    List<Page> findByUser_UserId(String userId);
 }

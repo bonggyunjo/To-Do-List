@@ -1,4 +1,4 @@
-package com.example.TodoList.controller;
+package com.example.TodoList.controller.records;
 
 import com.example.TodoList.dto.BlockDto;
 import com.example.TodoList.entity.record.Block;

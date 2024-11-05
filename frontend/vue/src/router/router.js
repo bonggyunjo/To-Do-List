@@ -12,6 +12,7 @@ import Board from "@/view/Board/Board.vue";
 import BoardWrite from "@/view/Board/BoardWrite.vue";
 import BoardDetailPage from "@/view/Board/BoardDetailPage.vue";
 import EditBoardPage from "@/view/Board/EditBoard.vue";
+import MainPage from "@/view/Record/MainPage.vue";
 Vue.use(VueRouter)
 
 const routes = [
@@ -27,7 +28,8 @@ const routes = [
     { path: '/board' , component: Board, meta: { hideFooter: true,hideHeader: false}},
     { path: '/board/write' , component: BoardWrite, meta: { hideFooter: true,hideHeader: false}},
     { path: '/board/detail/:postId', component: BoardDetailPage, meta: { hideFooter: true,hideHeader: false}},
-    { path: '/board/edit/:postId', component: EditBoardPage, meta: { hideFooter: true,hideHeader: false}}
+    { path: '/board/edit/:postId', component: EditBoardPage, meta: { hideFooter: true,hideHeader: false}},
+    { path: '/pages/:userId', component: MainPage, meta: { hideFooter: true,hideHeader: true}}
 ]
 
 const router = new VueRouter({

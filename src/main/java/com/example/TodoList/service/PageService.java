@@ -20,8 +20,8 @@ public class PageService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<Page> getAllPages() {
-        return pageRepository.findAll();
+    public List<Page> findByUserId(String userId) {
+        return pageRepository.findByUser_UserId(userId); // 수정한 메서드 사용
     }
 
     public Page createPage(String title, String content, String userId){
