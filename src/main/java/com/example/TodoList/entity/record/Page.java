@@ -23,6 +23,7 @@ public class Page {
     private String title;
 
     @Lob
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String content;
 
     @Column(name = "created_date", nullable = false)

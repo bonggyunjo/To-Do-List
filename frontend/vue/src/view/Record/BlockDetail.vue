@@ -36,7 +36,7 @@ export default {
   computed: {
     ...mapGetters(['getUserId']),
     userId() {
-      return this.getUserId; 
+      return this.getUserId;
     },
   },
   created() {

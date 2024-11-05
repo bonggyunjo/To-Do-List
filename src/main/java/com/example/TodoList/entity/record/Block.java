@@ -23,6 +23,7 @@ public class Block {
     private String type;
 
     @Lob
+    @Column(columnDefinition = "MEDIUMTEXT") // MEDIUMTEXT로 명시적으로 설정
     private String content;
 
     @ManyToOne
