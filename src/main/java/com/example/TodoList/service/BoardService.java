@@ -18,8 +18,19 @@ public class BoardService {
     private BoardRepository boardRepository;
 
     @Transactional
-    public List<Board> getAllBoards() {
-        return boardRepository.findAll();
+    public List<BoardDto> getAllBoards() {
+        List<Board> boards = boardRepository.findAll();
+        return boards.stream()
+                .map(board -> BoardDto.builder()
+                        .postId(board.getPostId())
+                        .userId(board.getUser().getUserId())
+                        .nickname(board.getUser().getNickname())
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .createdAt(board.getCreatedAt())
+                        .updatedAt(board.getUpdatedAt())
+                        .build())
+                .collect(Collectors.toList());
     }
     public Board createBoard(Board board) {
         if (board.getTitle() == null || board.getContent() == null) {

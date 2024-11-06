@@ -18,8 +18,8 @@ public class BoardController {
 
 
     @GetMapping("/boards")
-    public ResponseEntity<List<Board>> getBoards() {
-        List<Board> boards = boardService.getAllBoards();
+    public ResponseEntity<List<BoardDto>> getBoards() {
+        List<BoardDto> boards = boardService.getAllBoards();
         return new ResponseEntity<>(boards, HttpStatus.OK);
     }
 
