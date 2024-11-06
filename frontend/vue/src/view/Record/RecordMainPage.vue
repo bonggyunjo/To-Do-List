@@ -25,10 +25,12 @@
       </div>
       <div style="border-bottom: 1px solid lightgray; position:relative; top:-6px;"></div>
       <textarea
+          ref="cardContent"
           v-model="selectedPage.content"
           class="card-content"
-          @input="updatePageContent"
+          @input="handleTextareaInput"
           placeholder="내용을 입력하세요"
+          style="overflow: hidden; resize: none;"
       ></textarea>
       <div class="blocks-container">
         <div v-for="block in selectedPage.blocks" :key="block.id" class="block" @click="goToBlockDetail(block.id)">
@@ -62,6 +64,15 @@ export default {
     this.fetchPageData();
   },
   methods: {
+    handleTextareaInput(event) {
+      this.updatePageContent();
+      this.adjustTextareaHeight(event);
+    },
+    adjustTextareaHeight(event) {
+      const textarea = event.target;
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    },
     async deletebt() {
       try {
         console.log("페이지 id:", this.selectedPage.id);
@@ -148,6 +159,7 @@ export default {
       }
     },
     async updatePageContent() {
+      this.adjustTextareaHeight({ target: this.$refs.cardContent });
       try {
         console.log('업데이트할 제목:', this.selectedPage.title);
         const payload = {
