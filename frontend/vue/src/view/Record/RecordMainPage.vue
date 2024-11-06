@@ -19,9 +19,9 @@
         />
         <div class="time-shared">
           <span class="time">{{ formatTime(selectedPage.createdDate) }}</span>
+          <button class="create-page-button" @click="createBlockPage">새 페이지</button>
           <button class="share-button" @click="shareLink">공유</button>
-
-
+          <button class="delete-button" @click="deletebt">삭제</button>
         </div>
       </div>
       <div style="border-bottom: 1px solid lightgray; position:relative; top:-6px;"></div>
@@ -77,19 +77,41 @@ export default {
       textarea.style.height = 'auto';
       textarea.style.height = `${textarea.scrollHeight}px`;
     },
-    async deleteBlock(blockId) {
+    async createBlockPage() {
+      const newBlock = {
+        title: '새 블록',
+        content: '블록 내용 입력',
+        userId: this.getUserId,
+        id: this.selectedPage.id,
+        type: 'text'
+      };
+
       try {
-        const userConfirmed = confirm("이 블록을 삭제하시겠습니까?");
+        const response = await axios.post(`http://localhost:8081/pages/block/create`, newBlock);
+        this.selectedPage.blocks.push(response.data);
+        console.log("블록 생성 성공:", response.data);
+      } catch (error) {
+        console.error('블록 생성 중 오류 발생:', error.response.data);
+      }
+    },
+    async deletebt() {
+      try {
+        console.log("페이지 id:", this.selectedPage.id);
+        const userConfirmed = confirm("삭제하시겠습니까?");
         if (!userConfirmed) {
           return;
         }
-        await axios.delete(`http://localhost:8081/pages/blocks/${blockId}`);
+        await axios.delete(`http://localhost:8081/pages/${this.selectedPage.id}`);
+        this.pages = this.pages.filter(page => page.id !== this.selectedPage.id);
+        if (this.pages.length > 0) {
+          this.selectedPage = this.pages[0];
+        } else {
+          this.selectedPage = {};
+        }
 
-        // 삭제 후, 블록 목록을 갱신합니다.
-        await this.fetchBlocks(this.selectedPage.id);
-        console.log("블록 삭제 성공");
+        console.log("삭제 성공");
       } catch (error) {
-        console.error('블록 삭제 중 오류 발생:', error.response.data);
+        console.error('페이지 삭제 중 오류 발생:', error.response.data);
       }
     },
     goToMainPage() {
@@ -230,7 +252,18 @@ export default {
   display: flex;
   align-items: center;
 }
-
+.create-page-button{
+  padding: 5px 10px;
+  font-size: 13.5px;
+  color: #333333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background-color: #f9f9f9;
+  position: relative;
+  left: 20px;
+}
 .share-button {
   padding: 5px 10px;
   font-size: 13.5px;
@@ -240,7 +273,6 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s;
   background-color: #f9f9f9;
-  text-decoration: underline;
   position: relative;
   left: 10px;
 }

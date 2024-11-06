@@ -46,7 +46,7 @@ export default {
 
 <style scoped>
 .sidebar {
-  flex: 0 0 18%;
+  flex: 0 0 16%;
   border-right: 1px solid #e7e7e7;
   padding-right: 20px;
   position: relative;
@@ -92,6 +92,7 @@ export default {
 }
 
 .page-item-content {
+  font-size: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
