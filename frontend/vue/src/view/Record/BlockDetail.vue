@@ -7,11 +7,12 @@
         :goToMainPage="goToMainPage"
     />
     <div class="content-area">
-      <div class="block-detail">
-        <h2>{{ block.title }}</h2>
-        <p>{{ block.content }}</p>
-        <button @click="goBack">뒤로가기</button>
+      <div class="header">
+        <span class="block-title">{{ block.title || '제목 없음' }}</span>
+        <button class="delete-button" @click="deletebt">삭제</button>
       </div>
+      <div style="border-bottom: 1px solid lightgray; position:relative; top:16px;"></div>
+      <p class="block-content">{{ block.content }}</p>
     </div>
   </div>
 </template>
@@ -44,6 +45,21 @@ export default {
     this.fetchBlockData();
   },
   methods: {
+    async deletebt() {
+      const blockId = this.block.id; // 현재 블록의 ID를 가져옵니다.
+      try {
+        const userConfirmed = confirm("이 블록을 삭제하시겠습니까?");
+        if (!userConfirmed) {
+          return;
+        }
+        await axios.delete(`http://localhost:8081/pages/blocks/${blockId}`);
+
+        console.log("블록 삭제 성공");
+        this.goBack(); // 삭제 후 이전 페이지로 돌아가기
+      } catch (error) {
+        console.error('블록 삭제 중 오류 발생:', error.response.data);
+      }
+    },
     async fetchPageData() {
       try {
         const response = await axios.get(`http://localhost:8081/pages/${this.userId}`);
@@ -73,11 +89,10 @@ export default {
     },
     selectPage(index) {
       this.selectedPage = this.pages[index];
-
       this.$router.push(`/pages/${this.userId}`);
     },
     formatTime(date) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(date).toLocaleString(undefined, options);
     }
   }
@@ -90,7 +105,6 @@ export default {
   max-width: 100%;
   height: 100vh;
   margin: 0;
-  padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -101,12 +115,34 @@ export default {
   padding-left: 20px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  top: 30px;
+  color: #333333;
+}
+.block-title {
+  font-size: 24px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.block-detail {
-  padding: 20px;
-  border: 1px solid #e7e7e7;
+.block-content {
+  font-size: 14px;
+  color: #666;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.delete-button {
+  padding: 5px 10px;
+  font-size: 13.5px;
+  color: #333333;
+  border: none;
   border-radius: 5px;
-  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background-color: #f9f9f9;
 }
 </style>

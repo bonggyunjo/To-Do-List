@@ -20,7 +20,8 @@
         <div class="time-shared">
           <span class="time">{{ formatTime(selectedPage.createdDate) }}</span>
           <button class="share-button" @click="shareLink">공유</button>
-          <button class="delete-button" @click="deletebt">삭제</button>
+
+
         </div>
       </div>
       <div style="border-bottom: 1px solid lightgray; position:relative; top:-6px;"></div>
@@ -57,6 +58,9 @@ export default {
       selectedPage: {}
     };
   },
+  mounted() {
+    this.adjustTextareaHeight({ target: this.$refs.cardContent });
+  },
   computed: {
     ...mapGetters(['getUserId']),
   },
@@ -73,24 +77,19 @@ export default {
       textarea.style.height = 'auto';
       textarea.style.height = `${textarea.scrollHeight}px`;
     },
-    async deletebt() {
+    async deleteBlock(blockId) {
       try {
-        console.log("페이지 id:", this.selectedPage.id);
-        const userConfirmed = confirm("삭제하시겠습니까?");
+        const userConfirmed = confirm("이 블록을 삭제하시겠습니까?");
         if (!userConfirmed) {
           return;
         }
-        await axios.delete(`http://localhost:8081/pages/${this.selectedPage.id}`);
-        this.pages = this.pages.filter(page => page.id !== this.selectedPage.id);
-        if (this.pages.length > 0) {
-          this.selectedPage = this.pages[0];
-        } else {
-          this.selectedPage = {};
-        }
+        await axios.delete(`http://localhost:8081/pages/blocks/${blockId}`);
 
-        console.log("삭제 성공");
+        // 삭제 후, 블록 목록을 갱신합니다.
+        await this.fetchBlocks(this.selectedPage.id);
+        console.log("블록 삭제 성공");
       } catch (error) {
-        console.error('페이지 삭제 중 오류 발생:', error.response.data);
+        console.error('블록 삭제 중 오류 발생:', error.response.data);
       }
     },
     goToMainPage() {
@@ -214,8 +213,8 @@ export default {
   background-color: #f9f9f9;
   border: none;
   outline: none;
+  min-height: 50px;
 }
-
 .time {
   font-size: 12px;
   color: #999;
