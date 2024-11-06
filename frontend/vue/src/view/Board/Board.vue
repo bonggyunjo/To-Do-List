@@ -68,6 +68,7 @@ export default {
       try {
         const response = await axios.get('http://localhost:8081/boards');
         this.posts = response.data.reverse();
+        console.log("res",response.data.nickname);
       } catch (error) {
         console.error('게시글을 가져오는 데 오류가 발생했습니다:', error);
       }

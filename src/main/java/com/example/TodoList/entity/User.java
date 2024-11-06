@@ -1,7 +1,6 @@
 package com.example.TodoList.entity;
 
 
-import com.example.TodoList.dto.UserInfoUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
 

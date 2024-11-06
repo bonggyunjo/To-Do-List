@@ -61,7 +61,6 @@ export default {
 
         this.$store.commit('clearUserData');
         localStorage.removeItem('token');
-
         alert('계정이 삭제되었습니다.');
         this.$router.push('/');
       } catch (error) {
