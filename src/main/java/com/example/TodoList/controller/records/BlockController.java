@@ -48,19 +48,19 @@ public class BlockController {
     }
 
 
-    @GetMapping("/pages/deleted")
+    @GetMapping("/pages/blocks/deleted")
     public ResponseEntity<List<Block>> getDeletedBlocks(){
         List<Block> deletedBlocks = blockService.getDeletedBlock();
         return ResponseEntity.ok(deletedBlocks);
     }
 
-    @PatchMapping("/pages/{id}/restore")
+    @PatchMapping("/pages/blocks/{id}/restore")
     public ResponseEntity<Block> restoreBlock(@PathVariable Long id) {
         Block restoredBlock = blockService.restoreBlock(id);
         return ResponseEntity.ok(restoredBlock);
     }
 
-    @DeleteMapping("/pages/{id}/permanent")
+    @DeleteMapping("/pages/blocks/{id}/permanent")
     public ResponseEntity<Void> permanentDeleteBlock(@PathVariable Long id) {
         blockService.permanentDeleteBlock(id);
         return ResponseEntity.noContent().build();

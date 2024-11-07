@@ -2,6 +2,7 @@ package com.example.TodoList.service;
 
 import com.example.TodoList.entity.Board;
 import com.example.TodoList.entity.User;
+import com.example.TodoList.entity.record.Block;
 import com.example.TodoList.entity.record.Page;
 import com.example.TodoList.repository.PageRepository;
 import com.example.TodoList.repository.UserRepository;
@@ -50,14 +51,38 @@ public class PageService {
         }
     }
 
-    public Page deletePage(Long id) {
+    public Page moveToTrash(Long id) {
+        Page page = pageRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("페이지를 찾을 수 없습니다."));
+        page.setDeleted(true);
+        return pageRepository.save(page);
+    }
+
+    public List<Page> getDeletedPage(){
+        return pageRepository.findByDeleted(true);
+    }
+
+    public Page restorePage(Long id) {
+        Optional<Page> optionalPage = pageRepository.findById(id);
+        if (optionalPage.isPresent()) {
+            Page page = optionalPage.get();
+            if (page.isDeleted()) {
+                page.setDeleted(false);
+                return pageRepository.save(page);
+            } else {
+                throw new RuntimeException("페이지가 복원되었습니다.");
+            }
+        } else {
+            throw new RuntimeException("페이지를 찾을 수 없습니다.");
+        }
+    }
+
+    public void permanentDeletePage(Long id) {
         Optional<Page> optionalPage = pageRepository.findById(id);
         if (optionalPage.isPresent()) {
             pageRepository.delete(optionalPage.get());
         } else {
-            throw new RuntimeException("게시글을 찾을 수 없습니다.");
+            throw new RuntimeException("블록 페이지를 찾을 수 없습니다.");
         }
-        return null;
     }
-
 }

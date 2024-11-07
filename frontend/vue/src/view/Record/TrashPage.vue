@@ -32,7 +32,7 @@ export default {
   methods: {
     async fetchDeletedPages() {
       try {
-        const response = await axios.get(`http://localhost:8081/pages/deleted`);
+        const response = await axios.get(`http://localhost:8081/pages/blocks/deleted`);
         this.deletedPages = response.data;
       } catch (error) {
         console.error('삭제된 페이지 데이터를 가져오는 데 실패했습니다:', error);
@@ -40,7 +40,7 @@ export default {
     },
     async restorePage(pageId) {
       try {
-        await axios.patch(`http://localhost:8081/pages/${pageId}/restore`);
+        await axios.patch(`http://localhost:8081/pages/blocks/${pageId}/restore`);
         this.deletedPages = this.deletedPages.filter(page => page.id !== pageId);
         console.log('페이지 복원 성공');
       } catch (error) {
@@ -49,7 +49,7 @@ export default {
     },
     async permanentDeletePage(pageId) {
       try {
-        await axios.delete(`http://localhost:8081/pages/${pageId}/permanent`);
+        await axios.delete(`http://localhost:8081/pages/blocks/${pageId}/permanent`);
         this.deletedPages = this.deletedPages.filter(page => page.id !== pageId);
         console.log('페이지 완전 삭제 성공');
       } catch (error) {

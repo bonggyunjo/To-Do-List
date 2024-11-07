@@ -4,6 +4,7 @@ package com.example.TodoList.controller.records;
 import com.example.TodoList.dto.PageDto;
 import com.example.TodoList.entity.Board;
 import com.example.TodoList.entity.User;
+import com.example.TodoList.entity.record.Block;
 import com.example.TodoList.entity.record.Page;
 import com.example.TodoList.repository.UserRepository;
 import com.example.TodoList.service.PageService;
@@ -44,9 +45,29 @@ public class PageController {
         return ResponseEntity.ok(updatepage);
     }
 
-    @DeleteMapping("/pages/{id}")
-    public ResponseEntity<Void> deletePage(@PathVariable Long id) {
-        pageService.deletePage(id);
+
+    @PatchMapping("/pages/{id}/delete")
+    public ResponseEntity<Page> moveToTrash(@PathVariable Long id) {
+        Page page = pageService.moveToTrash(id);
+        return  ResponseEntity.ok(page);
+    }
+
+
+    @GetMapping("/pages/deleted")
+    public ResponseEntity<List<Page>> getDeletedPages(){
+        List<Page> deletedPages = pageService.getDeletedPage();
+        return ResponseEntity.ok(deletedPages);
+    }
+
+    @PatchMapping("/pages/{id}/restore")
+    public ResponseEntity<Page> restorePage(@PathVariable Long id) {
+        Page restoredPage = pageService.restorePage(id);
+        return ResponseEntity.ok(restoredPage);
+    }
+
+    @DeleteMapping("/pages/{id}/permanent")
+    public ResponseEntity<Void> permanentDeletePage(@PathVariable Long id) {
+        pageService.permanentDeletePage(id);
         return ResponseEntity.noContent().build();
     }
 }
