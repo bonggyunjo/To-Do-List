@@ -55,6 +55,7 @@ public class PageService {
         Page page = pageRepository.findById(id)
                         .orElseThrow(() -> new RuntimeException("페이지를 찾을 수 없습니다."));
         page.setDeleted(true);
+        pageRepository.save(page);
         return pageRepository.save(page);
     }
 

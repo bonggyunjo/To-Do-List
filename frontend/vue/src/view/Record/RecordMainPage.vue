@@ -34,7 +34,7 @@
           style="overflow: hidden; resize: none;"
       ></textarea>
       <div class="blocks-container"  >
-        <div v-for="block in selectedPage.blocks" :key="block.id" class="block" @click="goToBlockDetail(block.id)">
+        <div v-for="block in selectedPage.blocks" :key="block.id" class="block" @click="goToBlockDetail(block.id)" >
           <h3 class="block-title">{{ block.title || '제목 없음' }}</h3>
         </div>
       </div>
@@ -95,17 +95,23 @@ export default {
       }
     },
     async deletebt() {
+      const id = this.selectedPage.id;
       try {
         console.log("페이지 id:", this.selectedPage.id);
         const userConfirmed = confirm("삭제하시겠습니까?");
         if (!userConfirmed) {
           return;
         }
-        this.deletedPages.push(this.selectedPage);
-        this.pages = this.pages.filter(page => page.id !== this.selectedPage.id);
-        this.goToTrash();
+        await axios.patch(`http://localhost:8081/pages/${id}/delete`);
+        console.log("페이지가 휴지통으로 이동했습니다.");
+
+
+        this.pages = this.pages.filter(selectedPage => selectedPage.id !== id);
+
+
         if (this.pages.length > 0) {
-          this.selectedPage = this.pages[0];
+          this.selectedPage = { ...this.pages[0] };
+          await this.fetchBlocks(this.selectedPage.id);
         } else {
           this.selectedPage = {};
         }
@@ -115,15 +121,13 @@ export default {
         console.error('페이지 삭제 중 오류 발생:', error.response.data);
       }
     },
-    goToTrash() {
-      this.$router.push({ name: 'TrashPage' });
-    },
+
     goToMainPage() {
       this.$router.push(`/pages/${this.userId}`);
     },
     async fetchPageData() {
       try {
-        const response = await axios.get(`http://localhost:8081/pages/${this.getUserId}`);
+        const response = await axios.get(`http://localhost:8081/pages/${this.getUserId}?deleted=false`); // deleted=false를 쿼리로 추가
         this.pages = response.data;
         if (this.pages.length > 0) {
           this.selectedPage = { ...this.pages[0], content: this.pages[0].content || '', title: this.pages[0].title || '' };

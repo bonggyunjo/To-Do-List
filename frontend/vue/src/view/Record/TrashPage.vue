@@ -37,6 +37,13 @@ export default {
       } catch (error) {
         console.error('삭제된 페이지 데이터를 가져오는 데 실패했습니다:', error);
       }
+      try {
+        const response = await axios.get(`http://localhost:8081/pages/deleted`);
+        this.deletedPages = response.data;
+      } catch (error) {
+        console.error('삭제된 페이지 데이터를 가져오는 데 실패했습니다:', error);
+      }
+
     },
     async restorePage(pageId) {
       try {
