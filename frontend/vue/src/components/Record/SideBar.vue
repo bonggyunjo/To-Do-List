@@ -2,9 +2,9 @@
   <div class="sidebar">
     <div class="sidebar-header">
       <h2 class="sidebar-title" @click="goToMainPage">개인 페이지</h2>
-      <router-link to="/trash" class="trash">      <img src="@/assets/records/trash.png" width="31" height="28" class="trash"/></router-link>
       <img src="@/assets/records/write.png" width="20" height="25" class="write-button" @click="createPage"/>
     </div>
+    <router-link to="/trash" class="trash"> <img src="@/assets/records/trash.png" width="31" height="28" class="trash"/></router-link>
     <ul class="page-list">
       <li v-for="(pageItem, index) in pages" :key="index" @click="selectPage(index)" class="page-item">
         <div class="page-item-content">
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     createPage() {
-      this.$emit('create-page'); // 부모 컴포넌트에 이벤트를 발행
+      this.$emit('create-page');
     }
   }
 };
@@ -55,10 +55,10 @@ export default {
 }
 
 .sidebar-header {
-  display: flex; /* Flexbox 사용 */
-  justify-content: space-between; /* 공간을 균등하게 분배 */
-  align-items: center; /* 수직 중앙 정렬 */
-  margin-bottom: 15px; /* 제목과 페이지 리스트 간의 간격 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .sidebar-title {
@@ -72,7 +72,7 @@ export default {
 
 .write-button {
   cursor: pointer;
-  margin-left: 10px; /* 아이콘과 제목 간의 간격 */
+  margin-left: 10px;
   position: relative;
   top:-32px;
 }
@@ -107,8 +107,8 @@ export default {
   text-decoration: none;
   color: #333333;
   font-size: 15px;
+  top:-17px;
   position: relative;
-  top:-18px;
-  left:30px;
+  left:23%;
 }
 </style>
