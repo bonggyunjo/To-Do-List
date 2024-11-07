@@ -41,9 +41,28 @@ public class BlockController {
         return ResponseEntity.ok(updatedBlock);
     }
 
-    @DeleteMapping("/pages/blocks/{id}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
-        blockService.deleteBlock(id);
+    @PatchMapping("/pages/blocks/{id}/delete")
+    public ResponseEntity<Block> moveToTrash(@PathVariable Long id) {
+        Block block = blockService.moveToTrash(id);
+        return  ResponseEntity.ok(block);
+    }
+
+
+    @GetMapping("/pages/deleted")
+    public ResponseEntity<List<Block>> getDeletedBlocks(){
+        List<Block> deletedBlocks = blockService.getDeletedBlock();
+        return ResponseEntity.ok(deletedBlocks);
+    }
+
+    @PatchMapping("/pages/{id}/restore")
+    public ResponseEntity<Block> restoreBlock(@PathVariable Long id) {
+        Block restoredBlock = blockService.restoreBlock(id);
+        return ResponseEntity.ok(restoredBlock);
+    }
+
+    @DeleteMapping("/pages/{id}/permanent")
+    public ResponseEntity<Void> permanentDeleteBlock(@PathVariable Long id) {
+        blockService.permanentDeleteBlock(id);
         return ResponseEntity.noContent().build();
     }
 }

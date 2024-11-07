@@ -62,15 +62,38 @@ public class BlockService {
         return blockRepository.save(block);
     }
 
-    public Block deleteBlock(Long id) {
+    public Block moveToTrash(Long id) {
+        Block block = getBlocksById(id).orElseThrow(() -> new RuntimeException("error"));
+        block.setDeleted(true);
+        return blockRepository.save(block);
+    }
+
+    public List<Block> getDeletedBlock(){
+        return blockRepository.findByDeleted(true);
+    }
+
+    public Block restoreBlock(Long id) {
+        Optional<Block> optionalBlock = blockRepository.findById(id);
+        if (optionalBlock.isPresent()) {
+            Block block = optionalBlock.get();
+            if (block.isDeleted()) {
+                block.setDeleted(false);
+                return blockRepository.save(block);
+            } else {
+                throw new RuntimeException("블록 페이지는 이미 복원되었습니다.");
+            }
+        } else {
+            throw new RuntimeException("블록 페이지를 찾을 수 없습니다.");
+        }
+    }
+
+    public void permanentDeleteBlock(Long id) {
         Optional<Block> optionalBlock = blockRepository.findById(id);
         if (optionalBlock.isPresent()) {
             blockRepository.delete(optionalBlock.get());
         } else {
             throw new RuntimeException("블록 페이지를 찾을 수 없습니다.");
         }
-        return null;
     }
-
 }
 

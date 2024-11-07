@@ -23,7 +23,7 @@ public class Block {
     private String type;
 
     @Lob
-    @Column(columnDefinition = "MEDIUMTEXT") // MEDIUMTEXT로 명시적으로 설정
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String content;
 
     @ManyToOne
@@ -37,4 +37,7 @@ public class Block {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 }

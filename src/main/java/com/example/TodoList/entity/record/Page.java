@@ -50,4 +50,7 @@ public class Page {
 
     @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Block> blocks;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 }

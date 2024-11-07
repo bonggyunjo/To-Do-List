@@ -14,6 +14,7 @@ import BoardDetailPage from "@/view/Board/BoardDetailPage.vue";
 import EditBoardPage from "@/view/Board/EditBoard.vue";
 import MainPage from "@/view/Record/RecordMainPage.vue";
 import BlockDetail from "@/view/Record/BlockDetail.vue";
+import TrashPage from "@/view/Record/TrashPage.vue";
 Vue.use(VueRouter)
 
 const routes = [
@@ -31,7 +32,8 @@ const routes = [
     { path: '/board/detail/:postId', component: BoardDetailPage, meta: { hideFooter: true,hideHeader: false}},
     { path: '/board/edit/:postId', component: EditBoardPage, meta: { hideFooter: true,hideHeader: false}},
     { path: '/pages/:userId', component: MainPage, meta: { hideFooter: true,hideHeader: true}},
-    { path: '/block/:id', name: 'BlockDetail', component: BlockDetail,meta: { hideFooter: true,hideHeader: true}}
+    { path: '/block/:id', name: 'BlockDetail', component: BlockDetail,meta: { hideFooter: true,hideHeader: true}},
+    { path: '/trash', name:'TrashPage', component:TrashPage, meta: { hideFooter: true,hideHeader: true}}
 ]
 
 const router = new VueRouter({

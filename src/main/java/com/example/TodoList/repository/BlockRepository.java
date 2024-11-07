@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface BlockRepository extends JpaRepository<Block,Long> {
     List<Block> findByPageId(Long pageId);
     Optional<Block> findById(Long id);
+
+    List<Block> findByDeleted(boolean deleted);
 }

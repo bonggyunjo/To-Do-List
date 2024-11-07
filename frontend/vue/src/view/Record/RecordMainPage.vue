@@ -33,7 +33,7 @@
           placeholder="내용을 입력하세요"
           style="overflow: hidden; resize: none;"
       ></textarea>
-      <div class="blocks-container">
+      <div class="blocks-container"  >
         <div v-for="block in selectedPage.blocks" :key="block.id" class="block" @click="goToBlockDetail(block.id)">
           <h3 class="block-title">{{ block.title || '제목 없음' }}</h3>
         </div>
@@ -45,8 +45,7 @@
 <script>
 import axios from 'axios';
 import { mapGetters } from 'vuex';
-import Sidebar from '@/components/Record/SideBar.vue';
-
+import Sidebar from "@/components/Record/SideBar.vue";
 export default {
   name: 'MainPage-Record',
   components: {
@@ -55,7 +54,8 @@ export default {
   data() {
     return {
       pages: [],
-      selectedPage: {}
+      selectedPage: {},
+      deletedPages: []
     };
   },
   mounted() {
@@ -101,8 +101,9 @@ export default {
         if (!userConfirmed) {
           return;
         }
-        await axios.delete(`http://localhost:8081/pages/${this.selectedPage.id}`);
+        this.deletedPages.push(this.selectedPage);
         this.pages = this.pages.filter(page => page.id !== this.selectedPage.id);
+        this.goToTrash();
         if (this.pages.length > 0) {
           this.selectedPage = this.pages[0];
         } else {
@@ -113,6 +114,9 @@ export default {
       } catch (error) {
         console.error('페이지 삭제 중 오류 발생:', error.response.data);
       }
+    },
+    goToTrash() {
+      this.$router.push({ name: 'TrashPage' });
     },
     goToMainPage() {
       this.$router.push(`/pages/${this.userId}`);

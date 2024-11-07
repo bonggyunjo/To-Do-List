@@ -2,6 +2,7 @@
   <div class="sidebar">
     <div class="sidebar-header">
       <h2 class="sidebar-title" @click="goToMainPage">개인 페이지</h2>
+      <router-link to="/trash" class="trash">      <img src="@/assets/records/trash.png" width="31" height="28" class="trash"/></router-link>
       <img src="@/assets/records/write.png" width="20" height="25" class="write-button" @click="createPage"/>
     </div>
     <ul class="page-list">
@@ -73,7 +74,7 @@ export default {
   cursor: pointer;
   margin-left: 10px; /* 아이콘과 제목 간의 간격 */
   position: relative;
-  top:-30px
+  top:-32px;
 }
 
 .page-list {
@@ -101,5 +102,13 @@ export default {
 .time {
   font-size: 12px;
   color: #999;
+}
+.trash{
+  text-decoration: none;
+  color: #333333;
+  font-size: 15px;
+  position: relative;
+  top:-18px;
+  left:30px;
 }
 </style>

@@ -41,7 +41,8 @@ export default {
     return {
       block: {},
       pages: [],
-      selectedPage: {}
+      selectedPage: {},
+
     };
   },
   computed: {
@@ -70,13 +71,15 @@ export default {
         if (!userConfirmed) {
           return;
         }
-        await axios.delete(`http://localhost:8081/pages/blocks/${blockId}`);
-        console.log("블록 삭제 성공");
+        await axios.patch(`http://localhost:8081/pages/blocks/${blockId}/delete`);
+        console.log("블록이 휴지통으로 이동했습니다.");
+        this.$emit('blockDeleted', blockId);
         this.goBack();
       } catch (error) {
         console.error('블록 삭제 중 오류 발생:', error.response.data);
       }
     },
+
     async fetchPageData() {
       try {
         const response = await axios.get(`http://localhost:8081/pages/${this.userId}`);
