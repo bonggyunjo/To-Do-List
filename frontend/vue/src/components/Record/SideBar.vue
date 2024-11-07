@@ -2,9 +2,14 @@
   <div class="sidebar">
     <div class="sidebar-header">
       <h2 class="sidebar-title" @click="goToMainPage">개인 페이지</h2>
-      <router-link to="/trash" class="trash">      <img src="@/assets/records/trash.png" width="31" height="28" class="trash"/></router-link>
-      <img src="@/assets/records/write.png" width="20" height="25" class="write-button" @click="createPage"/>
+      <div class="header-actions"> <!-- 새로운 div로 버튼들을 감쌉니다 -->
+        <img src="@/assets/records/write.png" width="20" height="25" class="write-button" @click="createPage"/>
+        <router-link to="/trash" class="trash">
+          <img src="@/assets/records/trash.png" width="31" height="28" class="trash"/>
+        </router-link>
+      </div>
     </div>
+
     <ul class="page-list">
       <li v-for="(pageItem, index) in pages" :key="index" @click="selectPage(index)" class="page-item">
         <div class="page-item-content">
@@ -13,6 +18,7 @@
         </div>
       </li>
     </ul>
+    <router-link to="/" class="go-back">뒤로가기</router-link>
   </div>
 </template>
 
@@ -39,7 +45,7 @@ export default {
   },
   methods: {
     createPage() {
-      this.$emit('create-page'); // 부모 컴포넌트에 이벤트를 발행
+      this.$emit('create-page');
     }
   }
 };
@@ -55,10 +61,10 @@ export default {
 }
 
 .sidebar-header {
-  display: flex; /* Flexbox 사용 */
-  justify-content: space-between; /* 공간을 균등하게 분배 */
-  align-items: center; /* 수직 중앙 정렬 */
-  margin-bottom: 15px; /* 제목과 페이지 리스트 간의 간격 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .sidebar-title {
@@ -66,15 +72,16 @@ export default {
   color: #333;
   cursor: pointer;
   font-weight: bolder;
-  position: relative;
-  top:-30px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
 }
 
 .write-button {
   cursor: pointer;
-  margin-left: 10px; /* 아이콘과 제목 간의 간격 */
-  position: relative;
-  top:-32px;
+  margin-left: 10px;
 }
 
 .page-list {
@@ -103,12 +110,19 @@ export default {
   font-size: 12px;
   color: #999;
 }
-.trash{
+
+.trash {
   text-decoration: none;
   color: #333333;
   font-size: 15px;
-  position: relative;
-  top:-18px;
-  left:30px;
+  margin-left: 5px;
+}
+
+.go-back {
+  text-decoration: none;
+  color: #333333;
+  font-size: 14px;
+  margin-top: 20px;
+  font-weight: bolder;
 }
 </style>

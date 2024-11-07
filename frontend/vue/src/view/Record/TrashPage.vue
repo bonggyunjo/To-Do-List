@@ -1,13 +1,36 @@
 <template>
   <div class="trash-container">
-    <h2>휴지통</h2>
-    <div v-if="deletedPages.length === 0">
-      <p>휴지통이 비어 있습니다.</p>
-    </div>
-    <div v-for="page in deletedPages" :key="page.id" class="deleted-page">
-      <h3>{{ page.title || '제목 없음' }}</h3>
-      <button @click="restorePage(page.id)">복원</button>
-      <button @click="permanentDeletePage(page.id)">완전 삭제</button>
+    <h6 style="font-weight: bolder; color: #333333">휴지통</h6>
+
+    <div class="sections">
+
+      <div class="section pages-section" style="position: relative; left:5%;">
+        <h3>페이지</h3>
+        <div v-if="deletedPages.length === 0">
+          <p>휴지통이 비어 있습니다.</p>
+        </div>
+        <div v-for="page in deletedPages" :key="page.id" class="deleted-item">
+          <div class="buttons">
+            <h4>{{ page.title || '제목 없음' }}</h4>
+            <button @click="confirmRestorePage(page.id)" class="restore-button">복원</button>
+            <button @click="confirmPermanentDeletePage(page.id)" class="delete-button">삭제</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section blocks-section" style="position: relative; left:-5%;">
+        <h3>블록</h3>
+        <div v-if="deletedBlocks.length === 0">
+          <p></p>
+        </div>
+        <div v-for="block in deletedBlocks" :key="block.id" class="deleted-item">
+          <h4>{{ block.title || '제목 없음' }}</h4>
+          <div class="buttons">
+            <button @click="confirmRestoreBlock(block.id)" class="restore-button">복원</button>
+            <button @click="confirmPermanentDeleteBlock(block.id)" class="delete-button">삭제</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -20,7 +43,8 @@ export default {
   name: 'TrashPage',
   data() {
     return {
-      deletedPages: []
+      deletedPages: [],
+      deletedBlocks: [] // 블록 데이터를 추가합니다.
     };
   },
   computed: {
@@ -28,6 +52,7 @@ export default {
   },
   created() {
     this.fetchDeletedPages();
+    this.fetchDeletedBlocks(); // 삭제된 블록도 가져옵니다.
   },
   methods: {
     async fetchDeletedPages() {
@@ -38,11 +63,29 @@ export default {
         console.error('삭제된 페이지 데이터를 가져오는 데 실패했습니다:', error);
       }
     },
+    async fetchDeletedBlocks() {
+      try {
+        const response = await axios.get(`http://localhost:8081/pages/blocks/deleted`);
+        this.deletedBlocks = response.data; // 삭제된 블록 데이터를 가져옵니다.
+      } catch (error) {
+        console.error('삭제된 블록 데이터를 가져오는 데 실패했습니다:', error);
+      }
+    },
+    confirmRestorePage(pageId) {
+      if (confirm('복원하시겠습니까?')) {
+        this.restorePage(pageId);
+      }
+    },
+    confirmPermanentDeletePage(pageId) {
+      if (confirm('삭제하시겠습니까?')) {
+        this.permanentDeletePage(pageId);
+      }
+    },
     async restorePage(pageId) {
       try {
         await axios.patch(`http://localhost:8081/pages/${pageId}/restore`);
         this.deletedPages = this.deletedPages.filter(page => page.id !== pageId);
-        console.log('페이지 복원 성공');
+        alert('복원되었습니다.');
       } catch (error) {
         console.error('페이지 복원 중 오류 발생:', error.response.data);
       }
@@ -51,24 +94,106 @@ export default {
       try {
         await axios.delete(`http://localhost:8081/pages/${pageId}/permanent`);
         this.deletedPages = this.deletedPages.filter(page => page.id !== pageId);
-        console.log('페이지 완전 삭제 성공');
+        alert('삭제되었습니다.');
       } catch (error) {
         console.error('페이지 완전 삭제 중 오류 발생:', error.response.data);
+      }
+    },
+    confirmRestoreBlock(blockId) {
+      if (confirm('복원하시겠습니까?')) {
+        this.restoreBlock(blockId);
+      }
+    },
+    confirmPermanentDeleteBlock(blockId) {
+      if (confirm('삭제하시겠습니까?')) {
+        this.permanentDeleteBlock(blockId);
+      }
+    },
+    async restoreBlock(blockId) {
+      try {
+        await axios.patch(`http://localhost:8081/pages/blocks/${blockId}/restore`);
+        this.deletedBlocks = this.deletedBlocks.filter(block => block.id !== blockId);
+        alert('복원되었습니다.');
+      } catch (error) {
+        console.error('블록 복원 중 오류 발생:', error.response.data);
+      }
+    },
+    async permanentDeleteBlock(blockId) {
+      try {
+        await axios.delete(`http://localhost:8081/pages/blocks/${blockId}/permanent`);
+        this.deletedBlocks = this.deletedBlocks.filter(block => block.id !== blockId);
+        alert('삭제되었습니다.');
+      } catch (error) {
+        console.error('블록 완전 삭제 중 오류 발생:', error.response.data);
       }
     }
   }
 };
 </script>
 
+
 <style scoped>
 .trash-container {
   padding: 20px;
 }
 
-.deleted-page {
-  margin: 10px 0;
-  padding: 10px;
+.sections {
+  display: flex;
+  justify-content: space-between;
+}
+
+.section {
+  width: 40%;
+  padding: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.deleted-item {
+  margin: 10px 0;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+
+}
+
+.deleted-item h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.buttons {
+  margin-top: 10px;
+}
+
+
+button:hover {
+  opacity: 0.9;
+}
+
+.restore-button{
+  background-color: #f9f9f9;
+  border: none;
+  color: #333333;
+  font-size: 13.5px;
+}
+
+.delete-button{
+  background-color:#f9f9f9;
+  color: #333333;
+  border: none;
+  font-size: 13.5px;
+
+}
+button{
+  position: relative;
+  left:47%;
 }
 </style>

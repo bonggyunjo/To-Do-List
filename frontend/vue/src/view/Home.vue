@@ -49,7 +49,16 @@
     <!-- 세번째 -->
 
     <div class="right">
-      <p>오른쪽 콘텐츠</p>
+      <div class="first-image">
+      <img src="@/assets/main/page.png"  class="first-image" width="700" height="380">
+      </div>
+      <div class="third-image">
+        <img src="@/assets/main/pagem.png"  class="first-image" width="447" height="474">
+      </div>
+
+      <div class="second-image">
+        <img src="@/assets/main/board.png"  class="second-image" width="712" height="350">
+      </div>
     </div>
   </div>
   </div>
@@ -160,13 +169,16 @@ body {
 
 .left {
   width: 60%;
+  height: 1500px;
 }
 
 .right {
   width: 35%;
   padding: 10px;
-  background-color: #e9e9e9;
   border-radius: 8px;
+  position: relative;
+  left:-100px;
+  height: 1000px;
 }
 
 .task-list-message {
@@ -196,6 +208,7 @@ body {
   font-size: 16px;
   position: relative;
   left: -175px;
+  top:50px;
 }
 .second-content{
   display: flex;
@@ -207,9 +220,12 @@ body {
   font-weight: bolder;
   position: relative;
   left: -50px;
+  top:50px;
 }
 .task-list-message2 {
   margin-top: 20px;
+  position: relative;
+  top:50px;
 }
 
 .task-intro2 {
@@ -219,6 +235,7 @@ body {
   margin: 10px 0;
   position: relative;
   left:-16px;
+  top:50px;
 }
 
 .task-benefit2 {
@@ -228,6 +245,7 @@ body {
   margin: 10px 0;
   position: relative;
   left:-128px;
+  top:50px;
 }
 .third-title{
   font-weight: bolder;
@@ -235,6 +253,7 @@ body {
   font-size: 16px;
   position: relative;
   left: -182px;
+  top:100px;
 }
 .third-content{
   display: flex;
@@ -246,9 +265,12 @@ body {
   font-weight: bolder;
   position: relative;
   left: -50px;
+  top:100px;
 }
 .task-list-message3 {
   margin-top: 20px;
+  position: relative;
+  top:100px;
 }
 
 .task-intro3 {
@@ -310,5 +332,23 @@ body {
   position: relative;
   left:-395px;
   top:-400px;
+}
+.first-image{
+  position: relative;
+  left:-40px;
+  top:-5px;
+  border-radius: 10px;
+
+}
+.second-image
+{
+  position: relative;
+  left:-42px;
+  top:95px;
+}
+.third-image{
+  position: relative;
+  left:-42px;
+  top:60px;
 }
 </style>

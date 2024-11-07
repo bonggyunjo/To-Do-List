@@ -4,7 +4,9 @@ package com.example.TodoList.controller.records;
 import com.example.TodoList.dto.PageDto;
 import com.example.TodoList.entity.Board;
 import com.example.TodoList.entity.User;
+import com.example.TodoList.entity.record.Block;
 import com.example.TodoList.entity.record.Page;
+import com.example.TodoList.repository.PageRepository;
 import com.example.TodoList.repository.UserRepository;
 import com.example.TodoList.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class PageController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PageRepository pageRepository;
     @PostMapping("/pages/create")
     public ResponseEntity<Page> createPage(@RequestBody PageDto pagedto) {
         String userId = pagedto.getUserId();
@@ -34,19 +38,44 @@ public class PageController {
     }
 
     @GetMapping("/pages/{userId}")
-    public List<Page> getPagesByUserId(@PathVariable String userId) {
-        return pageService.findByUserId(userId);
+    public ResponseEntity<List<Page>> getPagesByUserId(@PathVariable String userId, @RequestParam(required = false) Boolean deleted) {
+        List<Page> pages;
+        if (deleted != null) {
+            pages = pageRepository.findByUser_UserIdAndDeleted(userId, deleted);
+        } else {
+            pages = pageRepository.findByUser_UserId(userId); // 기본적으로 모든 페이지 반환
+        }
+        return ResponseEntity.ok(pages);
     }
-
     @PutMapping("/pages/{id}")
     public ResponseEntity<Page> updatePage(@PathVariable Long id, @RequestBody Page updatedPage) {
         Page updatepage = pageService.updatePage(id, updatedPage.getTitle(), updatedPage.getContent());
         return ResponseEntity.ok(updatepage);
     }
 
-    @DeleteMapping("/pages/{id}")
-    public ResponseEntity<Void> deletePage(@PathVariable Long id) {
-        pageService.deletePage(id);
+
+    @PatchMapping("/pages/{id}/delete")
+    public ResponseEntity<Page> moveToTrash(@PathVariable Long id) {
+        Page page = pageService.moveToTrash(id);
+        return  ResponseEntity.ok(page);
+    }
+
+
+    @GetMapping("/pages/deleted")
+    public ResponseEntity<List<Page>> getDeletedPages(){
+        List<Page> deletedPages = pageService.getDeletedPage();
+        return ResponseEntity.ok(deletedPages);
+    }
+
+    @PatchMapping("/pages/{id}/restore")
+    public ResponseEntity<Page> restorePage(@PathVariable Long id) {
+        Page restoredPage = pageService.restorePage(id);
+        return ResponseEntity.ok(restoredPage);
+    }
+
+    @DeleteMapping("/pages/{id}/permanent")
+    public ResponseEntity<Void> permanentDeletePage(@PathVariable Long id) {
+        pageService.permanentDeletePage(id);
         return ResponseEntity.noContent().build();
     }
 }
