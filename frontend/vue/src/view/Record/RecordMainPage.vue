@@ -25,6 +25,13 @@
         </div>
       </div>
       <div style="border-bottom: 1px solid lightgray; position:relative; top:-6px;"></div>
+
+      <div class="blocks-container">
+        <div v-for="block in selectedPage.blocks" :key="block.id" class="block" @click="goToBlockDetail(block.id)">
+          <h3 class="block-title">{{ block.title || '제목 없음' }}</h3>
+        </div>
+      </div>
+
       <textarea
           ref="cardContent"
           v-model="selectedPage.content"
@@ -33,11 +40,6 @@
           placeholder="내용을 입력하세요"
           style="overflow: hidden; resize: none;"
       ></textarea>
-      <div class="blocks-container"  >
-        <div v-for="block in selectedPage.blocks" :key="block.id" class="block" @click="goToBlockDetail(block.id)" >
-          <h3 class="block-title">{{ block.title || '제목 없음' }}</h3>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -46,6 +48,7 @@
 import axios from 'axios';
 import { mapGetters } from 'vuex';
 import Sidebar from "@/components/Record/SideBar.vue";
+
 export default {
   name: 'MainPage-Record',
   components: {
@@ -58,9 +61,6 @@ export default {
       deletedPages: []
     };
   },
-  mounted() {
-    this.adjustTextareaHeight({ target: this.$refs.cardContent });
-  },
   computed: {
     ...mapGetters(['getUserId']),
   },
@@ -71,11 +71,18 @@ export default {
     handleTextareaInput(event) {
       this.updatePageContent();
       this.adjustTextareaHeight(event);
+      this.checkForCommand(event.target.value);
     },
     adjustTextareaHeight(event) {
       const textarea = event.target;
       textarea.style.height = 'auto';
       textarea.style.height = `${textarea.scrollHeight}px`;
+    },
+    async checkForCommand(content) {
+      if (content.trim().endsWith('/페이지')) {
+        await this.createBlockPage();
+        this.selectedPage.content = content.slice(0, -4);
+      }
     },
     async createBlockPage() {
       const newBlock = {
@@ -104,10 +111,7 @@ export default {
         }
         await axios.patch(`http://localhost:8081/pages/${id}/delete`);
         console.log("페이지가 휴지통으로 이동했습니다.");
-
-
         this.pages = this.pages.filter(selectedPage => selectedPage.id !== id);
-
 
         if (this.pages.length > 0) {
           this.selectedPage = { ...this.pages[0] };
@@ -121,13 +125,12 @@ export default {
         console.error('페이지 삭제 중 오류 발생:', error.response.data);
       }
     },
-
     goToMainPage() {
       this.$router.push(`/pages/${this.userId}`);
     },
     async fetchPageData() {
       try {
-        const response = await axios.get(`http://localhost:8081/pages/${this.getUserId}?deleted=false`); // deleted=false를 쿼리로 추가
+        const response = await axios.get(`http://localhost:8081/pages/${this.getUserId}?deleted=false`);
         this.pages = response.data;
         if (this.pages.length > 0) {
           this.selectedPage = { ...this.pages[0], content: this.pages[0].content || '', title: this.pages[0].title || '' };
@@ -205,7 +208,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .container {
   display: flex;
@@ -243,7 +245,7 @@ export default {
   background-color: #f9f9f9;
   border: none;
   outline: none;
-  min-height: 50px;
+  min-height: 150px;
 }
 .time {
   font-size: 12px;
@@ -315,4 +317,5 @@ export default {
   cursor: pointer;
   font-size: 16px;
 }
+
 </style>

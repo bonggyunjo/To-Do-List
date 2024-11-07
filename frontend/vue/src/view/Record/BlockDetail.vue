@@ -8,7 +8,13 @@
     />
     <div class="content-area">
       <div class="header">
-        <span class="block-title">{{ block.title || '제목 없음' }}</span>
+        <input
+            type="text"
+            v-model="block.title"
+            @input="updateBlockTitle"
+            class="block-title-input"
+            placeholder="블록 제목을 입력하세요"
+        />
         <div class="time-shared">
           <span class="time">{{ formatTime(selectedPage.createdDate) }}</span>
           <button class="share-button" @click="shareLink">공유</button>
@@ -56,6 +62,20 @@ export default {
     this.fetchBlockData();
   },
   methods: {
+    async updateBlockTitle() {
+      const blockId = this.block.id;
+      try {
+        const payload = {
+          title: this.block.title,
+          content: this.block.content,
+          userId: this.userId
+        };
+        await axios.put(`http://localhost:8081/pages/blocks/${blockId}`, payload);
+        console.log('블록 제목 업데이트 성공');
+      } catch (error) {
+        console.error('블록 제목 업데이트 중 오류 발생:', error.response.data);
+      }
+    },
     shareLink() {
       const shareUrl = window.location.href;
       navigator.clipboard.writeText(shareUrl).then(() => {
@@ -71,8 +91,8 @@ export default {
         if (!userConfirmed) {
           return;
         }
-        await axios.patch(`http://localhost:8081/pages/blocks/${blockId}/delete`);
-        console.log("블록이 휴지통으로 이동했습니다.");
+        await axios.delete(`http://localhost:8081/pages/blocks/${blockId}/permanent`);
+        console.log("삭제되었습니다.");
         this.$emit('blockDeleted', blockId);
         this.goBack();
       } catch (error) {
@@ -82,10 +102,11 @@ export default {
 
     async fetchPageData() {
       try {
-        const response = await axios.get(`http://localhost:8081/pages/${this.userId}`);
-        this.pages = response.data;
+        const response = await axios.get(`http://localhost:8081/pages/${this.getUserId}?deleted=false`);
+        this.pages = response.data.filter(page => !page.deleted); // 삭제된 페이지 필터링
         if (this.pages.length > 0) {
-          this.selectedPage = this.pages[0];
+          this.selectedPage = { ...this.pages[0], content: this.pages[0].content || '', title: this.pages[0].title || '' };
+          await this.fetchBlocks(this.selectedPage.id);
         }
       } catch (error) {
         console.error('페이지 데이터를 가져오는 데 실패했습니다:', error);
@@ -154,9 +175,13 @@ export default {
   color: #333333;
 }
 
-.block-title {
+.block-title-input{
   font-size: 24px;
+  color: #333333;
+  border: none;
+  background-color: #f9f9f9;
 }
+
 .header {
   display: flex;
   justify-content: space-between;

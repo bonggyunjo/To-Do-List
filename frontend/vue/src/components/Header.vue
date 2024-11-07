@@ -10,7 +10,6 @@
       <nav class="navigation">
         <ul>
           <li><router-link to="/">홈</router-link></li>
-          <li><router-link to="/add-task">작업 추가</router-link></li>
           <router-link :to="`/pages/${userId}`" class="task-list-button">작업 목록</router-link>
           <li><router-link to="/board">자유 게시판</router-link></li>
           <li><router-link to="/mypage">설정</router-link></li>
