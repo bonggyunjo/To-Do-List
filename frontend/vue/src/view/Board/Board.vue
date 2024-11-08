@@ -12,9 +12,9 @@
         <li v-for="post in paginatedPosts" :key="post.postId" class="post-item">
           <div class="post-info">
             <span class="post-id" style="position: relative; left:-60px;" @click="goToPost(post.postId)">{{ post.postId }}</span>
-            <span class="post-user" style="position: relative; left:-100px;">{{ post.nickname }}</span>
-            <span class="post-title"  style="position: relative; left:-75px;">{{ post.title }}</span>
-            <small class="post-date" style="font-size: 14px">{{ formatDate(post.createdAt) }}</small>
+            <span class="post-user" style="position: relative; left:-100px;"  @click="goToPost(post.postId)">{{ post.nickname }}</span>
+            <span class="post-title"  style="position: relative; left:-75px;"  @click="goToPost(post.postId)">{{ post.title }}</span>
+            <small class="post-date" style="font-size: 14px"  @click="goToPost(post.postId)">{{ formatDate(post.createdAt) }}</small>
           </div>
         </li>
       </ul>
@@ -151,6 +151,7 @@ ul {
 .post-title,
 .post-date {
   text-align: center;
+  cursor: pointer;
 }
 
 .pagination {
