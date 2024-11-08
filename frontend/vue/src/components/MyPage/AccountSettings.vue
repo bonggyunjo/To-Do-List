@@ -29,7 +29,7 @@
     </div>
     <div id="intro">
       <span class="intro-title">소개</span>
-      <span style="position: relative; left:-503px; top:70px; font-size: 14.5px;">{{intro}}</span>
+      <span style="position: relative; left:-50%; top:70px; font-size: 14.5px;">{{intro}}</span>
     </div>
     <span style="font-size: 13px; position: relative; left:-130px; top:130px; color: #333333;">이것은 작업, 프로젝트, 댓글, 및 그 이상을 포함한 당신의 모든 데이터를 즉시 삭제합니다. 실행 취소될 수 없습니다.</span>
     <router-link to="/mypage/user/delete"><button class="btn btn-outline-danger" id="delete-user-button">계정 삭제</button></router-link>
@@ -115,7 +115,7 @@ export default {
   font-size: 14px;
   font-weight: bolder;
   position: relative;
-  left:-474px;
+  left:-47%;
   top:40px;
 }
 

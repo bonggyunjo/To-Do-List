@@ -1,7 +1,7 @@
 <template>
   <header class="app-header">
     <div class="logo">
-      <h1>할 일 목록</h1>
+      <h1 style="">할 일 목록</h1>
     </div>
     <p class="slogan">일정을 관리하여 보세요.</p>
 
@@ -108,10 +108,12 @@ h1 {
   list-style: none;
   padding: 0;
   margin: 10px 0;
+  font-family: 'SOGANGUNIVERSITYTTF';
 }
 
 .navigation li {
   margin: 0 15px;
+  font-family: 'SOGANGUNIVERSITYTTF';
 }
 
 .navigation a {
