@@ -6,6 +6,7 @@ import com.example.TodoList.entity.User;
 import com.example.TodoList.repository.BoardRepository;
 import com.example.TodoList.repository.BookmarkRepository;
 import com.example.TodoList.repository.UserRepository;
+import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +28,28 @@ public class BookmarkService {
         Board board = boardRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
 
         if (!bookmarkRepository.existsByUser_UserIdAndBoard_PostId(userId, postId)) {
-            Bookmark bookmark = Bookmark.builder()
-                    .user(user)
-                    .board(board)
-                    .build();
+            Bookmark bookmark = new Bookmark();
+            bookmark.setUser(user);
+            bookmark.setBoard(board);
+            bookmark.setBookmarkCount(1);
             bookmarkRepository.save(bookmark);
+
+
+            board.incrementFavoriteCount();
+            boardRepository.save(board);
+        } else {
+            throw new RuntimeException("Bookmark already exists");
         }
     }
 
     public void removeFavorite(String userId, Long postId) {
-        bookmarkRepository.findByUser_UserIdAndBoard_PostId(userId, postId).ifPresent(bookmarkRepository::delete);
+        Bookmark bookmark = bookmarkRepository.findByUser_UserIdAndBoard_PostId(userId, postId)
+                .orElseThrow(() -> new RuntimeException("Bookmark not found"));
+
+        Board board = bookmark.getBoard();
+        bookmarkRepository.delete(bookmark);
+        board.decrementFavoriteCount();
+        boardRepository.save(board);
     }
 
     public List<Bookmark> getFavorites(String userId) {

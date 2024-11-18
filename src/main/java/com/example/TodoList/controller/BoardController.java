@@ -50,4 +50,10 @@ public class BoardController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/{postId}/bookmark/count")
+    public ResponseEntity<Integer> getBookmarkCount(@PathVariable Long postId){
+        int count = boardService.getTotalBookmarks(postId);
+        return ResponseEntity.ok(count);
+    }
 }

@@ -17,7 +17,7 @@ public class BookmarkController {
 
     @PostMapping("/bookmark/post/{userId}/{postId}")
     public ResponseEntity<Void> addFavorite(@RequestBody BookmarkDto bookmarkDto) {
-        bookmarkService.addFavorite(bookmarkDto.getUserId(), bookmarkDto.getPostId());
+            bookmarkService.addFavorite(bookmarkDto.getUserId(), bookmarkDto.getPostId());
         return ResponseEntity.status(201).build();
     }
 

@@ -3,6 +3,7 @@ package com.example.TodoList.service;
 import com.example.TodoList.dto.BoardDto;
 import com.example.TodoList.entity.Board;
 import com.example.TodoList.repository.BoardRepository;
+import com.example.TodoList.repository.BookmarkRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
 
     @Transactional
     public List<BoardDto> getAllBoards() {
@@ -72,5 +75,9 @@ public class BoardService {
         dto.setNickname(board.getUser().getNickname());
         dto.setCreatedAt(board.getCreatedAt());
         return dto;
+    }
+
+    public int getTotalBookmarks(Long postId){
+        return bookmarkRepository.countByBoard_PostId(postId);
     }
 }

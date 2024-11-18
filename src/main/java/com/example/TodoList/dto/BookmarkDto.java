@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BookmarkDto {
     private String userId;
-    private Long PostId;
+    private Long postId;
 
 }
