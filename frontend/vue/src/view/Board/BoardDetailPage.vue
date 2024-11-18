@@ -1,6 +1,12 @@
 <template>
   <div class="board-detail-page">
     <div class="post-container" v-if="post">
+      <div class="favorite-action">
+  <span @click="toggleFavorite" class="favorite-icon" :class="{ 'active': isFavorite }">
+    <i class="fas fa-star" :class="isFavorite ? 'fa-star' : 'fa-star-o'"></i>
+  </span>
+        <span class="bookmark-count"> {{ bookmarkCount > 0 ? bookmarkCount : 0 }}</span>
+      </div>
       <div class="post-header">
         <span class="post-label">제목 :</span>
         <h1 class="post-title">{{ post.title }}</h1>
@@ -23,12 +29,6 @@
         <span style="position: relative; left:5px; color: red;" @click="deletePost(post.postId)">삭제</span>
       </div>
 
-      <div class="favorite-action">
-        <span @click="toggleFavorite" class="favorite-icon" :class="{ 'active': isFavorite }">
-          <i class="fas" :class="isFavorite ? 'fa-star' : 'fa-star-o'"></i>
-        </span>
-        <span class="bookmark-count">즐겨찾기 수: {{ bookmarkCount }}</span> <!-- 즐겨찾기 수 표시 -->
-      </div>
 
     </div>
     <div v-else>로딩 중...</div>
@@ -46,8 +46,8 @@ export default {
   data() {
     return {
       post: null,
-      isFavorite: false, // 즐겨찾기 상태 추가
-      bookmarkCount: 0, // 즐겨찾기 수 추가
+      isFavorite: false,
+      bookmarkCount: 0,
     };
   },
   computed: {
@@ -59,8 +59,8 @@ export default {
   created() {
     const postId = this.$route.params.postId;
     this.fetchPost(postId);
-    this.checkFavorite(postId); // 페이지 로드 시 즐겨찾기 상태 확인
-    this.fetchBookmarkCount(postId); // 페이지 로드 시 즐겨찾기 수 확인
+    this.checkFavorite(postId);
+    this.fetchBookmarkCount(postId);
   },
   methods: {
     async fetchPost(postId) {
@@ -85,28 +85,26 @@ export default {
       }
     },
     async toggleFavorite() {
-      this.isFavorite = !this.isFavorite;
-      this.bookmarkCount += this.isFavorite ? 1 : -1; // 즐겨찾기 수 조정
 
       const userId = this.$store.getters.getUserId;
       const postId = this.post.postId;
 
       try {
         if (this.isFavorite) {
-          // 즐겨찾기 해제
           await axios.delete(`http://localhost:8081/bookmark/delete/${userId}/${postId}`);
           this.isFavorite = false;
-          alert("즐겨찾기에서 해제되었습니다.");
+          alert("취소하였습니다");
         } else {
-          // 즐겨찾기 추가
+
           await axios.post(`http://localhost:8081/bookmark/post/${userId}/${postId}`, {
             userId: userId,
             postId: postId
           });
+
           this.isFavorite = true;
           alert("즐겨찾기에 추가되었습니다.");
         }
-        // 즐겨찾기 수를 다시 가져옵니다.
+
         this.fetchBookmarkCount(postId);
       } catch (error) {
         console.error('즐겨찾기 처리 중 오류가 발생했습니다:', error);
@@ -117,6 +115,7 @@ export default {
       try {
         const response = await axios.get(`http://localhost:8081/bookmark/exists/${userId}/${postId}`);
         this.isFavorite = response.data;
+        console.log('즐겨찾기 상태:', this.isFavorite);
       } catch (error) {
         console.error('즐겨찾기 상태 확인 중 오류가 발생했습니다:', error);
       }
@@ -218,20 +217,21 @@ export default {
 }
 
 .favorite-action {
-  margin-top: 20px;
   display: flex;
   align-items: center;
+  margin-top: 10px;
+  position: relative;
+  left:882px;
+  top:15px;
 }
-
 .favorite-icon {
-  font-size: 24px;
   cursor: pointer;
-  color: #ccc; /* 기본 색상 */
-  transition: color 0.3s;
+  font-size: 16px;
+  color: #dee2e6;
 }
 
 .favorite-icon.active {
-  color: #ffcc00; /* 즐겨찾기 상태일 때 색상 변경 */
+  color: #ffcc00;
 }
 
 .bookmark-count {
