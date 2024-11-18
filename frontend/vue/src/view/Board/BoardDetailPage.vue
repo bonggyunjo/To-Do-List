@@ -1,7 +1,6 @@
 <template>
   <div class="board-detail-page">
     <div class="post-container" v-if="post">
-
       <div class="post-header">
         <span class="post-label">제목 :</span>
         <h1 class="post-title">{{ post.title }}</h1>
@@ -24,6 +23,13 @@
         <span style="position: relative; left:5px; color: red;" @click="deletePost(post.postId)">삭제</span>
       </div>
 
+      <div class="favorite-action">
+        <span @click="toggleFavorite" class="favorite-icon" :class="{ 'active': isFavorite }">
+          <i class="fas" :class="isFavorite ? 'fa-star' : 'fa-star-o'"></i>
+        </span>
+        <span class="bookmark-count">즐겨찾기 수: {{ bookmarkCount }}</span> <!-- 즐겨찾기 수 표시 -->
+      </div>
+
     </div>
     <div v-else>로딩 중...</div>
     <router-link to="/board">
@@ -40,10 +46,12 @@ export default {
   data() {
     return {
       post: null,
+      isFavorite: false, // 즐겨찾기 상태 추가
+      bookmarkCount: 0, // 즐겨찾기 수 추가
     };
   },
   computed: {
-    ...mapGetters(['userNickname']),
+    ...mapGetters(['getUserId', 'userNickname']),
     isAuthor() {
       return this.post && this.post.nickname === this.userNickname;
     },
@@ -51,6 +59,8 @@ export default {
   created() {
     const postId = this.$route.params.postId;
     this.fetchPost(postId);
+    this.checkFavorite(postId); // 페이지 로드 시 즐겨찾기 상태 확인
+    this.fetchBookmarkCount(postId); // 페이지 로드 시 즐겨찾기 수 확인
   },
   methods: {
     async fetchPost(postId) {
@@ -62,22 +72,65 @@ export default {
         console.error('게시글을 가져오는 데 오류가 발생했습니다:', error);
       }
     },
-    async deletePost(postId){
+    async deletePost(postId) {
       try {
-        const response = await axios.delete(`http://localhost:8081/boards/${postId}`);
-        this.post = response.data;
-        console.log(response);
         const userConfirmed = confirm("삭제하시겠습니까?");
         if (userConfirmed) {
+          await axios.delete(`http://localhost:8081/boards/${postId}`);
           alert("삭제되었습니다.");
           this.$router.push('/board');
         }
       } catch (error) {
-        console.error('게시글을 가져오는 데 오류가 발생했습니다:', error);
+        console.error('게시글을 삭제하는 데 오류가 발생했습니다:', error);
+      }
+    },
+    async toggleFavorite() {
+      this.isFavorite = !this.isFavorite;
+      this.bookmarkCount += this.isFavorite ? 1 : -1; // 즐겨찾기 수 조정
+
+      const userId = this.$store.getters.getUserId;
+      const postId = this.post.postId;
+
+      try {
+        if (this.isFavorite) {
+          // 즐겨찾기 해제
+          await axios.delete(`http://localhost:8081/bookmark/delete/${userId}/${postId}`);
+          this.isFavorite = false;
+          alert("즐겨찾기에서 해제되었습니다.");
+        } else {
+          // 즐겨찾기 추가
+          await axios.post(`http://localhost:8081/bookmark/post/${userId}/${postId}`, {
+            userId: userId,
+            postId: postId
+          });
+          this.isFavorite = true;
+          alert("즐겨찾기에 추가되었습니다.");
+        }
+        // 즐겨찾기 수를 다시 가져옵니다.
+        this.fetchBookmarkCount(postId);
+      } catch (error) {
+        console.error('즐겨찾기 처리 중 오류가 발생했습니다:', error);
+      }
+    },
+    async checkFavorite(postId) {
+      const userId = this.$store.getters.getUserId;
+      try {
+        const response = await axios.get(`http://localhost:8081/bookmark/exists/${userId}/${postId}`);
+        this.isFavorite = response.data;
+      } catch (error) {
+        console.error('즐겨찾기 상태 확인 중 오류가 발생했습니다:', error);
+      }
+    },
+    async fetchBookmarkCount(postId) {
+      try {
+        const response = await axios.get(`http://localhost:8081/${postId}/bookmark/count`);
+        this.bookmarkCount = response.data;
+      } catch (error) {
+        console.error('즐겨찾기 수를 가져오는 데 오류가 발생했습니다:', error);
       }
     },
     formatDate(dateString) {
-      const options = {year: 'numeric', month: 'long', day: 'numeric'};
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(dateString).toLocaleDateString('ko-KR', options);
     },
   },
@@ -159,10 +212,32 @@ export default {
 .post-actions {
   margin-top: 20px;
   position: relative;
-  left:425px;
+  left: 425px;
   font-size: 14px;
-  top:-95px;
+  top: -95px;
+}
 
+.favorite-action {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.favorite-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: #ccc; /* 기본 색상 */
+  transition: color 0.3s;
+}
+
+.favorite-icon.active {
+  color: #ffcc00; /* 즐겨찾기 상태일 때 색상 변경 */
+}
+
+.bookmark-count {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #333;
 }
 
 .btn {

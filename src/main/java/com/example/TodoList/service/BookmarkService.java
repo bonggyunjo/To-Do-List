@@ -6,11 +6,9 @@ import com.example.TodoList.entity.User;
 import com.example.TodoList.repository.BoardRepository;
 import com.example.TodoList.repository.BookmarkRepository;
 import com.example.TodoList.repository.UserRepository;
-import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.List;
 
 @Service
@@ -23,9 +21,10 @@ public class BookmarkService {
 
     @Autowired
     private BoardRepository boardRepository;
+
     public void addFavorite(String userId, Long postId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        Board board = boardRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        Board board = boardRepository.findById(postId).orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
 
         if (!bookmarkRepository.existsByUser_UserIdAndBoard_PostId(userId, postId)) {
             Bookmark bookmark = new Bookmark();
@@ -34,17 +33,16 @@ public class BookmarkService {
             bookmark.setBookmarkCount(1);
             bookmarkRepository.save(bookmark);
 
-
             board.incrementFavoriteCount();
             boardRepository.save(board);
         } else {
-            throw new RuntimeException("Bookmark already exists");
+            throw new RuntimeException("이미 추가하였습니다.");
         }
     }
 
     public void removeFavorite(String userId, Long postId) {
         Bookmark bookmark = bookmarkRepository.findByUser_UserIdAndBoard_PostId(userId, postId)
-                .orElseThrow(() -> new RuntimeException("Bookmark not found"));
+                .orElseThrow(() -> new RuntimeException("제거할 수 없습니다."));
 
         Board board = bookmark.getBoard();
         bookmarkRepository.delete(bookmark);
@@ -54,5 +52,9 @@ public class BookmarkService {
 
     public List<Bookmark> getFavorites(String userId) {
         return bookmarkRepository.findByUser_UserId(userId);
+    }
+
+    public boolean isFavorite(String userId, Long postId) {
+        return bookmarkRepository.existsByUser_UserIdAndBoard_PostId(userId, postId);
     }
 }
