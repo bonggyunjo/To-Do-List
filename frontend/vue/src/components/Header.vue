@@ -108,12 +108,10 @@ h1 {
   list-style: none;
   padding: 0;
   margin: 10px 0;
-  font-family: 'SOGANGUNIVERSITYTTF';
 }
 
 .navigation li {
   margin: 0 15px;
-  font-family: 'SOGANGUNIVERSITYTTF';
 }
 
 .navigation a {

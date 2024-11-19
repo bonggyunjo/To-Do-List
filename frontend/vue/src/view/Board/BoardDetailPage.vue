@@ -12,7 +12,6 @@
       </div>
       <div style="border-bottom: 1px solid lightgray; position: relative; top:5px;"></div>
       <div class="post-content">
-        <span class="post-label">내용</span>
         <p>{{ post.content }}</p>
       </div>
       <div v-if="isAuthor" class="post-actions">
@@ -22,25 +21,25 @@
         <span style="position: relative; left:5px; color: red;" @click="deletePost(post.postId)">삭제</span>
       </div>
 
-
+      <span class="like-action">
+  <span @click="toggleLike" class="like-icon" :class="{ 'active': isLike }">
+ <i class="fas fa-thumbs-up" :class="isLike ? 'fa-thumbs-up' : 'fa-thumbs-down'"></i>
+  </span>
+        <span class="like-count">{{ likeCount > 0 ? likeCount : 0 }}</span>
+      </span>
 
     </div>
     <div v-else>로딩 중...</div>
     <router-link to="/board">
-      <button class="btn btn-secondary" style="font-size: 13.5px; width: 90px; height: 35px; position: relative; left:415px; top:280px;">뒤로가기</button>
+      <button class="btn btn-secondary" style="font-size: 13.5px; width: 90px; height: 35px; position: relative; left:445px; top:280px;">뒤로가기</button>
     </router-link>
-    <div class="like-action">
-  <span @click="toggleLike" class="like-icon" :class="{ 'active': isLike }">
- <i class="fas fa-thumbs-up" :class="isLike ? 'fa-thumbs-up' : 'fa-thumbs-down'"></i>
-  </span>
-      <span class="like-count">{{ likeCount > 0 ? likeCount : 0 }}</span>
-    </div>
-    <div class="favorite-action">
+
+    <span class="favorite-action">
   <span @click="toggleFavorite" class="favorite-icon" :class="{ 'active': isFavorite }">
     <i class="fas fa-star" :class="isFavorite ? 'fa-star' : 'fa-star-o'"></i>
   </span>
       <span class="bookmark-count"> {{ bookmarkCount > 0 ? bookmarkCount : 0 }}</span>
-    </div>
+    </span>
   </div>
 </template>
 
@@ -117,7 +116,7 @@ export default {
           alert("즐겨찾기에 추가되었습니다.");
         }
 
-        this.fetchLikeCount(postId);
+        this.fetchBookmarkCount(postId);
       } catch (error) {
         console.error('즐겨찾기 처리 중 오류가 발생했습니다:', error);
       }
@@ -131,7 +130,7 @@ export default {
         if (this.isLike) {
           await axios.delete(`http://localhost:8081/like/delete/${userId}/${postId}`);
           this.isLike = false;
-          this.likeCount--; // 좋아요 수 감소
+          this.likeCount--;
           alert("취소하였습니다");
         } else {
 
@@ -141,11 +140,10 @@ export default {
           });
 
           this.isLike = true;
-          this.likeCount++; // 좋아요 수 감소
+          this.likeCount++;
           alert("좋아요를 눌렀습니다.");
         }
-
-        this.fetchBookmarkCount(postId);
+        this.fetchLikeCount(postId);
       } catch (error) {
         console.error('좋아요 처리 중 오류가 발생했습니다:', error);
       }
@@ -271,13 +269,13 @@ export default {
   position: relative;
   left: 425px;
   font-size: 14px;
-  top: -95px;
+  top: -70px;
 }
 
 .favorite-action{
   position: relative;
-  top:187px;
-  left:15px;
+  top:257px;
+  left:-40px;
 }
 .favorite-icon {
   cursor: pointer;
@@ -300,7 +298,7 @@ export default {
 }
 .like-action{
   position: relative;
-  top:225px;
+  top:314.5px;
   left:-50px;
 }
 .like-icon {
