@@ -4,8 +4,10 @@ import com.example.TodoList.dto.BoardDto;
 import com.example.TodoList.entity.Board;
 import com.example.TodoList.repository.BoardRepository;
 import com.example.TodoList.repository.BookmarkRepository;
+import com.example.TodoList.repository.LikeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,8 @@ public class BoardService {
     @Autowired
     private BookmarkRepository bookmarkRepository;
 
+    @Autowired
+    private LikeRepository likeRepository;
     @Transactional
     public List<BoardDto> getAllBoards() {
         List<Board> boards = boardRepository.findAll();
@@ -79,5 +83,9 @@ public class BoardService {
 
     public int getTotalBookmarks(Long postId){
         return bookmarkRepository.countByBoard_PostId(postId);
+    }
+
+    public int getTotalLikes(Long postId){
+        return likeRepository.countByBoard_PostId(postId);
     }
 }

@@ -42,7 +42,7 @@ public class LikeService {
 
     public void removeLike(String userId, Long postId) {
         UserLike like = likeRepository.findByUser_UserIdAndBoard_PostId(userId, postId)
-                .orElseThrow(() -> new RuntimeException("제거할 수 없습니다."));
+                .orElseThrow(() -> new RuntimeException("사용자 " + userId + "의 게시물 " + postId + "에 대한 좋아요가 존재하지 않습니다."));
 
         Board board = like.getBoard();
         likeRepository.delete(like);
