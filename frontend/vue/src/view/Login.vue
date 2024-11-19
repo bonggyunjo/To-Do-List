@@ -9,7 +9,7 @@
         <div class="input-group">
           <input type="password" style="position: relative;top:-8.516px;" class="password-text" id="password" v-model="password" placeholder="비밀번호" />
         </div>
-        <button type="submit" id="login-btn" class="btn btn-outline-primary">로그인</button>
+        <button type="submit" id="login-btn" class="btn btn-outline-primary" :disabled="isLoginDisabled">로그인</button>
       </form>
       <h6 class="link-text">
         <router-link to="/" style="font-weight: bolder; color: #0056b3; top:10px; position: relative;">비밀번호를 잊으셨나요?</router-link>
@@ -28,7 +28,9 @@ export default {
   data() {
     return {
       userId: '',
-      password: ''
+      password: '',
+      cnt: localStorage.getItem('loginAttempts') ? parseInt(localStorage.getItem('loginAttempts')) : 0,
+      isLoginDisabled: localStorage.getItem('isLoginDisabled') === 'true'
     };
   },
   methods: {
@@ -46,7 +48,6 @@ export default {
       const userData = {
         userId: this.userId,
         password: this.password,
-
       };
 
       try {
@@ -68,9 +69,22 @@ export default {
       } catch (error) {
         alert('로그인에 실패하였습니다. 아이디와 비밀번호를 확인해 주세요.');
         console.error('Error data', error);
+        this.cnt++;
+        localStorage.setItem('loginAttempts', this.cnt);
+
+        if (this.cnt === 5) {
+          alert("5회 이상 틀렸습니다. 잠시 후 다시 시도해 주세요.");
+          this.isLoginDisabled = true;
+          localStorage.setItem('isLoginDisabled', 'true');
+
+          setTimeout(() => {
+            this.isLoginDisabled = false;
+            localStorage.setItem('isLoginDisabled', 'false');
+            this.cnt = 0;
+            localStorage.removeItem('loginAttempts');
+          }, 60000); 
+        }
       }
-
-
     }
   }
 };
