@@ -48,16 +48,30 @@ public class Board {
 
     private int BookmarkCount;
 
+    @Column(name = "like_count")
+    private Integer like;
+
     public void incrementFavoriteCount() {
         this.BookmarkCount++;
     }
 
-    // 즐겨찾기 수를 감소시키는 메서드
     public void decrementFavoriteCount() {
         this.BookmarkCount--;
     }
+    public void incrementLikeCount() {
+        if (this.like == null) {
+            this.like = 0;
+        }
+        this.like++;
+    }
+
+    public void decrementLikeCount() {
+        if (this.like != null && this.like > 0) {
+            this.like--;
+        }
+    }
     @Builder
-    public Board(Long postId, User user, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt,int bookmarkCount) {
+    public Board(Long postId, User user, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt,int bookmarkCount,Integer like) {
         this.postId = postId;
         this.user = user;
         this.title = title;
@@ -65,5 +79,6 @@ public class Board {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.BookmarkCount= bookmarkCount;
+        this.like = (like!=null)?null:0;
     }
 }
