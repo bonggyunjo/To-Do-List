@@ -1,5 +1,6 @@
 <template>
   <div class="board-list">
+
     <div class="dropdown" style="position: relative; left:-470px; top:-15px; background-color: white; padding: 0;">
       <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color: #333333; font-size: 13.5px; border: none;">
         {{ selectedSort }}
@@ -7,7 +8,7 @@
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         <li class="dropdown-item" @click="sortPosts('latest')">최신 순</li>
         <li class="dropdown-item" @click="sortPosts('oldest')">오래된 순</li>
-        <li class="dropdown-item" @click="sortPosts('likes')">좋아요 순</li> <!-- 좋아요 순 추가 -->
+        <li class="dropdown-item" @click="sortPosts('likes')">좋아요 순</li>
       </ul>
     </div>
 
@@ -28,10 +29,17 @@
             <span class="post-title" style="position: relative; left:-175px;" @click="goToPost(post.postId)">{{ post.title }}</span>
             <small class="post-date" style="font-size: 14px; position: relative; left:-150px;" @click="goToPost(post.postId)">{{ formatDate(post.createdAt) }}</small>
             <span id="like-icon" class="fas fa-thumbs-up" :class="isLike ? 'fa-thumbs-up' : 'fa-thumbs-down'"></span>
-            <span class="like-count" style="margin-left: 10px;">{{ post.likeCount }}</span> <!-- 좋아요 수 표시 -->
+            <span class="like-count" style="margin-left: 10px;">{{ post.likeCount }}</span>
           </div>
         </li>
       </ul>
+
+      <form class="d-flex" @submit.prevent="filterPosts">
+        <input class="form-control me-2" type="text" v-model="searchQuery"
+               placeholder="search..." aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+
       <div class="pagination">
         <div class="page-numbers">
           <button
@@ -64,7 +72,9 @@ export default {
       currentPage: 1,
       postsPerPage: 10,
       sortOrder: 'latest',
-      selectedSort: '최신 순', // 초기 선택된 정렬 기준
+      selectedSort: '최신 순',
+      searchQuery: '',
+      filteredPosts: []
     };
   },
   created() {
@@ -72,23 +82,21 @@ export default {
   },
   computed: {
     totalPages() {
-      return Math.ceil(this.posts.length / this.postsPerPage);
+      return Math.ceil(this.filteredPosts.length / this.postsPerPage);
     },
     paginatedPosts() {
       const start = (this.currentPage - 1) * this.postsPerPage;
-      return this.posts.slice(start, start + this.postsPerPage);
+      return this.filteredPosts.slice(start, start + this.postsPerPage);
     }
   },
   methods: {
     async fetchPosts() {
       try {
         const response = await axios.get('http://localhost:8081/boards');
-        this.posts = response.data.reverse(); // 초기 데이터 반전
-
-        // 각 게시글의 좋아요 수를 가져오는 API 호출
+        this.posts = response.data.reverse();
         await Promise.all(this.posts.map(post => this.fetchLikeCount(post)));
-
-        this.sortPosts(this.sortOrder); // 초기 정렬
+        this.filteredPosts = this.posts;
+        this.sortPosts(this.sortOrder);
       } catch (error) {
         console.error('게시글을 가져오는 데 오류가 발생했습니다:', error);
       }
@@ -96,7 +104,7 @@ export default {
     async fetchLikeCount(post) {
       try {
         const response = await axios.get(`http://localhost:8081/${post.postId}/like/count`);
-        post.likeCount = response.data; // 각 게시글에 좋아요 수 추가
+        post.likeCount = response.data;
       } catch (error) {
         console.error('좋아요 수를 가져오는 데 오류가 발생했습니다:', error);
       }
@@ -106,14 +114,22 @@ export default {
       this.sortOrder = order;
 
       if (order === 'latest') {
-        this.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        this.filteredPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       } else if (order === 'oldest') {
-        this.posts.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        this.filteredPosts.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
       } else if (order === 'likes') {
-        this.posts.sort((a, b) => b.likeCount - a.likeCount); // 좋아요 수 기준 정렬
+        this.filteredPosts.sort((a, b) => b.likeCount - a.likeCount); // 좋아요 수 기준 정렬
       }
 
-      this.currentPage = 1; // 정렬 후 첫 페이지로 이동
+      this.currentPage = 1;
+    },
+    filterPosts() {
+
+      const query = this.searchQuery.toLowerCase();
+      this.filteredPosts = this.posts.filter(post =>
+          post.title.toLowerCase().includes(query) || post.nickname.toLowerCase().includes(query)
+      );
+      this.currentPage = 1;
     },
     formatDate(dateString) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -128,6 +144,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .board-list {
@@ -278,5 +295,9 @@ ul {
   position: relative;
   left:620px;
   top:-23px;
+}
+.d-flex{
+  width: 500px;
+  margin: auto;
 }
 </style>
