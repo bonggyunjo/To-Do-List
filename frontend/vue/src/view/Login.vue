@@ -9,7 +9,8 @@
         <div class="input-group">
           <input type="password" style="position: relative;top:-8.516px;" class="password-text" id="password" v-model="password" placeholder="비밀번호" />
         </div>
-        <button type="submit" id="login-btn" class="btn btn-outline-primary" :disabled="isLoginDisabled">로그인</button>
+        <button type="submit" id="login-btn" class="btn btn-outline-primary">로그인</button>
+        <p v-if="isLoginDisabled" class="error-message">5회 이상 로그인에 실패하였습니다.<br> 잠시 후에 다시 시도해주세요.</p>
       </form>
       <h6 class="link-text">
         <router-link to="/" style="font-weight: bolder; color: #0056b3; top:10px; position: relative;">비밀번호를 잊으셨나요?</router-link>
@@ -29,13 +30,23 @@ export default {
     return {
       userId: '',
       password: '',
-      cnt: localStorage.getItem('loginAttempts') ? parseInt(localStorage.getItem('loginAttempts')) : 0,
-      isLoginDisabled: localStorage.getItem('isLoginDisabled') === 'true'
+      cnt:0,
+      isLoginDisabled: false,
+      disableUntil: null,
     };
   },
   methods: {
     async login() {
-      // 로그인 로직
+
+      if (this.isLoginDisabled) {
+        const timeLeft = this.disableUntil - Date.now();
+        if (timeLeft > 0) {
+          alert(`잠시 후 다시 시도해주세요. 남은 시간: ${Math.ceil(timeLeft / 1000)}초`);
+          return;
+        } else {
+          this.isLoginDisabled = false; 
+        }
+      }
       if (!this.userId) {
         alert("아이디를 입력하세요.");
         return;
@@ -48,6 +59,7 @@ export default {
       const userData = {
         userId: this.userId,
         password: this.password,
+
       };
 
       try {
@@ -70,21 +82,16 @@ export default {
         alert('로그인에 실패하였습니다. 아이디와 비밀번호를 확인해 주세요.');
         console.error('Error data', error);
         this.cnt++;
-        localStorage.setItem('loginAttempts', this.cnt);
+        if(this.cnt===5){
+          this.isLoginDisabled=true;
+          this.disableUntil = Date.now() + 30000; // 5분 후
+          this.cnt=0;
+          alert("5회 이상 틀렸습니다.잠시후 다시 시도해 주세요.");
 
-        if (this.cnt === 5) {
-          alert("5회 이상 틀렸습니다. 잠시 후 다시 시도해 주세요.");
-          this.isLoginDisabled = true;
-          localStorage.setItem('isLoginDisabled', 'true');
-
-          setTimeout(() => {
-            this.isLoginDisabled = false;
-            localStorage.setItem('isLoginDisabled', 'false');
-            this.cnt = 0;
-            localStorage.removeItem('loginAttempts');
-          }, 60000); 
         }
       }
+
+
     }
   }
 };
@@ -169,5 +176,12 @@ h4 {
 .login-text, .password-text{
   font-size: 13.5px;
 }
-
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+  position: relative;
+  top:20px;
+}
 </style>
