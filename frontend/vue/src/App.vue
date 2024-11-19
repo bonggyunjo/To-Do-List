@@ -10,6 +10,8 @@
 
 import AppHeader from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
+import '@fortawesome/fontawesome-free/css/all.css';
+
 export default {
   name: 'App',
   components: {
