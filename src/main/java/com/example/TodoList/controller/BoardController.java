@@ -56,4 +56,9 @@ public class BoardController {
         int count = boardService.getTotalBookmarks(postId);
         return ResponseEntity.ok(count);
     }
+    @GetMapping("/{postId}/like/count")
+    public ResponseEntity<Integer> getLikeCount(@PathVariable Long postId){
+        int count = boardService.getTotalLikes(postId);
+        return ResponseEntity.ok(count);
+    }
 }
