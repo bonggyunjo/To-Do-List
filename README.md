@@ -28,7 +28,7 @@
 ![image](https://github.com/user-attachments/assets/182efa26-27bb-4723-a258-33ecfec7c11e)
 
 
-### Screen
+### Screen (URL : 준비중)
 <table style="width: 1250px; border-collapse: collapse;">
     <tr>
         <th style="text-align: left; padding: 10px; border: 1px solid #ddd;">메인화면</th>
