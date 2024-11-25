@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/c779aff5-2c78-4886-add9-64411ac55189)# 📌 To-Do-List Project
+# 📌 To-Do-List Project
 
 - **프로젝트 명**: To-Do-List Project
 - **프로젝트 기간**: 2024년 07월 03일 ~ 2024년 11월 25일
@@ -8,6 +8,10 @@
 ![image](https://github.com/user-attachments/assets/652aefcd-b6b9-4c36-ad65-7a390642ef06)
 
 <br>
+
+## 프로젝트 명세서 & API 명세서
+-
+-
 
 ## 실행 방법
 ### 1.  node.js 설치
