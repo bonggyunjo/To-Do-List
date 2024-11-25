@@ -9,7 +9,7 @@
 <br>
 
 ## 프로젝트 명세서 & API 명세서
--
+- <a href="https://o365deu-my.sharepoint.com/:x:/g/personal/20193182_office_deu_ac_kr/EbAdew-JhnFNiDy2H1IBnC0ByMPUyS1jvPGvT00tVA6Y3w?e=cXZDGy" class="no-underline">🔍프로젝트 명세서</a>
 -
 
 ## 실행 방법
