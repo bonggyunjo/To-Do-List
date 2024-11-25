@@ -2,7 +2,6 @@
 
 - **프로젝트 명**: To-Do-List Project
 - **프로젝트 기간**: 2024년 07월 03일 ~ 2024년 11월 25일
-
 <br>
 
 ![image](https://github.com/user-attachments/assets/652aefcd-b6b9-4c36-ad65-7a390642ef06)
@@ -112,14 +111,6 @@
 <h4>6. 작업 관리 </h4>
    <img src="https://github.com/user-attachments/assets/b9706f4d-1d22-4719-8de2-66eea576c1ae" alt="게시판 이미지 4" width="500" height="250" style="margin: 5px;" />
   <img src="https://github.com/user-attachments/assets/064d8390-d465-4838-8056-e4d8df922ae7" alt="게시판 이미지 4" width="500" height="250" style="margin: 5px;" />
-
-
-
----
-
-
-
-
 
 
 
