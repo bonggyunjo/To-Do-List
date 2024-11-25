@@ -10,11 +10,10 @@
           <input type="password" style="position: relative;top:-8.516px;" class="password-text" id="password" v-model="password" placeholder="비밀번호" />
         </div>
         <button type="submit" id="login-btn" class="btn btn-outline-primary">로그인</button>
+        <p v-if="isLoginDisabled" class="error-message">5회 이상 로그인에 실패하였습니다.<br> 잠시 후에 다시 시도해주세요.</p>
       </form>
-
-      <span style="color:#555555; position: relative; top:20px;">────────── <span style="font-size: 13px;">또는</span> ──────────</span>
       <h6 class="link-text">
-        <router-link to="/" style="font-weight: bolder; color: #0056b3; top:5px; position: relative;">비밀번호를 잊으셨나요?</router-link>
+        <router-link to="/" style="font-weight: bolder; color: #0056b3; top:10px; position: relative;">비밀번호를 잊으셨나요?</router-link>
         <br><br><br>
         <span style="font-size: 14.5px; font-weight: bolder; color: #333333;">계정이 없으신가요?</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<router-link to="/signup" style="font-weight: bolder; font-size: 15px;">가입하기</router-link>
       </h6>
@@ -30,12 +29,24 @@ export default {
   data() {
     return {
       userId: '',
-      password: ''
+      password: '',
+      cnt:0,
+      isLoginDisabled: false,
+      disableUntil: null,
     };
   },
   methods: {
     async login() {
-      // 로그인 로직
+
+      if (this.isLoginDisabled) {
+        const timeLeft = this.disableUntil - Date.now();
+        if (timeLeft > 0) {
+          alert(`잠시 후 다시 시도해주세요. 남은 시간: ${Math.ceil(timeLeft / 1000)}초`);
+          return;
+        } else {
+          this.isLoginDisabled = false; 
+        }
+      }
       if (!this.userId) {
         alert("아이디를 입력하세요.");
         return;
@@ -48,19 +59,21 @@ export default {
       const userData = {
         userId: this.userId,
         password: this.password,
+
       };
 
       try {
         const res = await axios.post('http://localhost:8081/login', userData);
 
-        console.log('API 응답:', res); // 전체 응답을 확인
-        console.log('응답 데이터:', res.data); // 응답 데이터 확인
+        console.log('API 응답:', res);
+        console.log('응답 데이터:', res.data);
 
         if (res.data && res.data.token) {
           alert('로그인에 성공하였습니다.');
           localStorage.setItem('token', res.data.token);
           axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
           this.$store.commit('setUserId', res.data.userId);
+          this.$store.commit('setUserNickname', res.data.nickname);
           this.$router.push('/');
         } else {
           alert('토큰이 응답에 없습니다. 로그인 실패.');
@@ -68,6 +81,14 @@ export default {
       } catch (error) {
         alert('로그인에 실패하였습니다. 아이디와 비밀번호를 확인해 주세요.');
         console.error('Error data', error);
+        this.cnt++;
+        if(this.cnt===5){
+          this.isLoginDisabled=true;
+          this.disableUntil = Date.now() + 30000; // 5분 후
+          this.cnt=0;
+          alert("5회 이상 틀렸습니다.잠시후 다시 시도해 주세요.");
+
+        }
       }
 
 
@@ -83,7 +104,6 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f7f7f7;
 }
 
 .login-box {
@@ -156,5 +176,12 @@ h4 {
 .login-text, .password-text{
   font-size: 13.5px;
 }
-
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+  position: relative;
+  top:20px;
+}
 </style>

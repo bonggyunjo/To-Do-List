@@ -42,7 +42,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             String userId = credentials.get("userId");
             String password = credentials.get("password");
             System.out.println(userId);
-            // 나머지 코드
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, password, null);
             return authenticationManager.authenticate(authToken);
         } catch (IOException e) {
@@ -50,12 +49,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
-    //로그인 성공시 실행 (여기서 JWT를 발급)
+    //로그인 성공시 실행
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         String userId = customUserDetails.getUsername();
-
+        String nickname = customUserDetails.getUserNickname();
         // Role 추출
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String role = authorities.stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null);
@@ -66,9 +65,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         // JWT를 응답 헤더에 추가
         response.addHeader("Authorization", "Bearer " + token);
 
-        // 응답 본체에 JWT 포함
+        // 응답 본체에 JWT, userId포함 + 필요한 경우 nickname도 여기에 추가하면 됨
         response.setContentType("application/json");
-        response.getWriter().write("{\"token\": \"" + token + "\"}");
+        response.getWriter().write("{\"userId\": \"" + userId + "\", \"token\": \"" + token + "\", \"nickname\": \"" + nickname + "\"}");
 
         log.info("Login successful: {}", userId);
     }

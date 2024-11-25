@@ -180,10 +180,10 @@ export default {
         const result = res.data;
         if (result) {
           alert('사용 가능한 닉네임입니다.');
-          this.isNicknameAvailable = true; // 닉네임 사용 가능 상태 업데이트
+          this.isNicknameAvailable = true;
         } else if(!result) {
           alert("이미 사용중인 닉네임입니다..");
-          this.isNicknameAvailable = false; // 닉네임 사용 불가 상태 업데이트
+          this.isNicknameAvailable = false;
         }
       })
     }

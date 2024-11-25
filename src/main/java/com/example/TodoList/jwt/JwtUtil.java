@@ -2,6 +2,7 @@ package com.example.TodoList.jwt;
 
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ public class JwtUtil {
     public JwtUtil(@Value("${spring.jwt.secret}")String secret) {
 
 
-        secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+        secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
     }
 
     public String getUsername(String token) {
@@ -42,7 +43,7 @@ public class JwtUtil {
     //토큰 생성
     public String createJwt(String userId, String role, Long expiredMs) {
 
-        //빌더 패턴
+
         return Jwts.builder()
                 .claim("userId", userId)
                 .claim("role", role)
