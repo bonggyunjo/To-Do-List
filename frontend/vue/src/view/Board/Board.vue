@@ -37,7 +37,14 @@
       <form class="d-flex" @submit.prevent="filterPosts">
         <input class="form-control me-2" type="text" v-model="searchQuery"
                placeholder="search..." aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <button type="submit" id="search-btn">
+          <i class="fas" :class="isLike ? 'fa-search' : 'fa-search-minus'"></i>
+          <!-- 필요에 따라 버튼 텍스트 추가 -->
+        </button>
+
+
+
+
       </form>
 
       <div class="pagination">
@@ -284,7 +291,7 @@ ul {
 }
 
 .dropdown-item:hover {
-  background-color: #f8f9fa; 
+  background-color: #f8f9fa;
 }
 #like-icon{
   position: relative;
@@ -299,5 +306,17 @@ ul {
 .d-flex{
   width: 500px;
   margin: auto;
+}
+#search-btn{
+  font-size: 13px;
+  width: 40px;
+  height: 33px;
+  font-weight: bolder;
+  position: relative;
+  top:2px;
+  border: 2px solid #333333;
+  color: #333333;
+  background-color: white;
+  border-radius: 3px;
 }
 </style>
