@@ -1,6 +1,6 @@
-# 📌 To-Do-List Project
+# 📌 To-Do-List
 
-- **프로젝트 명**: To-Do-List Project
+- **프로젝트 명**: To-Do-List 
 - **프로젝트 기간**: 2024년 07월 03일 ~ 2024년 11월 25일
 <br>
 
