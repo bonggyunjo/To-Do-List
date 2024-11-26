@@ -88,29 +88,20 @@
     </tr>
 </table>
 
-<h4>5. 게시판</h4>
-<table style="width: 100%; border-collapse: collapse;">
-    <tr>
-        <td style="padding: 10px; border: 1px solid #ddd;">
-            <img src="https://github.com/user-attachments/assets/f29dc02a-cbed-448f-a44f-f5d975aebd40" alt="게시판 이미지 1" width="500" height="250" style="margin: 5px;" />
-        </td>
-        <td style="padding: 10px; border: 1px solid #ddd;">
-            <img src="https://github.com/user-attachments/assets/c8d6d8c7-af34-4608-99bd-338e89765c4f" alt="게시판 이미지 2" width="500" height="250" style="margin: 5px;" />
-        </td>
-    </tr>
-    <tr>
-        <td style="padding: 10px; border: 1px solid #ddd;">
-            <img src="https://github.com/user-attachments/assets/dd90b0ba-b876-429c-8176-892478002d15" alt="게시판 이미지 3" width="500" height="250" style="margin: 5px;" />
-        </td>
-        <td style="padding: 10px; border: 1px solid #ddd;">
-            <img src="https://github.com/user-attachments/assets/b0162470-64fb-44d6-9044-151c03040309" alt="게시판 이미지 4" width="500" height="250" style="margin: 5px;" />
-        </td>
-    </tr>
-</table>
+<h3>5. 게시판</h3>
 
-<h4>6. 작업 관리 </h4>
-   <img src="https://github.com/user-attachments/assets/b9706f4d-1d22-4719-8de2-66eea576c1ae" alt="게시판 이미지 4" width="500" height="250" style="margin: 5px;" />
-  <img src="https://github.com/user-attachments/assets/064d8390-d465-4838-8056-e4d8df922ae7" alt="게시판 이미지 4" width="500" height="250" style="margin: 5px;" />
+- 게시판 조회, 작성, 수정, 삭제
+- 즐겨찾기
+- 좋아요
+- 정렬 (오래된 순, 최신 순, 좋아요 순)
+- 검색
 
+<h3>6. 작업 관리</h3>
+
+- 페이지 조회, 생성, 수정, 삭제
+- 블록 페이지 생성, 조회, 수정, 삭제
+- 공유
+- 휴지통
+- 태그
 
 
