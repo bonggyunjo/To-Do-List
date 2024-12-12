@@ -2,6 +2,7 @@ package com.example.TodoList.service;
 
 import com.example.TodoList.dto.BoardDto;
 import com.example.TodoList.entity.Board;
+import com.example.TodoList.entity.User;
 import com.example.TodoList.repository.BoardRepository;
 import com.example.TodoList.repository.BookmarkRepository;
 import com.example.TodoList.repository.LikeRepository;
@@ -87,5 +88,9 @@ public class BoardService {
 
     public int getTotalLikes(Long postId){
         return likeRepository.countByBoard_PostId(postId);
+    }
+
+    public List<Board> getBoardByUser(User user){
+        return boardRepository.findByUser(user);
     }
 }

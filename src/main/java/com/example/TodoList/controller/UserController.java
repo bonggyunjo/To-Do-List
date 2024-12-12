@@ -3,7 +3,10 @@ package com.example.TodoList.controller;
 import com.example.TodoList.dto.SignUpDto;
 import com.example.TodoList.dto.UserInfoDto;
 import com.example.TodoList.dto.UserInfoUpdateDto;
+import com.example.TodoList.entity.Board;
+import com.example.TodoList.entity.User;
 import com.example.TodoList.repository.UserRepository;
+import com.example.TodoList.service.BoardService;
 import com.example.TodoList.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -21,6 +26,8 @@ public class  UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BoardService boardService;
 
     @PostMapping("/signup")
     public ResponseEntity<String> registerUser(@RequestBody SignUpDto signUpDto) {
@@ -74,5 +81,15 @@ public class  UserController {
     public ResponseEntity<String> deleteUser(@RequestParam String userId){
         userService.deleteuser(userId);
         return ResponseEntity.status(HttpStatus.OK).body("회원 탈퇴 완료");
+    }
+
+    @GetMapping("/mypage/board/get/{userId}")
+    public ResponseEntity<List<Board>> myPage(@PathVariable String userId) {
+        User user = userService.findByUsername(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        List<Board> posts = boardService.getBoardByUser(user);
+
+        return ResponseEntity.ok(posts);
     }
 }

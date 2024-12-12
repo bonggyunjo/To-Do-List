@@ -15,6 +15,7 @@ import EditBoardPage from "@/view/Board/EditBoard.vue";
 import MainPage from "@/view/Record/RecordMainPage.vue";
 import BlockDetail from "@/view/Record/BlockDetail.vue";
 import TrashPage from "@/view/Record/TrashPage.vue";
+import MyPageBoard from "@/view/MyPage/GetBoardList.vue"
 Vue.use(VueRouter)
 
 const routes = [
@@ -33,7 +34,8 @@ const routes = [
     { path: '/board/edit/:postId', component: EditBoardPage, meta: { hideFooter: true,hideHeader: false}},
     { path: '/pages/:userId', component: MainPage, meta: { hideFooter: true,hideHeader: true}},
     { path: '/block/:id', name: 'BlockDetail', component: BlockDetail,meta: { hideFooter: true,hideHeader: true}},
-    { path: '/trash', name:'TrashPage', component:TrashPage, meta: { hideFooter: true,hideHeader: true}}
+    { path: '/trash', name:'TrashPage', component:TrashPage, meta: { hideFooter: true,hideHeader: true}},
+    { path: '/mypage/board/get', component: MyPageBoard, meta: { hideHeader: true,hideFooter: true, requiresAuth: true}},
 ]
 
 const router = new VueRouter({

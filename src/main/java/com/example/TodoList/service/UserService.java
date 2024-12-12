@@ -3,7 +3,9 @@ package com.example.TodoList.service;
 import com.example.TodoList.dto.SignUpDto;
 import com.example.TodoList.dto.UserInfoDto;
 import com.example.TodoList.dto.UserInfoUpdateDto;
+import com.example.TodoList.entity.Board;
 import com.example.TodoList.entity.User;
+import com.example.TodoList.repository.BoardRepository;
 import com.example.TodoList.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -93,4 +96,9 @@ public class UserService {
     public void deleteuser(String userId){
         userRepository.deleteById(userId);
     }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUserId(username);
+    }
+
 }
