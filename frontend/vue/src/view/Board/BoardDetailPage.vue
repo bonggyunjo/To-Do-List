@@ -18,7 +18,7 @@
         <router-link :to="`/board/edit/${post.postId}`" style="text-decoration: none; color: black;">
           <span>수정</span>
         </router-link>
-        <span style="position: relative; left:5px; color: red;" @click="deletePost(post.postId)">삭제</span>
+        <span style="position: relative; left:5px; color: red;" @click="deletePost(post.postId)"  >삭제</span>
       </div>
 
       <span class="like-action">
@@ -27,7 +27,6 @@
   </span>
         <span class="like-count">{{ likeCount > 0 ? likeCount : 0 }}</span>
       </span>
-
     </div>
     <div v-else>로딩 중...</div>
     <router-link to="/board">
@@ -40,14 +39,18 @@
   </span>
       <span class="bookmark-count"> {{ bookmarkCount > 0 ? bookmarkCount : 0 }}</span>
     </span>
+    <CommentComponent :postId="post.postId" :userNickname="userNickname" />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { mapGetters } from 'vuex';
-
+import CommentComponent from '@/components/CommentComponent.vue';
 export default {
+  components: {
+    CommentComponent
+  },
   data() {
     return {
       post: null,

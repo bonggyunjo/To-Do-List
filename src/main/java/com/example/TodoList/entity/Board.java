@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @Entity
 @Table(name = "board")
@@ -70,6 +70,16 @@ public class Board {
             this.like--;
         }
     }
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
+    // 댓글 추가 메서드
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setBoard(this);
+    }
+
     @Builder
     public Board(Long postId, User user, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt,int bookmarkCount,Integer like) {
         this.postId = postId;
