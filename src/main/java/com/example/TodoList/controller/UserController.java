@@ -1,5 +1,6 @@
 package com.example.TodoList.controller;
 
+import com.example.TodoList.dto.BoardDto;
 import com.example.TodoList.dto.SignUpDto;
 import com.example.TodoList.dto.UserInfoDto;
 import com.example.TodoList.dto.UserInfoUpdateDto;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -84,12 +86,30 @@ public class  UserController {
     }
 
     @GetMapping("/mypage/board/get/{userId}")
-    public ResponseEntity<List<Board>> myPage(@PathVariable String userId) {
+    public ResponseEntity<List<BoardDto>> myPage(@PathVariable String userId) {
         User user = userService.findByUsername(userId)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         List<Board> posts = boardService.getBoardByUser(user);
 
-        return ResponseEntity.ok(posts);
+        // Debugging: Log the posts retrieved
+        System.out.println("Retrieved posts: " + posts);
+
+        List<BoardDto> boardDtos = posts.stream()
+                .map(board -> {
+                    BoardDto dto = new BoardDto();
+                    dto.setPostId(board.getPostId());
+                    dto.setUserId(board.getUser().getUserId());
+                    dto.setNickname(board.getUser().getNickname());
+                    dto.setTitle(board.getTitle());
+                    dto.setContent(board.getContent());
+                    dto.setCreatedAt(board.getCreatedAt());
+                    dto.setUpdatedAt(board.getUpdatedAt());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(boardDtos);
     }
+
 }

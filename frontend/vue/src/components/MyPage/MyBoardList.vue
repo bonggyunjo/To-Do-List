@@ -8,18 +8,25 @@
         <div class="table-title">작성일</div>
       </div>
       <div style="border-top: 1px solid #e0e0e0;"></div>
-      <ul>
+      <ul v-if="boards.length > 0">
         <li v-for="post in boards" :key="post.postId" class="post-item">
           <div class="post-info">
             <span class="post-id" @click="goToPost(post.postId)">{{ post.postId }}</span>
-            <span class="post-user" @click="goToPost(post.postId)">{{ post.nickname }}</span>
+            <span class="post-user" @click="goToPost(post.postId)">
+              {{ post.user ? post.user.nickname : '익명' }}
+            </span>
             <span class="post-title" @click="goToPost(post.postId)">{{ post.title }}</span>
-            <small class="post-date" @click="goToPost(post.postId)">{{ formatDate(post.createdAt) }}</small>
+            <small class="post-date" @click="goToPost(post.postId)">
+              {{ formatDate(post.createdAt) }}
+            </small>
           </div>
+          <!-- 댓글 출력 부분 제거 -->
         </li>
       </ul>
-      <button @click="goBack" class="back-button">뒤로가기</button> <!-- 뒤로가기 버튼 추가 -->
-      <p v-if="!boards.length" class="no-boards">게시글이 없습니다.</p>
+
+      <p v-if="isLoading" class="loading">로딩 중...</p>
+      <p v-if="!boards.length && !isLoading" class="no-boards">게시글이 없습니다.</p>
+      <button v-if="!isLoading" @click="goBack" class="back-button">뒤로가기</button>
     </div>
   </main>
 </template>
@@ -32,17 +39,20 @@ export default {
   data() {
     return {
       boards: [], // 게시글 목록을 저장할 배열
+      isLoading: true, // 로딩 상태 추가
     };
   },
   created() {
     this.fetchBoards();
   },
+
   methods: {
     async fetchBoards() {
       const userId = this.$store.getters.getUserId;
       const token = localStorage.getItem('token');
       if (!userId || !token) {
         console.error('사용자 ID 또는 토큰이 없습니다. 로그인 후 다시 시도하세요.');
+        this.isLoading = false; // 로딩 종료
         return;
       }
       try {
@@ -51,16 +61,32 @@ export default {
             'Authorization': `Bearer ${token}`
           }
         });
-        this.boards = response.data;
+
+        console.log('게시글 응답:', response.data); // 응답 데이터 확인
+        console.log('필터링된 게시글:', this.boards); // 필터링 후 게시글 로그 추가
+
+        // 응답 데이터가 배열인지 확인
+        if (Array.isArray(response.data)) {
+          this.boards = response.data.filter(post => post.postId && post.nickname && post.title && post.createdAt);
+
+          console.log('필터링된 게시글:', this.boards); // 필터링된 게시글 확인
+        } else {
+          console.error('응답 데이터가 배열이 아닙니다:', response.data);
+          this.boards = []; // 비어있는 배열로 초기화
+        }
+
+        console.log('현재 boards 배열:', this.boards); // 현재 boards 배열의 내용 확인
       } catch (error) {
         console.error('게시글을 가져오는 데 실패했습니다:', error);
+      } finally {
+        this.isLoading = false; // 로딩 종료
       }
     },
     goToPost(postId) {
-      this.$router.push({ path: `/board/detail/${postId}` }); // 경로 수정
+      this.$router.push({ path: `/board/detail/${postId}` });
     },
     goBack() {
-      this.$router.go(-1); // 이전 페이지로 돌아가기
+      this.$router.push('/mypage'); // mypage 경로로 이동
     },
     formatDate(dateString) {
       const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -96,8 +122,8 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   position: relative;
-  left:400px;
-  top:20px;
+  left: 400px;
+  top: 20px;
 }
 
 .back-button:hover {
