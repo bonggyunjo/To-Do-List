@@ -186,6 +186,7 @@ export default{
   position: relative;
   left:425px;
   top:255px;
+  font-size: 12.5px;
 }
 
 </style>

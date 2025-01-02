@@ -1,7 +1,9 @@
 <template>
   <div class="sidebar">
     <h6 class="header-title">설정</h6>
-    <button id="board-btn" @click="goToMyPosts">내가 작성한 게시글</button>
+    <button id="board-btn" @click="goToMyPosts">작성한 게시글</button>
+    <button id="board-btn" @click="goToMyRecords">작업 목록</button>
+    <button id="board-btn" @click="goToMyTrash">휴지통</button>
   </div>
 </template>
 
@@ -12,6 +14,12 @@ export default {
     goToMyPosts() {
       // 버튼 클릭 시 /mypage/board/get 경로로 이동
       this.$router.push('/mypage/board/get');
+    },
+    goToMyRecords(userId) {
+      this.$router.push(`/pages/${userId}`);
+    },
+    goToMyTrash(){
+      this.$router.push(`/trash`);
     }
   }
 }
@@ -37,8 +45,15 @@ export default {
   color: #343a40;
   font-size: 18px;
 }
-#board-btn{
+
+#board-btn {
+font-size: 14px;
+  width: 150px;
+  height: 40px;
   background-color: white;
-  border:none;
+  border: none;
+  color: #333333;
+  font-weight: bolder;
 }
+
 </style>

@@ -1,3 +1,6 @@
+물론이죠! 아래는 닉네임의 길이에 상관없이 왼쪽 부분이 고정되도록 수정한 코드입니다:
+
+```html
 <template>
   <main class="content">
     <h6 class="content-title">계정 삭제</h6>
@@ -5,7 +8,9 @@
     <div class="content-line"></div>
 
     <span class="content-for-delete-ismain">
-        <div style="position: relative; left:-50px;"><span style="font-weight: bolder; font-size: 18px;">{{userNickname}}</span>님 <span class="bounce">계정을 삭제하시겠습니까 ?</span></div>
+      <div class="delete-confirmation">
+        <span class="nickname">{{ userNickname }}</span>님 <span class="bounce">계정을 삭제하시겠습니까?</span>
+      </div>
       <br>
       계정 삭제 시 모든 데이터는 즉시 삭제되며 복구할 수 없습니다.
       <br>
@@ -14,21 +19,20 @@
       <span style="position: relative; left:-104.5px;">필요시 백업을 고려하세요.</span>
       <br>
       <span style="position: relative; left:-30px; top:60px; color: green; font-weight: bolder; font-size: 13px;">위의 사항을 확인하였으며, 이에 동의합니다.</span>
-      </span>
+    </span>
     <div class="form-check" style="position: relative; top:46px; left:-3px;">
-      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"  v-model="isChecked">
-      <label class="form-check-label" for="defaultCheck1">
-      </label>
+      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" v-model="isChecked">
+      <label class="form-check-label" for="defaultCheck1"></label>
     </div>
-    <button class="btn btn-outline-danger" id="delete-user-button"  :disabled="!isChecked" @click="deleteUser">계정 삭제</button>
+    <button class="btn btn-outline-danger" id="delete-user-button" :disabled="!isChecked" @click="deleteUser">계정 삭제</button>
   </main>
 </template>
 
 <script>
 import axios from 'axios';
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 export default {
-  name : 'DeleteUser',
+  name: 'DeleteUser',
   data() {
     return {
       isChecked: false,
@@ -36,11 +40,11 @@ export default {
   },
   computed: {
     ...mapGetters(['userNickname']),
-    nickname(){
+    nickname() {
       return this.userNickname;
     }
   },
-  methods:{
+  methods: {
     async deleteUser() {
       if (!this.isChecked) {
         alert('계정 삭제를 위해 동의해야 합니다.');
@@ -57,7 +61,7 @@ export default {
             userId: userId // userId를 쿼리 파라미터로 추가
           }
         });
-        console.log("res",res);
+        console.log("res", res);
 
         this.$store.commit('clearUserData');
         localStorage.removeItem('token');
@@ -76,36 +80,50 @@ export default {
 .content {
   width: 80%;
   position: relative;
-  top:20px;
+  top: 20px;
 }
 
-.content-title{
+.content-title {
   margin-bottom: 10px;
   font-weight: bolder;
   color: black;
   font-size: 15px;
   position: relative;
-  left:-474px;
-  top:-20px;
+  left: -474px;
+  top: -20px;
 }
 
-.content-line{
+.content-line {
   border-top: 1px solid lightgrey;
   width: 100%;
 }
 
-.content-for-delete-ismain{
+.content-for-delete-ismain {
   position: relative;
-  top:10px;
-  left:-325px;
+  top: 10px;
+  left: -325px;
   font-size: 13px;
   color: #333333;
 }
 
-#delete-user-button{
+.delete-confirmation {
+  display: flex;
+  align-items: center;
   position: relative;
-  top:240px;
-  left:460px;
+  left:32%;
+}
+
+.nickname {
+  font-weight: bolder;
+  font-size: 18px;
+  margin-right: 5px; /* 닉네임과 텍스트 사이의 간격 */
+}
+
+#delete-user-button {
+  position: relative;
+  top: 240px;
+  left: 460px;
+  font-size: 12px;
 }
 
 .bounce {

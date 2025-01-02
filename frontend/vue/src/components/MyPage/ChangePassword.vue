@@ -174,6 +174,7 @@ export default{
   position: relative;
   left:425px;
   top:240px;
+  font-size: 13px;
 }
 
 .password-match, .password-not-match {
