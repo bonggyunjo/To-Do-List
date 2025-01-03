@@ -104,8 +104,21 @@ public class PageService {
     public Page updateProgressStatus(Long id, ProgressStatus progressStatus) {
         Page page = pageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("페이지를 찾을 수 없습니다."));
-        page.setProgressStatus(progressStatus);
-        return pageRepository.save(page);
+
+
+        Page updatedPage = Page.builder()
+                .id(page.getId())
+                .title(page.getTitle())
+                .content(page.getContent())
+                .priority(page.getPriority())
+                .createdDate(page.getCreatedDate())
+                .modifiedDate(LocalDateTime.now())
+                .progressStatus(progressStatus)
+                .user(page.getUser())
+                .deleted(page.isDeleted())
+                .build();
+
+        return pageRepository.save(updatedPage);
     }
 
 }

@@ -158,7 +158,7 @@ export default {
         this.pages = this.pages.filter(selectedPage => selectedPage.id !== id);
 
         if (this.pages.length > 0) {
-          this.selectedPage = { ...this.pages[0] };
+          this.selectedPage = {...this.pages[0]};
           await this.fetchBlocks(this.selectedPage.id);
         } else {
           this.selectedPage = {};
@@ -177,7 +177,13 @@ export default {
         const response = await axios.get(`http://localhost:8081/pages/${this.getUserId}?deleted=false`);
         this.pages = response.data;
         if (this.pages.length > 0) {
-          this.selectedPage = { ...this.pages[0], content: this.pages[0].content || '', title: this.pages[0].title || '', priority: this.pages[0].priority || 0,  progressStatus: this.pages[0].progressStatus || 'PENDING'};
+          this.selectedPage = {
+            ...this.pages[0],
+            content: this.pages[0].content || '',
+            title: this.pages[0].title || '',
+            priority: this.pages[0].priority || 0,
+            progressStatus: this.pages[0].progressStatus || 'PENDING'
+          };
           await this.fetchBlocks(this.selectedPage.id);
         }
       } catch (error) {
@@ -197,10 +203,10 @@ export default {
       this.fetchBlocks(this.selectedPage.id);
     },
     goToBlockDetail(blockId) {
-      this.$router.push({ name: 'BlockDetail', params: { id: blockId } });
+      this.$router.push({name: 'BlockDetail', params: {id: blockId}});
     },
     formatTime(date) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric'};
+      const options = {year: 'numeric', month: 'long', day: 'numeric'};
       return new Date(date).toLocaleString(undefined, options);
     },
     shareLink() {
@@ -230,14 +236,14 @@ export default {
     },
     async updatePageTitle() {
       try {
-        await axios.put(`http://localhost:8081/pages/${this.selectedPage.id}`, { title: this.selectedPage.title });
+        await axios.put(`http://localhost:8081/pages/${this.selectedPage.id}`, {title: this.selectedPage.title});
         console.log('제목 업데이트 성공');
       } catch (error) {
         console.error('제목 업데이트 중 오류 발생:', error.response.data);
       }
     },
     async updatePageContent() {
-      this.adjustTextareaHeight({ target: this.$refs.cardContent });
+      this.adjustTextareaHeight({target: this.$refs.cardContent});
       try {
         const payload = {
           title: this.selectedPage.title,
@@ -277,44 +283,43 @@ export default {
       const userConfirmed = confirm(confirmationMessage);
 
       if (userConfirmed) {
-
-        this.selectedPage.progressStatus = newStatus;
-
-
-        await this.updateProgressStatus();
-
-
+        // 상태 업데이트
+        await this.updateProgressStatus(newStatus);
         this.movePageToCorrectList(newStatus);
-
         alert(`${newStatus === 'IN_PROGRESS' ? '진행 중' : '완료'} 상태로 변경되었습니다.`);
       } else {
-
         this.selectedPage.progressStatus = this.previousProgressStatus;
       }
     },
+
+    async updateProgressStatus(newStatus) {
+      try {
+        const payload = {
+          status: newStatus
+        };
+        await axios.patch(`http://localhost:8081/pages/${this.selectedPage.id}/progress`, payload);
+        console.log('진행 상태 업데이트 성공');
+
+        // 로컬 상태도 업데이트
+        this.selectedPage.progressStatus = newStatus;
+      } catch (error) {
+        console.error('진행 상태 업데이트 중 오류 발생:', error.response.data);
+      }
+    },
+
+
     movePageToCorrectList(status) {
       const id = this.selectedPage.id;
 
       // 상태에 따라 페이지를 적절한 배열로 이동
-      if (status === 'IN_PROGRESS') {
-
-        this.pages = this.pages.map(page => {
-          if (page.id === id) {
-            return { ...page, progressStatus: 'IN_PROGRESS' };
-          }
-          return page;
-        });
-      } else if (status === 'COMPLETED') {
-        // 완료 목록에 추가
-        this.pages = this.pages.map(page => {
-          if (page.id === id) {
-            return { ...page, progressStatus: 'COMPLETED' };
-          }
-          return page;
-        });
-      }
-    },
-
+      this.pages = this.pages.map(page => {
+        if (page.id === id) {
+          return {...page, progressStatus: status}; // 특정 페이지의 상태만 변경
+        }
+        return page;
+      });
+    }
+  },
     async updateProgressStatus() {
       try {
         const payload = {
@@ -322,16 +327,11 @@ export default {
         };
         await axios.patch(`http://localhost:8081/pages/${this.selectedPage.id}/progress`, payload);
         console.log('진행 상태 업데이트 성공');
-
-        // 페이지 데이터 다시 가져오기
-        await this.fetchPageData(); // 상태 변경 후 페이지 데이터를 다시 가져옴
+        // 페이지 데이터 다시 가져오기 로직 제거
       } catch (error) {
         console.error('진행 상태 업데이트 중 오류 발생:', error.response.data);
       }
-    },
-
-
-  }
+    }
 };
 </script>
 <style scoped>
