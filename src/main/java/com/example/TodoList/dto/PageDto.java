@@ -1,5 +1,6 @@
 package com.example.TodoList.dto;
 
+import com.example.TodoList.entity.record.ProgressStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,6 @@ public class PageDto {
     private List<Long> tagIds;
     private String userId;
     private Integer priority; // 우선순위 필드 추가
+    private ProgressStatus progressStatus; // 추가
+
 }

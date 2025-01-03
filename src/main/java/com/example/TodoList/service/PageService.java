@@ -4,6 +4,7 @@ import com.example.TodoList.entity.Board;
 import com.example.TodoList.entity.User;
 import com.example.TodoList.entity.record.Block;
 import com.example.TodoList.entity.record.Page;
+import com.example.TodoList.entity.record.ProgressStatus;
 import com.example.TodoList.repository.PageRepository;
 import com.example.TodoList.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class PageService {
     }
 
 
-    public Page createPage(String title, String content, Integer priority, String userId){
+    public Page createPage(String title, String content, Integer priority, String userId,ProgressStatus progressStatus){
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Page page = Page.builder()
@@ -35,6 +36,7 @@ public class PageService {
                 .priority(priority) // 우선순위 설정
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
+                .progressStatus(progressStatus) // 진행 상태 설정
                 .user(user)
                 .build();
         return pageRepository.save(page);
@@ -97,6 +99,13 @@ public class PageService {
 
     public List<Page> findByUserIdSortedByPriority(String userId) {
         return pageRepository.findByUser_UserIdOrderByPriority(userId);
+    }
+
+    public Page updateProgressStatus(Long id, ProgressStatus progressStatus) {
+        Page page = pageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("페이지를 찾을 수 없습니다."));
+        page.setProgressStatus(progressStatus);
+        return pageRepository.save(page);
     }
 
 }

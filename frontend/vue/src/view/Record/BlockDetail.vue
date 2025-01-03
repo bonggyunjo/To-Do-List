@@ -160,9 +160,9 @@ export default {
   max-width: 100%;
   height: 100vh;
   margin: 0;
-  background-color: #f9f9f9;
+  background-color: white;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
 }
 
 .content-area {
@@ -172,14 +172,12 @@ export default {
   flex-direction: column;
   position: relative;
   top: 30px;
-  color: #333333;
 }
 
 .block-title-input{
   font-size: 24px;
   color: #333333;
   border: none;
-  background-color: #f9f9f9;
 }
 
 .header {
@@ -193,7 +191,6 @@ export default {
   color: #666;
   margin: 20px 0;
   text-align: left;
-  background-color: #f9f9f9;
   border: none;
   outline: none;
 }

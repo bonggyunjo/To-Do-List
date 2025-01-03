@@ -37,7 +37,11 @@ public class Page {
     private Page parentPage;
 
     @Column(nullable = false)
-    private Integer priority; // 우선순위 필드 추가
+    private Integer priority;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ProgressStatus progressStatus = ProgressStatus.PENDING; // 기본값 설정
 
     @ManyToMany
     @JoinTable(
