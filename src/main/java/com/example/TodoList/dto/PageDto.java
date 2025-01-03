@@ -19,4 +19,5 @@ public class PageDto {
     private Long parentId;
     private List<Long> tagIds;
     private String userId;
+    private Integer priority; // 우선순위 필드 추가
 }

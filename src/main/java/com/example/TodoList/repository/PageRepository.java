@@ -18,4 +18,6 @@ public interface PageRepository extends JpaRepository<Page, Long > {
     List<Page> findByDeleted(boolean deleted);
 
     List<Page> findByUser_UserIdAndDeleted(String userId, boolean deleted);
+
+    List<Page> findByUser_UserIdOrderByPriority(String userId);
 }

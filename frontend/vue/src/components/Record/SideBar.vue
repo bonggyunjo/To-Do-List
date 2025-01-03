@@ -2,7 +2,7 @@
   <div class="sidebar">
     <div class="sidebar-header">
       <h2 class="sidebar-title" @click="goToMainPage">개인 페이지</h2>
-      <div class="header-actions"> <!-- 새로운 div로 버튼들을 감쌉니다 -->
+      <div class="header-actions">
         <img src="@/assets/records/write.png" width="20" height="25" class="write-button" @click="createPage"/>
         <router-link to="/trash" class="trash">
           <img src="@/assets/records/trash.png" width="31" height="28" class="trash"/>
@@ -18,6 +18,7 @@
         </div>
       </li>
     </ul>
+    <span class="sort-button" @click="sortPages">중요도</span> <!-- 정렬 버튼 추가 -->
     <router-link to="/" class="go-back">뒤로가기</router-link>
   </div>
 </template>
@@ -46,6 +47,9 @@ export default {
   methods: {
     createPage() {
       this.$emit('create-page');
+    },
+    sortPages() {
+      this.$emit('sort-pages'); // 부모에게 정렬 이벤트를 전달
     }
   }
 };
@@ -58,6 +62,7 @@ export default {
   padding-right: 20px;
   position: relative;
   top: 50px;
+  background-color: white;
 }
 
 .sidebar-header {
@@ -82,6 +87,16 @@ export default {
 .write-button {
   cursor: pointer;
   margin-left: 10px;
+}
+
+.sort-button {
+  margin-left: 10px; /* 정렬 버튼의 위치 조정 */
+  cursor: pointer;
+  color: #333333;
+  font-size: 14px;
+  font-weight: bolder;
+  position: relative;
+  left:-10px;
 }
 
 .page-list {
@@ -125,4 +140,5 @@ export default {
   margin-top: 20px;
   font-weight: bolder;
 }
+
 </style>

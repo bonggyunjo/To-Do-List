@@ -36,6 +36,9 @@ public class Page {
     @JoinColumn(name = "parent_id")
     private Page parentPage;
 
+    @Column(nullable = false)
+    private Integer priority; // 우선순위 필드 추가
+
     @ManyToMany
     @JoinTable(
             name = "page_tags",

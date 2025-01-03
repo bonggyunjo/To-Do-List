@@ -26,12 +26,13 @@ public class PageService {
     }
 
 
-    public Page createPage(String title, String content, String userId){
+    public Page createPage(String title, String content, Integer priority, String userId){
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Page page = Page.builder()
                 .title(title)
                 .content(content)
+                .priority(priority) // 우선순위 설정
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
                 .user(user)
@@ -86,4 +87,16 @@ public class PageService {
             throw new RuntimeException("블록 페이지를 찾을 수 없습니다.");
         }
     }
+
+    public Page updatePriority(Long id, Integer priority) {
+        Page page = pageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("페이지를 찾을 수 없습니다."));
+        page.setPriority(priority);
+        return pageRepository.save(page);
+    }
+
+    public List<Page> findByUserIdSortedByPriority(String userId) {
+        return pageRepository.findByUser_UserIdOrderByPriority(userId);
+    }
+
 }

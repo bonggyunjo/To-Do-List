@@ -6,6 +6,7 @@
         :formatTime="formatTime"
         :goToMainPage="goToMainPage"
         @create-page="handleCreatePage"
+        @sort-pages="sortPages"
     />
     <div class="content-area">
       <div class="header">
@@ -17,6 +18,23 @@
             placeholder="제목을 입력하세요"
             maxlength="10"
         />
+        <div class="priority-area">
+          <label for="priority-slider"><span class="priority-title">중요도</span></label>
+          <div class="slider-container">
+            <input
+                type="range"
+                id="priority-slider"
+                v-model="selectedPage.priority"
+                @input="updatePagePriority"
+                class="priority-slider"
+                min="0"
+                max="10"
+            />
+            <span class="priority-value">{{ selectedPage.priority }}</span>
+          </div>
+
+        </div>
+
         <div class="time-shared">
           <span class="time">{{ formatTime(selectedPage.createdDate) }}</span>
           <button class="create-page-button" @click="createBlockPage">새 페이지</button>
@@ -57,7 +75,13 @@ export default {
   data() {
     return {
       pages: [],
-      selectedPage: {},
+      selectedPage: {
+        title: '',
+        content: '',
+        priority: 0, // 우선순위 필드 추가
+        createdDate: '',
+        blocks: []
+      },
       deletedPages: []
     };
   },
@@ -133,7 +157,7 @@ export default {
         const response = await axios.get(`http://localhost:8081/pages/${this.getUserId}?deleted=false`);
         this.pages = response.data;
         if (this.pages.length > 0) {
-          this.selectedPage = { ...this.pages[0], content: this.pages[0].content || '', title: this.pages[0].title || '' };
+          this.selectedPage = { ...this.pages[0], content: this.pages[0].content || '', title: this.pages[0].title || '', priority: this.pages[0].priority || 0 };
           await this.fetchBlocks(this.selectedPage.id);
         }
       } catch (error) {
@@ -171,6 +195,7 @@ export default {
       const newPage = {
         title: '새 페이지',
         content: '새 페이지 내용',
+        priority: 0, // 우선순위를 항상 0으로 설정
         createdDate: new Date().toISOString(),
         userId: this.getUserId
       };
@@ -193,10 +218,10 @@ export default {
     async updatePageContent() {
       this.adjustTextareaHeight({ target: this.$refs.cardContent });
       try {
-        console.log('업데이트할 제목:', this.selectedPage.title);
         const payload = {
           title: this.selectedPage.title,
           content: this.selectedPage.content,
+          priority: this.selectedPage.priority, // 우선순위 포함
           userId: this.getUserId
         };
         await axios.put(`http://localhost:8081/pages/${this.selectedPage.id}`, payload);
@@ -204,6 +229,22 @@ export default {
       } catch (error) {
         console.error('내용 업데이트 중 오류 발생:', error.response.data);
       }
+    },
+    async updatePagePriority() {
+      try {
+        const payload = {
+          priority: this.selectedPage.priority // 우선순위 업데이트
+        };
+        await axios.patch(`http://localhost:8081/pages/${this.selectedPage.id}/priority`, payload);
+        console.log('우선순위 업데이트 성공');
+      } catch (error) {
+        console.error('우선순위 업데이트 중 오류 발생:', error.response.data);
+      }
+    },
+    sortPages() {
+      this.pages.sort((a, b) => {
+        return (a.priority || Infinity) - (b.priority || Infinity); // 우선순위로 정렬
+      });
     }
   }
 };
@@ -214,9 +255,7 @@ export default {
   max-width: 100%;
   height: 100vh;
   margin: 0;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
 
 .content-area {
@@ -226,6 +265,7 @@ export default {
   flex-direction: column;
   position: relative;
   top: 30px;
+  background-color: white;
 }
 
 .page-title-input {
@@ -234,7 +274,6 @@ export default {
   margin-bottom: 20px;
   border: none;
   outline: none;
-  background-color: #f9f9f9;
 }
 
 .card-content {
@@ -242,7 +281,7 @@ export default {
   color: #666;
   margin-bottom: 15px;
   text-align: left;
-  background-color: #f9f9f9;
+
   border: none;
   outline: none;
   min-height: 150px;
@@ -317,5 +356,53 @@ export default {
   cursor: pointer;
   font-size: 16px;
 }
+.slider-container {
+  display: flex;
+  align-items: center;
+}
 
+.priority-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  background: #ddd;
+  border-radius: 5px;
+  height: 5px;
+  margin: 0 10px;
+}
+
+.priority-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #4CAF50; /* 슬라이더 핀 색상 */
+  cursor: pointer;
+}
+
+.priority-slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #4CAF50; /* 슬라이더 핀 색상 */
+  cursor: pointer;
+}
+
+.priority-value {
+  font-size: 16px;
+  color: #333;
+}
+.priority-area{
+  position: relative;
+  left:360px;
+  top:-10px;
+}
+.priority-title{
+  position: relative;
+  left:-110px;
+  top:23px;
+  font-size: 13.5px;
+  color: #333333;
+  font-weight: bolder;
+}
 </style>
