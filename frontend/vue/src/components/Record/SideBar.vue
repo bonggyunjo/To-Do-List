@@ -10,8 +10,6 @@
       </div>
     </div>
 
-
-
     <h3 class="section-title">목록</h3>
     <ul class="page-list">
       <li v-for="(pageItem, index) in pendingPages" :key="index" @click="selectPage(index)" class="page-item">
@@ -41,7 +39,6 @@
         </div>
       </li>
     </ul>
-    <span class="sort-button" @click="sortPages">중요도</span>
     <router-link to="/" class="go-back">뒤로가기</router-link>
   </div>
 </template>
@@ -123,16 +120,6 @@ export default {
   margin-left: 10px;
 }
 
-.sort-button {
-  margin: 10px 0;
-  cursor: pointer;
-  color: #4CAF50;
-  font-size: 14px;
-  font-weight: bolder;
-  position: relative;
-  left:-10px;
-}
-
 .section-title {
   font-size: 15px;
   color: #333;
@@ -180,7 +167,7 @@ export default {
 
 .go-back {
   text-decoration: none;
-  color: #4CAF50;
+  color: darkgreen;
   font-size: 14px;
   margin-top: 20px;
   font-weight: bolder;
