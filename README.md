@@ -4,7 +4,7 @@
 - **프로젝트 기간**: 2024년 07월 03일 ~ 2024년 11월 25일
 <br>
 
-![image](https://github.com/user-attachments/assets/652aefcd-b6b9-4c36-ad65-7a390642ef06)
+![image](https://github.com/user-attachments/assets/7ef3bf87-3811-4663-8b25-f4900cbfe5af)
 
 <br>
 
@@ -27,7 +27,7 @@
 ![image](https://github.com/user-attachments/assets/182efa26-27bb-4723-a258-33ecfec7c11e)
 
 
-### Screen ( <a href="https://youtu.be/tvqnYE0gTX0" class="no-underline">🎬 실행 영상 </a>)
+### Screen ( <a href="https://youtu.be/eMcfJc47V1U" class="no-underline">🎬 실행 영상 </a>)
 
 
 #### 1. 회원가입
