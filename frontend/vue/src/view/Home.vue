@@ -53,7 +53,7 @@
       <img src="@/assets/main/page.png"  class="first-image" width="700" height="380">
       </div>
       <div class="third-image">
-        <img src="@/assets/main/pagem.png"  class="first-image" width="447" height="474">
+        <img src="@/assets/main/pagem.png"  class="first-image" width="614" height="283">
       </div>
 
       <div class="second-image">
