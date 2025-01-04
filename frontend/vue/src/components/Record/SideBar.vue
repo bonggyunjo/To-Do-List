@@ -13,9 +13,11 @@
     <ul class="page-list">
       <li v-for="(pageItem, index) in pages" :key="index" @click="selectPage(index)" class="page-item">
         <div class="page-item-content">
-          {{ pageItem.title }}
+          <span class="page-title">{{ pageItem.title }}</span>
           <span class="time">{{ formatTime(pageItem.createdDate) }}</span>
+          <i v-if="pageItem.progressStatus === 'COMPLETED'" class="fas fa-check" aria-hidden="true"></i>
         </div>
+
       </li>
     </ul>
 
@@ -123,4 +125,9 @@ export default {
   font-size: 14px;
   margin-top: 20px;
   font-weight: bolder;
-} </style>
+}
+.page-item-content i {
+  color: green; /* 체크 아이콘 색상 */
+  margin-left: 5px; /* 제목과 체크 아이콘 사이의 간격 */
+}
+</style>

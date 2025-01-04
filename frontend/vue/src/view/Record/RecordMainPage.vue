@@ -14,10 +14,6 @@
       <p>페이지를 생성하세요</p>
     </div>
 
-    <div v-if="showStatusMessage" class="status-message" :style="{ color: getStatusColor(selectedPage.progressStatus), opacity: messageOpacity }">
-      <i :class="getStatusIcon(selectedPage.progressStatus)"></i>
-      <p>{{ getStatusMessage(selectedPage.progressStatus) }}</p>
-    </div>
     <div v-else class="content-area">
       <div class="header">
         <input
@@ -69,7 +65,10 @@
           <h3 class="block-title">{{ block.title || '제목 없음' }}</h3>
         </div>
       </div>
-
+      <div v-if="showStatusMessage" class="status-message" :style="{ color: getStatusColor(selectedPage.progressStatus), opacity: messageOpacity }">
+        <i :class="getStatusIcon(selectedPage.progressStatus)"></i>
+        <p>{{ getStatusMessage(selectedPage.progressStatus) }}</p>
+      </div>
       <textarea
           ref="cardContent"
           v-model="selectedPage.content"
@@ -335,6 +334,12 @@ export default {
 
         await axios.patch(`http://localhost:8081/pages/${this.selectedPage.id}/progress`, payload);
         console.log('진행 상태 업데이트 성공');
+
+        // 페이지 상태 갱신
+        const updatedPage = this.pages.find(page => page.id === this.selectedPage.id);
+        if (updatedPage) {
+          updatedPage.progressStatus = this.selectedPage.progressStatus; // 진행 상태 갱신
+        }
 
         // 상태 메시지를 표시하고 2초 후에 숨김
         this.showStatusMessage = true;
