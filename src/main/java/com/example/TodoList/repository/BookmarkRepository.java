@@ -13,6 +13,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     Optional<Bookmark> findByUser_UserIdAndBoard_PostId(String userId, Long postId);
 
+    void deleteByBoard_PostId(Long postId); // 추가
     boolean existsByUser_UserIdAndBoard_PostId(String userId, Long postId);
 
     @Query("SELECT COUNT(b) FROM Bookmark b WHERE b.board.postId = :postId")

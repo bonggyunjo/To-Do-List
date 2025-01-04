@@ -58,15 +58,29 @@ public class BoardService {
             throw new RuntimeException("게시글을 찾을 수 없습니다.");
         }
     }
-    public Board deleteBoard(Long postId) {
+
+    @Transactional
+    public void deleteBoard(Long postId) {
         Optional<Board> optionalBoard = boardRepository.findById(postId);
         if (optionalBoard.isPresent()) {
+            // UserLike 삭제
+            likeRepository.deleteByBoard_PostId(postId);
+
+            // 삭제할 Bookmark 개수 확인
+            int deletedCount = bookmarkRepository.countByBoard_PostId(postId);
+            System.out.println("삭제할 Bookmark 개수: " + deletedCount);
+
+            // Bookmark 삭제
+            bookmarkRepository.deleteByBoard_PostId(postId);
+
+            // Board 삭제
             boardRepository.delete(optionalBoard.get());
         } else {
             throw new RuntimeException("게시글을 찾을 수 없습니다.");
         }
-        return null;
     }
+
+
 
     public BoardDto getBoardPostId(Long postId) {
         Optional<Board> boardOptional = boardRepository.findById(postId);

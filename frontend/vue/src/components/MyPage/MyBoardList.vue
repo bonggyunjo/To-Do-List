@@ -8,29 +8,21 @@
         <div class="table-title">작성일</div>
       </div>
       <div style="border-top: 1px solid #e0e0e0;"></div>
-      <ul v-if="boards.length > 0">
+      <ul>
         <li v-for="post in boards" :key="post.postId" class="post-item">
           <div class="post-info">
             <span class="post-id" @click="goToPost(post.postId)">{{ post.postId }}</span>
-            <span class="post-user" @click="goToPost(post.postId)">
-              {{ post.user ? post.user.nickname : '익명' }}
-            </span>
+            <span class="post-user" @click="goToPost(post.postId)">{{ post.nickname }}</span>
             <span class="post-title" @click="goToPost(post.postId)">{{ post.title }}</span>
-            <small class="post-date" @click="goToPost(post.postId)">
-              {{ formatDate(post.createdAt) }}
-            </small>
+            <small class="post-date" @click="goToPost(post.postId)">{{ formatDate(post.createdAt) }}</small>
           </div>
-          <!-- 댓글 출력 부분 제거 -->
         </li>
       </ul>
-
-      <p v-if="isLoading" class="loading">로딩 중...</p>
-      <p v-if="!boards.length && !isLoading" class="no-boards">게시글이 없습니다.</p>
-      <button v-if="!isLoading" @click="goBack" class="back-button">뒤로가기</button>
+      <button @click="goBack" class="back-button">뒤로가기</button> <!-- 뒤로가기 버튼 추가 -->
+      <p v-if="!boards.length" class="no-boards">게시글이 없습니다.</p>
     </div>
   </main>
 </template>
-
 <script>
 import axios from 'axios';
 

@@ -105,6 +105,8 @@ public class PageService {
         Page page = pageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("페이지를 찾을 수 없습니다."));
 
+        // 기존 blocks를 가져옵니다.
+        List<Block> existingBlocks = page.getBlocks();
 
         Page updatedPage = Page.builder()
                 .id(page.getId())
@@ -116,9 +118,11 @@ public class PageService {
                 .progressStatus(progressStatus)
                 .user(page.getUser())
                 .deleted(page.isDeleted())
+                .blocks(existingBlocks) // 기존 blocks를 유지
                 .build();
 
         return pageRepository.save(updatedPage);
     }
+
 
 }

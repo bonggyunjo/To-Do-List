@@ -1,18 +1,17 @@
 <template>
   <div class="sidebar">
-    <div class="sidebar-header">
-      <h2 class="sidebar-title" @click="goToMainPage">개인 페이지</h2>
+    <div class="sidebar-header"><h2 class="sidebar-title" @click="goToMainPage">개인 페이지</h2>
       <div class="header-actions">
-        <img src="@/assets/records/write.png" width="20" height="25" class="write-button" @click="createPage"/>
-        <router-link to="/trash" class="trash">
-          <img src="@/assets/records/trash.png" width="31" height="28" class="trash"/>
-        </router-link>
+        <i class="fas fa-plus-circle"  width="20" height="25"  @click="createPage" id="write-button"></i>
+        <router-link to="/trash"><i class="fas fa-trash" width="31" height="28" id="trash"></i></router-link>
+
+
       </div>
     </div>
 
     <h3 class="section-title">목록</h3>
     <ul class="page-list">
-      <li v-for="(pageItem, index) in pendingPages" :key="index" @click="selectPage(index)" class="page-item">
+      <li v-for="(pageItem, index) in pages" :key="index" @click="selectPage(index)" class="page-item">
         <div class="page-item-content">
           {{ pageItem.title }}
           <span class="time">{{ formatTime(pageItem.createdDate) }}</span>
@@ -20,74 +19,27 @@
       </li>
     </ul>
 
-    <h3 class="section-title" style="position: relative; left:-70px;">진행 중인 목록</h3>
-    <ul class="page-list">
-      <li v-for="(pageItem, index) in ongoingPages" :key="index" @click="selectPage(index)" class="page-item">
-        <div class="page-item-content">
-          {{ pageItem.title }}
-          <span class="time">{{ formatTime(pageItem.createdDate) }}</span>
-        </div>
-      </li>
-    </ul>
-
-    <h3 class="section-title" style="position: relative; left:-79.5px;">완료된 목록</h3>
-    <ul class="page-list">
-      <li v-for="(pageItem, index) in completedPages" :key="index" @click="selectPage(index)" class="page-item">
-        <div class="page-item-content">
-          {{ pageItem.title }}
-          <span class="time">{{ formatTime(pageItem.createdDate) }}</span>
-        </div>
-      </li>
-    </ul>
     <router-link to="/" class="go-back">뒤로가기</router-link>
   </div>
 </template>
-
 <script>
 export default {
   name: 'SideBar',
   props: {
-    pages: {
-      type: Array,
-      required: true
-    },
-    selectPage: {
-      type: Function,
-      required: true
-    },
-    formatTime: {
-      type: Function,
-      required: true
-    },
-    goToMainPage: {
-      type: Function,
-      required: true
-    }
-  },
-  computed: {
-    pendingPages() {
-      return this.pages.filter(page => page.progressStatus === 'PENDING');
-    },
-    ongoingPages() {
-      return this.pages.filter(page => page.progressStatus === 'IN_PROGRESS');
-    },
-    completedPages() {
-      return this.pages.filter(page => page.progressStatus === 'COMPLETED');
-    },
+    pages: {type: Array, required: true},
+    selectPage: {type: Function, required: true},
+    formatTime: {type: Function, required: true},
+    goToMainPage: {type: Function, required: true}
   },
   methods: {
     createPage() {
       this.$emit('create-page');
-    },
-    sortPages() {
+    }, sortPages() {
       this.$emit('sort-pages');
     }
   }
-};
-</script>
-
-<style scoped>
-.sidebar {
+}; </script>
+<style scoped> .sidebar {
   flex: 0 0 16%;
   border-right: 1px solid #e7e7e7;
   padding: 20px;
@@ -115,7 +67,7 @@ export default {
   align-items: center;
 }
 
-.write-button {
+#write-button {
   cursor: pointer;
   margin-left: 10px;
 }
@@ -125,7 +77,7 @@ export default {
   color: #333;
   margin: 15px 0 5px;
   position: relative;
-  left:-105px;
+  left: -105px;
   color: #333333;
   font-weight: bolder;
 }
@@ -158,11 +110,11 @@ export default {
   color: #999;
 }
 
-.trash {
+#trash {
   text-decoration: none;
   color: #333333;
   font-size: 15px;
-  margin-left: 5px;
+  margin-left: 15px;
 }
 
 .go-back {
@@ -171,5 +123,4 @@ export default {
   font-size: 14px;
   margin-top: 20px;
   font-weight: bolder;
-}
-</style>
+} </style>

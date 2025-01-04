@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -56,7 +57,8 @@ public class Page {
     private User user;
 
     @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Block> blocks;
+    private List<Block> blocks = new ArrayList<>(); // 초기화
+
 
     @Column(nullable = false)
     private boolean deleted = false;

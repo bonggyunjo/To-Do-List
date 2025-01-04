@@ -22,8 +22,9 @@ public class Bookmark {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "postId", nullable = false)
+    @JoinColumn(name = "post_id", referencedColumnName = "postId", nullable = false)
     private Board board;
+
 
 
     private int BookmarkCount;

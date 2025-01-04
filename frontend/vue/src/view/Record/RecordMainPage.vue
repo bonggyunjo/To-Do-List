@@ -9,13 +9,15 @@
         @sort-pages="sortPages"
     />
 
-
     <div v-if="pages.length === 0" class="no-pages-message">
       <i class="fas fa-plus-circle" @click="handleCreatePage" id="no-pages-btn"></i>
       <p>페이지를 생성하세요</p>
     </div>
 
-
+    <div v-if="showStatusMessage" class="status-message" :style="{ color: getStatusColor(selectedPage.progressStatus), opacity: messageOpacity }">
+      <i :class="getStatusIcon(selectedPage.progressStatus)"></i>
+      <p>{{ getStatusMessage(selectedPage.progressStatus) }}</p>
+    </div>
     <div v-else class="content-area">
       <div class="header">
         <input
@@ -26,7 +28,6 @@
             placeholder="제목을 입력하세요"
             maxlength="10"
         />
-
 
         <div class="priority-area">
           <label for="priority-slider"><span class="priority-title">중요도</span></label>
@@ -43,14 +44,16 @@
             <span class="priority-value">{{ selectedPage.priority }}</span>
           </div>
         </div>
+
         <div class="progress-status-area">
-          <label for="progress-status">상태</label>
-          <select v-model="selectedPage.progressStatus" @change="confirmProgressChange" class="progress-status-select">
+          <label for="progress-status-select">진행 상태:</label>
+          <select v-model="selectedPage.progressStatus" @change="updateProgressStatus" class="progress-status-select">
             <option value="PENDING">대기 중</option>
             <option value="IN_PROGRESS">진행 중</option>
             <option value="COMPLETED">완료</option>
           </select>
         </div>
+
         <div class="time-shared">
           <span class="time">{{ formatTime(selectedPage.createdDate) }}</span>
           <button class="create-page-button" @click="createBlockPage">새 페이지</button>
@@ -58,6 +61,7 @@
           <button class="delete-button" @click="deletebt">삭제</button>
         </div>
       </div>
+
       <div style="border-bottom: 1px solid lightgray; position:relative; top:-6px;"></div>
 
       <div class="blocks-container">
@@ -71,14 +75,13 @@
           v-model="selectedPage.content"
           class="card-content"
           @input="handleTextareaInput"
-          placeholder="내용을 입력하세요"
           style="overflow: hidden; resize: none;"
       ></textarea>
     </div>
-
-
   </div>
 </template>
+
+
 
 <script>
 import axios from 'axios';
@@ -100,7 +103,9 @@ export default {
         createdDate: '',
         blocks: []
       },
-      deletedPages: []
+      deletedPages: [],
+      showStatusMessage: false, // 상태 메시지 표시 여부
+      messageOpacity: 1 // 상태 메시지의 불투명도
     };
   },
   computed: {
@@ -109,15 +114,44 @@ export default {
   created() {
     this.fetchPageData();
   },
-  watch: {
-    selectedPage: {
-      handler(newValue) {
-        this.previousProgressStatus = newValue.progressStatus; // 이전 상태 저장
-      },
-      immediate: true,
-    }
-  },
+
   methods: {
+    getStatusColor(status) {
+      switch (status) {
+        case 'PENDING':
+          return 'orange';
+        case 'IN_PROGRESS':
+          return 'blue';
+        case 'COMPLETED':
+          return 'green';
+        default:
+          return 'black';
+      }
+    },
+    getStatusMessage(status) {
+      switch (status) {
+        case 'PENDING':
+          return '작업이 대기 중입니다. 진행을 시작하세요.';
+        case 'IN_PROGRESS':
+          return '작업이 진행 중입니다. 완료를 위해 계속하세요.';
+        case 'COMPLETED':
+          return '작업이 완료되었습니다. 확인하세요!';
+        default:
+          return '';
+      }
+    },
+    getStatusIcon(status) {
+      switch (status) {
+        case 'PENDING':
+          return 'fas fa-hourglass-half';
+        case 'IN_PROGRESS':
+          return 'fas fa-spinner fa-spin';
+        case 'COMPLETED':
+          return 'fas fa-check-circle';
+        default:
+          return '';
+      }
+    },
     handleTextareaInput(event) {
       this.updatePageContent();
       this.adjustTextareaHeight(event);
@@ -220,7 +254,6 @@ export default {
     async handleCreatePage() {
       const newPage = {
         title: '새 페이지',
-        content: '새 페이지 내용',
         priority: 0,
         createdDate: new Date().toISOString(),
         userId: this.getUserId,
@@ -273,67 +306,61 @@ export default {
         return (a.priority || Infinity) - (b.priority || Infinity);
       });
     },
-    async confirmProgressChange() {
-      const newStatus = this.selectedPage.progressStatus;
-
-      const confirmationMessage = newStatus === 'IN_PROGRESS' ?
-          '진행하시겠습니까?' :
-          '완료하시겠습니까?';
-
-      const userConfirmed = confirm(confirmationMessage);
-
-      if (userConfirmed) {
-        // 상태 업데이트
-        await this.updateProgressStatus(newStatus);
-        this.movePageToCorrectList(newStatus);
-        alert(`${newStatus === 'IN_PROGRESS' ? '진행 중' : '완료'} 상태로 변경되었습니다.`);
-      } else {
-        this.selectedPage.progressStatus = this.previousProgressStatus;
-      }
-    },
-
-    async updateProgressStatus(newStatus) {
-      try {
-        const payload = {
-          status: newStatus
-        };
-        await axios.patch(`http://localhost:8081/pages/${this.selectedPage.id}/progress`, payload);
-        console.log('진행 상태 업데이트 성공');
-
-        // 로컬 상태도 업데이트
-        this.selectedPage.progressStatus = newStatus;
-      } catch (error) {
-        console.error('진행 상태 업데이트 중 오류 발생:', error.response.data);
-      }
-    },
-
-
-    movePageToCorrectList(status) {
-      const id = this.selectedPage.id;
-
-      // 상태에 따라 페이지를 적절한 배열로 이동
-      this.pages = this.pages.map(page => {
-        if (page.id === id) {
-          return {...page, progressStatus: status}; // 특정 페이지의 상태만 변경
-        }
-        return page;
-      });
-    }
-  },
     async updateProgressStatus() {
       try {
+        let message;
+
+        switch (this.selectedPage.progressStatus) {
+          case 'PENDING':
+            message = "대기 중으로 전환하시겠습니까?";
+            break;
+          case 'IN_PROGRESS':
+            message = "진행 중으로 바꾸시겠습니까?";
+            break;
+          case 'COMPLETED':
+            message = "완료로 바꾸시겠습니까?";
+            break;
+          default:
+            return;
+        }
+
+        const userConfirmed = confirm(message);
+        if (!userConfirmed) {
+          return; // 사용자가 취소할 경우 아무 작업도 하지 않음
+        }
+
         const payload = {
           status: this.selectedPage.progressStatus
         };
+
         await axios.patch(`http://localhost:8081/pages/${this.selectedPage.id}/progress`, payload);
         console.log('진행 상태 업데이트 성공');
-        // 페이지 데이터 다시 가져오기 로직 제거
+
+        // 상태 메시지를 표시하고 2초 후에 숨김
+        this.showStatusMessage = true;
+        this.messageOpacity = 1;
+        setTimeout(() => {
+          this.showStatusMessage = false;
+        }, 2000);
+
       } catch (error) {
         console.error('진행 상태 업데이트 중 오류 발생:', error.response.data);
       }
-    }
+    },
+    fadeOutMessage() {
+      const fadeInterval = setInterval(() => {
+        if (this.messageOpacity > 0) {
+          this.messageOpacity -= 0.1; // 점차적으로 불투명도 감소
+        } else {
+          clearInterval(fadeInterval);
+          this.showStatusMessage = false; // 사라지면 상태 메시지 숨김
+        }
+      }, 100); // 0.1초마다 불투명도 감소
+    },
+  }
 };
 </script>
+
 <style scoped>
 .container {
   display: flex;
@@ -545,6 +572,38 @@ export default {
 
 #no-pages-btn{
   cursor: pointer;
+}
+.progress-status-area {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.progress-status-select {
+  margin-left: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: border 0.3s;
+}
+
+.progress-status-select:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+.status-message {
+
+  display: flex;
+  align-items: center;
+  transition: opacity 0.5s ease; /* 애니메이션 효과 추가 */
+  margin: auto;
+}
+
+.status-message i {
+  margin-right: 8px;
+  font-size: 20px;
 }
 
 </style>

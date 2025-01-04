@@ -23,22 +23,29 @@ public class BookmarkService {
     private BoardRepository boardRepository;
 
     public void addFavorite(String userId, Long postId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        Board board = boardRepository.findById(postId).orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        Board board = boardRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
 
-        if (!bookmarkRepository.existsByUser_UserIdAndBoard_PostId(userId, postId)) {
-            Bookmark bookmark = new Bookmark();
-            bookmark.setUser(user);
-            bookmark.setBoard(board);
-            bookmark.setBookmarkCount(1);
-            bookmarkRepository.save(bookmark);
+        // 로그 추가
+        System.out.println("User: " + user);
+        System.out.println("Board: " + board + ", postId: " + board.getPostId());
 
-            board.incrementFavoriteCount();
-            boardRepository.save(board);
-        } else {
+        if (bookmarkRepository.existsByUser_UserIdAndBoard_PostId(userId, postId)) {
             throw new RuntimeException("이미 추가하였습니다.");
         }
+
+        Bookmark bookmark = new Bookmark();
+        bookmark.setUser(user);
+        bookmark.setBoard(board);
+        bookmark.setBookmarkCount(1);
+        bookmarkRepository.save(bookmark);
+
+        board.incrementFavoriteCount();
+        boardRepository.save(board);
     }
+
 
     public void removeFavorite(String userId, Long postId) {
         Bookmark bookmark = bookmarkRepository.findByUser_UserIdAndBoard_PostId(userId, postId)
